@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Assets.Map
 {
     public class Tile : MonoBehaviour {
-    
         public GameObject TileGameObject;
         public GameObject ShGameObject;
         public CubeIndex Index;
         public bool Available = true;
         public double Drag = 1;
         public Vector3 Position = new Vector3(0, 0, 0);
+        
 
         public static Vector3 Corner(Vector3 origin, float radius, int corner, HexOrientation orientation){
             float angle = 60 * corner;
@@ -68,6 +68,31 @@ namespace Assets.Map
 
             mesh.RecalculateNormals();
         }
+
+        void OnMouseDown()
+        {
+            //Destroy(this.TileGameObject);
+            // this object was clicked - do something
+            var grid = Assets.Map.Grid.Instance;
+            var tileList = grid.TilesInRange(this, 10);
+
+            foreach (var tile in tileList)
+            {
+                GameObject go = new GameObject("Shadow");
+                
+                go.transform.parent = tile.TileGameObject.transform;
+                go.transform.position = tile.Position + new Vector3(0, grid.HexRadius*2, 0);
+                go.transform.Rotate(new Vector3(90, 0, 0));
+                tile.ShGameObject = go;
+                go.AddComponent<Projector>();
+                var x = go.GetComponent<Projector>();
+                x.material = grid.SelectedMaterial;
+
+            }
+
+
+        }
+
 
         #region Coordinate Conversion Functions
         public static OffsetIndex CubeToEvenFlat(CubeIndex c) {
@@ -215,5 +240,7 @@ namespace Assets.Map
         public override string ToString () {
             return string.Format("[" + q + "," + r + "," + s + "]");
         }
+
+
     }
 }

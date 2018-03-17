@@ -217,6 +217,9 @@ namespace Assets.Map
             return Neighbours(TileAt(q, s));
         }
 
+
+        Dictionary<string, Tile> _gridInRage = new Dictionary<string, Tile>();
+
         /// <summary>
         ///     Method calculate which tile is in range from selected tile
         ///     Beta version- Each tile is available, drag is const
@@ -224,20 +227,25 @@ namespace Assets.Map
         /// <param name="center">start tile</param>
         /// <param name="range">range</param>
         /// <returns>List of tiles in range</returns>
-        public List<Tile> TilesInRange(Tile center, int range)
+        public List<Tile> TilesInRange(Tile center, double range)
         {
-            // TODO Dijkstra's algorithm with drag support 
+            foreach (var VARIABLE in _gridInRage)
+                VARIABLE.Value.DeleteChildGO();
+            
+            _gridInRage.Clear();
             var ret = new List<Tile>();
             CubeIndex o;
 
-            for (var dx = -range; dx <= range; dx++)
-            for (var dy = Mathf.Max(-range, -dx - range); dy <= Mathf.Min(range, -dx + range); dy++)
+            List<Tile> neighbours = Neighbours(center);
+            foreach (var tile in neighbours)
             {
-                o = new CubeIndex(dx, dy, -dx - dy) + center.Index;
-                if (_grid.ContainsKey(o.ToString()))
-                    ret.Add(_grid[o.ToString()]);
+                if (center.Drag / 2 + tile.Drag / 2 < range)
+                {
+                    _gridInRage.Add(tile.ToString(), tile);
+                    ret.Add(tile);
+                }
             }
-
+            
             return ret;
         }
 
