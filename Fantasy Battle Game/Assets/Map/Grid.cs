@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Random = System.Random;
 
 namespace Assets.Map
 {
     public class Grid : MonoBehaviour
     {
-        public static Grid Inst;
+        private static Grid _instance;
 
         //Generation Options
         public bool AddColliders = true;
         public bool DrawOutlines = true;
+        public int Seed = 0;
 
         //Map settings
         public MapShape MapShape = MapShape.Rectangle;
@@ -23,6 +27,7 @@ namespace Assets.Map
         public HexOrientation HexOrientation = HexOrientation.Flat;
         public float HexRadius = 1;
         public Material LineMaterial;
+        public Material SelectedMaterial;
 
         //Parameters of random hex
         public List<Material> HexMaterialsList = new List<Material>();
@@ -41,7 +46,8 @@ namespace Assets.Map
             new CubeIndex(-1, 0, 1),
             new CubeIndex(0, -1, 1)
         };
-        private readonly Random _rand = new Random();
+
+        private Random _rand;
 
 
         #region Getters and Setters
@@ -51,12 +57,30 @@ namespace Assets.Map
             get { return _grid; }
         }
 
+        // Singleton
+        public static Grid Instance
+        {
+            get 
+            {
+                if (_instance == null)
+                    _instance = new Grid();
+                return _instance; 
+            }
+        }
+
         #endregion
 
         #region Public Methods
 
         public void GenerateGrid()
         {
+            if (Seed == 0)
+                _rand = new Random();
+            else
+            {
+                _rand = new Random(Seed);
+            }
+            ClearGrid();
             if (HexMaterialsList.Count != DragList.Count || DragList.Count == 0 ||
                 AvailableList.Count != HexMaterialsList.Count)
             {
@@ -149,10 +173,14 @@ namespace Assets.Map
             {
                 CubeIndex o = tile.Index + _directions[i];
                 if (_grid.ContainsKey(o.ToString()))
-                    if (_grid[o.ToString()].Available)
+                {
+                    if (_grid[o.ToString()].Available == true)
+                    {
                         listToReturn.Add(_grid[o.ToString()]);
+                        Debug.Log(o.ToString());
+                    }
+                }
             }
-
             return listToReturn;
         }
 
@@ -245,10 +273,19 @@ namespace Assets.Map
 
         private void Awake()
         {
-            if (!Inst)
-                Inst = this;
+            if (!_instance)
+                _instance = this;
+            if (Seed == 0)
+                _rand = new Random();
+            else
+            {
+                _rand = new Random(Seed);
+            }
+
+            GenerateGrid();
         }
 
+        private void Start() { }
 
         private void GetMesh()
         {
@@ -433,7 +470,7 @@ namespace Assets.Map
 
             if (DrawOutlines)
                 go.AddComponent<LineRenderer>();
-
+            
             go.transform.position = position;
             go.transform.parent = transform;
 
@@ -473,6 +510,7 @@ namespace Assets.Map
                     lines.SetPosition(vert, Tile.Corner(tile.transform.position, HexRadius, vert, HexOrientation));
             }
 
+            tile.TileGameObject = go;
             return tile;
         }
 

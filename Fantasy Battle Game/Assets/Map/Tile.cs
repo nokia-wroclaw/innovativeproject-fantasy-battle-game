@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Map
 {
     public class Tile : MonoBehaviour {
     
+        public GameObject TileGameObject;
+        public GameObject ShGameObject;
         public CubeIndex Index;
         public bool Available = true;
         public double Drag = 1;
@@ -16,6 +19,11 @@ namespace Assets.Map
                 angle += 30;
             angle *= Mathf.PI / 180;
             return new Vector3(origin.x + radius * Mathf.Cos(angle), 0.0f, origin.z + radius * Mathf.Sin(angle));
+        }
+
+        public void DeleteChildGO()
+        {
+            Destroy(ShGameObject);
         }
 
         public static void GetHexMesh(float radius, HexOrientation orientation, ref Mesh mesh) {
