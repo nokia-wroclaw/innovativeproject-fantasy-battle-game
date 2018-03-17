@@ -27,7 +27,7 @@ namespace Assets.Map
         public HexOrientation HexOrientation = HexOrientation.Flat;
         public float HexRadius = 1;
         public Material LineMaterial;
-        public Material SelectedMaterial;
+        public Material ShadowMaterial;
 
         //Parameters of random hex
         public List<Material> HexMaterialsList = new List<Material>();
@@ -36,6 +36,7 @@ namespace Assets.Map
 
         //Internal variables
         private readonly Dictionary<string, Tile> _grid = new Dictionary<string, Tile>();
+        readonly Dictionary<string, Tile> _gridInRage = new Dictionary<string, Tile>();
         private Mesh _hexMesh;
         private readonly CubeIndex[] _directions =
         {
@@ -117,7 +118,6 @@ namespace Assets.Map
         /// </summary>
         public void ClearGrid()
         {
-            // TODO doesnt destroy after press play in unity
             Debug.Log("Clearing grid...");
             foreach (var tile in _grid)
                 DestroyImmediate(tile.Value.gameObject, false);
@@ -218,7 +218,7 @@ namespace Assets.Map
         }
 
 
-        Dictionary<string, Tile> _gridInRage = new Dictionary<string, Tile>();
+
 
         /// <summary>
         ///     Method calculate which tile is in range from selected tile
@@ -234,19 +234,50 @@ namespace Assets.Map
             
             _gridInRage.Clear();
             var ret = new List<Tile>();
-            CubeIndex o;
 
             List<Tile> neighbours = Neighbours(center);
             foreach (var tile in neighbours)
             {
-                if (center.Drag / 2 + tile.Drag / 2 < range)
+                if (center.Drag / 2 + tile.Drag / 2 <= range)
                 {
-                    _gridInRage.Add(tile.ToString(), tile);
-                    ret.Add(tile);
+                    _gridInRage.Add(tile.Index.ToString(), tile);
+                    tile.DistanceFromStart = center.Drag / 2 + tile.Drag / 2;
                 }
             }
             
+            foreach (var tile in neighbours)
+                if(_gridInRage.ContainsKey(tile.Index.ToString()))
+                    TilesInRangeRec(tile, range);
+
+            _gridInRage.Remove(center.Index.ToString());
+
+            foreach (Tile hex in _gridInRage.Values)
+                ret.Add(hex);
+
             return ret;
+        }
+
+
+        private void TilesInRangeRec(Tile currentTile, double range)
+        {
+            List<Tile> neighbours = Neighbours(currentTile);
+            foreach (var tile in neighbours)
+            {
+                if (_gridInRage.ContainsKey(tile.Index.ToString()))
+                {
+                    if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 < tile.DistanceFromStart)
+                    {
+                        tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
+                        TilesInRangeRec(tile, range);
+                    }
+                }
+                else if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag /2 <= range)
+                {
+                    _gridInRage.Add(tile.Index.ToString(), tile);
+                    tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
+                    TilesInRangeRec(tile, range);
+                }
+            }
         }
 
         /*

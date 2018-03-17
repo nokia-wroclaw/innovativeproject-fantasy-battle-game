@@ -212,9 +212,9 @@ MonoBehaviour:
   MapWidth: 10
   MapHeight: 0
   HexOrientation: 1
-  HexRadius: 1
+  HexRadius: 5
   LineMaterial: {fileID: 2100000, guid: a2bb29413886117438d548505a01b202, type: 2}
-  SelectedMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
+  ShadowMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
   HexMaterialsList:
   - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
   - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
@@ -225,11 +225,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
   AvailableList: 01010101010000
   DragList:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  - 2
+  - 2
+  - 3
+  - 3
+  - 3
   - 1
   - 1
 --- !u!4 &660150433
@@ -319,10 +319,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1820058485}
-  m_LocalRotation: {x: 0.36138803, y: -0, z: -0, w: 0.93241554}
-  m_LocalPosition: {x: 0, y: 14.3, z: -18}
+  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
+  m_LocalPosition: {x: 0, y: 68.06, z: -73.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 42.371002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 55, y: 0, z: 0}

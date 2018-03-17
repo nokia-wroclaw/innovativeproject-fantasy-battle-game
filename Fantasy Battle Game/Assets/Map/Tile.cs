@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Map
 {
@@ -11,7 +13,8 @@ namespace Assets.Map
         public bool Available = true;
         public double Drag = 1;
         public Vector3 Position = new Vector3(0, 0, 0);
-        
+        public double DistanceFromStart { get; set; }
+
 
         public static Vector3 Corner(Vector3 origin, float radius, int corner, HexOrientation orientation){
             float angle = 60 * corner;
@@ -23,7 +26,10 @@ namespace Assets.Map
 
         public void DeleteChildGO()
         {
-            Destroy(ShGameObject);
+            if(ShGameObject!=null)
+                Destroy(ShGameObject);
+            if(LabelGameObject!=null)
+                Destroy(LabelGameObject);
         }
 
         public static void GetHexMesh(float radius, HexOrientation orientation, ref Mesh mesh) {
@@ -71,27 +77,36 @@ namespace Assets.Map
 
         void OnMouseDown()
         {
-            //Destroy(this.TileGameObject);
-            // this object was clicked - do something
             var grid = Assets.Map.Grid.Instance;
-            var tileList = grid.TilesInRange(this, 10);
+            var tileList = grid.TilesInRange(this, 12);
 
             foreach (var tile in tileList)
             {
+                // Add Projector to tile
                 GameObject go = new GameObject("Shadow");
-                
                 go.transform.parent = tile.TileGameObject.transform;
-                go.transform.position = tile.Position + new Vector3(0, grid.HexRadius*2, 0);
+                go.transform.position = tile.Position + new Vector3(0, grid.HexRadius * 2, 0);
                 go.transform.Rotate(new Vector3(90, 0, 0));
                 tile.ShGameObject = go;
                 go.AddComponent<Projector>();
                 var x = go.GetComponent<Projector>();
-                x.material = grid.SelectedMaterial;
+                x.material = grid.ShadowMaterial;
 
+                // Add label to tile
+                GameObject labelGameObject = new GameObject("Label");
+                labelGameObject.transform.parent = tile.TileGameObject.transform;
+                labelGameObject.transform.position = tile.Position;
+                labelGameObject.transform.Rotate(new Vector3(90, 0, 0));
+                tile.LabelGameObject = labelGameObject;
+                var text = labelGameObject.AddComponent<TextMesh>();
+                text.text = Convert.ToString(Math.Round(tile.DistanceFromStart, 1));
+                text.fontSize = (int) (grid.HexRadius*9);
+                text.anchor = TextAnchor.MiddleCenter;
+                text.color = Color.white;
             }
-
-
         }
+
+        public GameObject LabelGameObject { get; set; }
 
 
         #region Coordinate Conversion Functions
