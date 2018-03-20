@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 namespace Assets.Map
 {
-    public class Tile : MonoBehaviour {
+    public class Tile : MonoBehaviour
+    {
         public GameObject TileGameObject;
         public GameObject ShGameObject;
         public CubeIndex Index;
@@ -14,9 +15,14 @@ namespace Assets.Map
         public double Drag = 1;
         public Vector3 Position = new Vector3(0, 0, 0);
         public double DistanceFromStart { get; set; }
+        private ChampionsManager _championsManager;
+        private GameObject _champion;
+        void Start()
+        {
+            _championsManager = ChampionsManager.Instance;
+        }
 
-
-        public static Vector3 Corner(Vector3 origin, float radius, int corner, HexOrientation orientation){
+    public static Vector3 Corner(Vector3 origin, float radius, int corner, HexOrientation orientation){
             float angle = 60 * corner;
             if(orientation == HexOrientation.Pointy)
                 angle += 30;
@@ -103,6 +109,16 @@ namespace Assets.Map
                 text.fontSize = (int) (grid.HexRadius*9);
                 text.anchor = TextAnchor.MiddleCenter;
                 text.color = Color.white;
+            }
+
+            if (_championsManager.GetChampionToSpawn() != null)
+            {
+                if (_champion == null)
+                {
+                    GameObject championToSpawn = _championsManager.GetChampionToSpawn();
+                    _champion = (GameObject)Instantiate(championToSpawn, transform.position,transform.rotation);
+       
+                }
             }
         }
 
