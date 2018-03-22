@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Map
+namespace assets.scripts.map
 {
     public class GridMetrics : MonoBehaviour
     {
@@ -13,16 +11,16 @@ namespace Assets.Scripts.Map
         public int Seed = 0; // if Seed == 0 algorithm use time-dependent seed value
 
         //Map settings
-        public GridGenerator.MapShape SelectedMapShape = GridGenerator.MapShape.Hexagon;
+        public MapShape SelectedMapShape = MapShape.Hexagon;
         public int MapWidth;
         public int MapHeight;
 
         //Hex Settings
-        public GridGenerator.HexOrientation SelectedHexOrientation = GridGenerator.HexOrientation.Flat;
+        public HexOrientation SelectedHexOrientation = HexOrientation.Flat;
         public float HexRadius = 10;
         public Material LineMaterial;
         public Material ProjectorMaterial; // used to show range of move
-        public List<GridGenerator.HexParametr> HexParametrs = new List<GridGenerator.HexParametr>();
+        public List<HexParametr> HexParametrs = new List<HexParametr>();
 
         [Serializable]
         public enum MapShape
@@ -43,9 +41,9 @@ namespace Assets.Scripts.Map
         [Serializable]
         public struct HexParametr
         {
-            public Material material;
-            public Boolean available;
-            public Double drag;
+            public Material Material;
+            public Boolean Available;
+            public Double Drag;
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Map
+namespace assets.scripts.map
 {
     public class TileMetrics
     {
-        public static void GetHexMesh(float radius, GridGenerator.HexOrientation orientation, ref Mesh mesh)
+        public static void GetHexMesh(float radius, GridMetrics.HexOrientation orientation, ref Mesh mesh)
         {
             mesh = new Mesh();
 
-            List<int> triangles = generateIndexesOfTrianglesInHex();
+            List<int> triangles = new List<int> { 0, 2, 1, 0, 5, 2, 2, 5, 3, 3, 5, 4 };
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> uvs = new List<Vector2>();
 
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Map
             mesh.RecalculateNormals();
         }
 
-        public static Vector3 Corner(Vector3 origin, float radius, int corner, GridGenerator.HexOrientation orientation)
+        public static Vector3 Corner(Vector3 origin, float radius, int corner, GridMetrics.HexOrientation orientation)
         {
             float angle = 60 * corner;
             if (orientation == GridMetrics.HexOrientation.Pointy)
@@ -41,53 +41,28 @@ namespace Assets.Scripts.Map
             return new Vector3(origin.x + radius * Mathf.Cos(angle), 0.0f, origin.z + radius * Mathf.Sin(angle));
         }
 
-        private static List<int> generateIndexesOfTrianglesInHex()
-        {
-            List<int> triangles = new List<int>();
-
-            triangles.Add(0);
-            triangles.Add(2);
-            triangles.Add(1);
-
-            triangles.Add(0);
-            triangles.Add(5);
-            triangles.Add(2);
-
-            triangles.Add(2);
-            triangles.Add(5);
-            triangles.Add(3);
-
-            triangles.Add(3);
-            triangles.Add(5);
-            triangles.Add(4);
-
-            return triangles;
-        }
-
         [System.Serializable]
-        public struct Index
+        public struct HexCoordinate
         {
             public readonly int Q;
             public readonly int R;
 
-            public Index(int Q, int R)
+            public HexCoordinate(int q, int r)
             {
-                this.Q = Q;
-                this.R = R;
+                Q = q;
+                R = r;
             }
 
-            public static Index operator +(Index one, Index two)
+            public static HexCoordinate operator +(HexCoordinate one, HexCoordinate two)
             {
-                return new Index(one.Q + two.Q, one.R + two.R);
+                return new HexCoordinate(one.Q + two.Q, one.R + two.R);
             }
 
             public override bool Equals(object obj)
             {
                 if (obj == null)
                     return false;
-                Index o = (Index)obj;
-                if ((System.Object)o == null)
-                    return false;
+                HexCoordinate o = (HexCoordinate)obj;
                 return ((Q == o.Q) && (R == o.R));
             }
 

@@ -1,53 +1,52 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Map
+namespace assets.scripts.map
 {
-    public class Grid : MonoBehaviour
+    public class Grid
     {
-        //Internal variables
         public float HexRadius { get; set; }
         public Material ProjectorsMaterial { get; set; }
         public static Grid Instance { get; private set; }
-        private Dictionary<TileMetrics.Index, Tile> _tiles = new Dictionary<TileMetrics.Index, Tile>();
-        private readonly Dictionary<TileMetrics.Index, Tile> _tilesInRange = new Dictionary<TileMetrics.Index, Tile>();
-        private static TileMetrics.Index[] _directions =
+        private static TileMetrics.HexCoordinate[] directions_ =
         {
-            new TileMetrics.Index(1, -1),
-            new TileMetrics.Index(1, 0),
-            new TileMetrics.Index(0, 1),
-            new TileMetrics.Index(-1, 1),
-            new TileMetrics.Index(-1, 0),
-            new TileMetrics.Index(0, -1)
+            new TileMetrics.HexCoordinate(1, -1),
+            new TileMetrics.HexCoordinate(1, 0),
+            new TileMetrics.HexCoordinate(0, 1),
+            new TileMetrics.HexCoordinate(-1, 1),
+            new TileMetrics.HexCoordinate(-1, 0),
+            new TileMetrics.HexCoordinate(0, -1)
         };
 
-        #region Public Methods
+        private Dictionary<TileMetrics.HexCoordinate, Tile> tilesInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+
+        private Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+
+        #region Public_Methods
 
         public Grid()
         {
             if (Instance == null)
+            {
                 Instance = this;
+            }
+                
         }
 
-        public Dictionary<TileMetrics.Index, Tile> Tiles
+        public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRangeDictionary
         {
-            get { return _tiles; }
-            set { _tiles = value; }
+            get { return tilesInRange_; }
+            set { tilesInRange_ = value; }
         }
 
-        public Dictionary<TileMetrics.Index, Tile> TilesInRangeDictionary
-        {
-            get { return _tilesInRange; }
-        }
-
-        public Dictionary<TileMetrics.Index, Tile> TilesInRange(Tile center, double range)
+        public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
             TilesInRangeDictionary.Clear();
 
-            Dictionary<TileMetrics.Index, bool> visited = new Dictionary<TileMetrics.Index, bool>();
+            var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
             visited.Add(center.Coordinate, center);
 
-            Queue<Tile> queue = new Queue<Tile>();
+            var queue = new Queue<Tile>();
 
             var neighbours = AvailableNeighbours(center);
             foreach (var tile in neighbours)
@@ -65,19 +64,22 @@ namespace Assets.Scripts.Map
                 foreach (var tile in neighbours)
                     if (TilesInRangeDictionary.ContainsKey(tile.Coordinate))
                     {
-                        if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 < tile.DistanceFromStart)
+                        if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <
+                            tile.DistanceFromStart)
                         {
-                            tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
+                            tile.DistanceFromStart =
+                                currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
                             queue.Enqueue(tile);
                         }
                     }
                     else if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <= range)
                     {
                         TilesInRangeDictionary.Add(tile.Coordinate, tile);
-                        tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;                        queue.Enqueue(tile);
+                        tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
+                        queue.Enqueue(tile);
                     }
             }
-            
+
             TilesInRangeDictionary.Remove(center.Coordinate);
 
             return TilesInRangeDictionary;
@@ -88,13 +90,12 @@ namespace Assets.Scripts.Map
         {
             var listToReturn = new List<Tile>();
             var neighbours = center.GetNeighbours();
-            foreach (Tile tile in neighbours)
-                if(tile.Available)
+            foreach (var tile in neighbours)
+                if (tile.Available)
                     listToReturn.Add(tile);
             return listToReturn;
         }
 
         #endregion
-        
     }
 }
