@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts.Map
 {
@@ -15,7 +17,7 @@ namespace Assets.Scripts.Map
 
         private GameObject _labelGameObject;
         private GameObject _projectorGameObject;
-        private List<Tile> _neighbours;
+        private List<Tile> _neighbours = new List<Tile>();
         private ChampionsManager _championsManager;
         private GameObject _champion;
 
@@ -32,6 +34,11 @@ namespace Assets.Scripts.Map
                 Destroy(_projectorGameObject);
         }
 
+        public List<Tile> GetNeighbours()
+        {
+            return _neighbours;
+        }
+
         #region Interaction with user
 
         private void OnMouseDown()
@@ -39,8 +46,14 @@ namespace Assets.Scripts.Map
             var grid = Grid.Instance;
             Debug.Log(grid.HexRadius);
             var gridHexRadius = grid.HexRadius;
-
-            var tilesInRange = grid.TilesInRange(this, 25);
+            
+            foreach (var tiles in grid.TilesInRangeDictionary)
+                tiles.Value.DeleteChildsGO();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var tilesInRange = grid.TilesInRange(this, 20);
+            stopwatch.Stop();
+            Debug.Log(stopwatch.Elapsed.TotalMilliseconds + "ms");
             foreach (Tile tile in tilesInRange.Values)
             {
 
@@ -51,8 +64,8 @@ namespace Assets.Scripts.Map
                 go.transform.Rotate(new Vector3(90, 0, 0));
                 tile._projectorGameObject = go;
                 go.AddComponent<Projector>();
-                var x = go.GetComponent<Projector>();
-                x.material = grid.ProjectorsMaterial;
+                var projector = go.GetComponent<Projector>();
+                projector.material = grid.ProjectorsMaterial;
 
                 // Add label to tile
                 GameObject labelGameObject = new GameObject("Label");

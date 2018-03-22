@@ -71,6 +71,17 @@ namespace Assets.Scripts.Map
                 ProjectorsMaterial = ProjectorMaterial,
                 HexRadius = HexRadius
             };
+
+            foreach (var tile in _tiles.Values)
+            {
+                for (var i = 0; i < 6; i++)
+                {
+                    var index = tile.Coordinate + _directions[i];
+                    if (_tiles.ContainsKey(index))
+                        tile.GetNeighbours().Add(_tiles[index]);
+                }
+            }
+
             return grid;
         }
 
