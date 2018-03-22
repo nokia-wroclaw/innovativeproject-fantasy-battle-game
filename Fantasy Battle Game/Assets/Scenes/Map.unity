@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2499,36 +2499,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 660150431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06ae7873d91888d4081a67018b59eb1c, type: 3}
+  m_Script: {fileID: 11500000, guid: b52ac7cb21c70254bbdf997afc9e7160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddColliders: 1
   DrawOutlines: 1
   Seed: 0
-  MapShape: 1
-  MapWidth: 10
+  SelectedMapShape: 1
+  MapWidth: 15
   MapHeight: 0
-  HexOrientation: 1
-  HexRadius: 5
+  SelectedHexOrientation: 1
+  HexRadius: 4
   LineMaterial: {fileID: 2100000, guid: a2bb29413886117438d548505a01b202, type: 2}
-  ShadowMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
-  HexMaterialsList:
-  - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-  - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 0223b5ff8e6cb2b44808922cce063641, type: 2}
-  - {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
-  AvailableList: 01010101010000
-  DragList:
-  - 2
-  - 2
-  - 3
-  - 3
-  - 3
-  - 1
-  - 1
+  ProjectorMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
+  HexParametrs:
+  - material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
+    available: 1
+    drag: 2
+  - material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
+    available: 1
+    drag: 2
+  - material: {fileID: 2100000, guid: 0223b5ff8e6cb2b44808922cce063641, type: 2}
+    available: 0
+    drag: 0
+  - material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    available: 1
+    drag: 1
+  - material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    available: 1
+    drag: 1
+  - material: {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
+    available: 0
+    drag: 0
 --- !u!4 &660150433
 Transform:
   m_ObjectHideFlags: 0
