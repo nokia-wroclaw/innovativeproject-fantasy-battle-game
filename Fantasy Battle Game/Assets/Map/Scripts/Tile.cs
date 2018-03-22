@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Assets.Map
 {
@@ -83,41 +84,44 @@ namespace Assets.Map
 
         void OnMouseDown()
         {
-            var grid = Assets.Map.Grid.Instance;
-            var tileList = grid.TilesInRange(this, 12);
-
-            foreach (var tile in tileList)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                // Add Projector to tile
-                GameObject go = new GameObject("Shadow");
-                go.transform.parent = tile.TileGameObject.transform;
-                go.transform.position = tile.Position + new Vector3(0, grid.HexRadius * 2, 0);
-                go.transform.Rotate(new Vector3(90, 0, 0));
-                tile.ShGameObject = go;
-                go.AddComponent<Projector>();
-                var x = go.GetComponent<Projector>();
-                x.material = grid.ShadowMaterial;
+                var grid = Assets.Map.Grid.Instance;
+                var tileList = grid.TilesInRange(this, 12);
 
-                // Add label to tile
-                GameObject labelGameObject = new GameObject("Label");
-                labelGameObject.transform.parent = tile.TileGameObject.transform;
-                labelGameObject.transform.position = tile.Position;
-                labelGameObject.transform.Rotate(new Vector3(90, 0, 0));
-                tile.LabelGameObject = labelGameObject;
-                var text = labelGameObject.AddComponent<TextMesh>();
-                text.text = Convert.ToString(Math.Round(tile.DistanceFromStart, 1));
-                text.fontSize = (int) (grid.HexRadius*9);
-                text.anchor = TextAnchor.MiddleCenter;
-                text.color = Color.white;
-            }
-
-            if (_championsManager.GetChampionToSpawn() != null)
-            {
-                if (_champion == null)
+                foreach (var tile in tileList)
                 {
-                    GameObject championToSpawn = _championsManager.GetChampionToSpawn();
-                    _champion = (GameObject)Instantiate(championToSpawn, transform.position,transform.rotation);
-       
+                    // Add Projector to tile
+                    GameObject go = new GameObject("Shadow");
+                    go.transform.parent = tile.TileGameObject.transform;
+                    go.transform.position = tile.Position + new Vector3(0, grid.HexRadius * 2, 0);
+                    go.transform.Rotate(new Vector3(90, 0, 0));
+                    tile.ShGameObject = go;
+                    go.AddComponent<Projector>();
+                    var x = go.GetComponent<Projector>();
+                    x.material = grid.ShadowMaterial;
+
+                    // Add label to tile
+                    GameObject labelGameObject = new GameObject("Label");
+                    labelGameObject.transform.parent = tile.TileGameObject.transform;
+                    labelGameObject.transform.position = tile.Position;
+                    labelGameObject.transform.Rotate(new Vector3(90, 0, 0));
+                    tile.LabelGameObject = labelGameObject;
+                    var text = labelGameObject.AddComponent<TextMesh>();
+                    text.text = Convert.ToString(Math.Round(tile.DistanceFromStart, 1));
+                    text.fontSize = (int)(grid.HexRadius * 9);
+                    text.anchor = TextAnchor.MiddleCenter;
+                    text.color = Color.white;
+                }
+
+                if (_championsManager.GetChampionToSpawn() != null)
+                {
+                    if (_champion == null)
+                    {
+                        GameObject championToSpawn = _championsManager.GetChampionToSpawn();
+                        _champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+
+                    }
                 }
             }
         }

@@ -12,7 +12,6 @@ public class MainMenu : MonoBehaviour {
 
     public void QuickGame()
     {
-        Debug.Log("QUICK");
         Application.Quit();
     }
 }
