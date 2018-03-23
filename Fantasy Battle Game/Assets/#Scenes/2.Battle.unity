@@ -2897,36 +2897,49 @@ MonoBehaviour:
   m_GameObject: {fileID: 660150431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06ae7873d91888d4081a67018b59eb1c, type: 3}
+  m_Script: {fileID: 11500000, guid: b52ac7cb21c70254bbdf997afc9e7160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AddColliders: 1
   DrawOutlines: 1
   Seed: 0
-  MapShape: 1
+  SelectedMapShape: 1
   MapWidth: 10
   MapHeight: 0
-  HexOrientation: 1
+  SelectedHexOrientation: 1
   HexRadius: 5
   LineMaterial: {fileID: 2100000, guid: a2bb29413886117438d548505a01b202, type: 2}
-  ShadowMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
-  HexMaterialsList:
-  - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-  - {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-  - {fileID: 2100000, guid: 0223b5ff8e6cb2b44808922cce063641, type: 2}
-  - {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
-  AvailableList: 01010101010000
-  DragList:
-  - 2
-  - 2
-  - 3
-  - 3
-  - 3
-  - 1
-  - 1
+  ProjectorMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
+  HexParametrs:
+  - Material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
+    Available: 1
+    Drag: 3
+  - Material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
+    Available: 1
+    Drag: 3
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
+    Available: 1
+    Drag: 1
+  - Material: {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
+    Available: 0
+    Drag: 0
+  - Material: {fileID: 2100000, guid: 0223b5ff8e6cb2b44808922cce063641, type: 2}
+    Available: 0
+    Drag: 0
 --- !u!4 &660150433
 Transform:
   m_ObjectHideFlags: 0
