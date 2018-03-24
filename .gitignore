@@ -26,6 +26,7 @@ sysinfo.txt
 *.user
 *.userprefs
 *.pidb
+.vs/
 .DS_Store
 
 ###
@@ -39,3 +40,8 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+
+###
+# Rider
+###
+.idea/
