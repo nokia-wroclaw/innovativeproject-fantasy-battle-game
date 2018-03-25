@@ -9326,11 +9326,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChampionsPrefabs:
-  - {fileID: 1178533114815920, guid: 8e2b83f57bad71a4ca6cbe4a2d4880e3, type: 2}
-  - {fileID: 1178533114815920, guid: 2bb55d0c64442384684076bd24ea9352, type: 2}
-  - {fileID: 1178533114815920, guid: b8e2e2c2aa04b1a40a36788cda9e78c7, type: 2}
-  - {fileID: 1178533114815920, guid: b77ad5d28a486194fa7b54d4c979cdf1, type: 2}
-  - {fileID: 1178533114815920, guid: 18a48cdaec9020e4396b9ab0891f760e, type: 2}
+  - {fileID: 143816, guid: 2e6391b851bd6104aa35c25d824e40b1, type: 2}
+  - {fileID: 101568, guid: 59c100dd669d88f46b60555886d4dae7, type: 2}
+  - {fileID: 100050, guid: ba24e610e0a338545b447ff44a3cf1cc, type: 3}
+  - {fileID: 1000013586557078, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 2}
+  - {fileID: 180470, guid: f4864ffb159f30048a3bdafeae646afb, type: 2}
 --- !u!4 &2015306275
 Transform:
   m_ObjectHideFlags: 0
