@@ -43,7 +43,9 @@ Thumbs.db
 ###
 # Rider
 ###
-Fantasy Battle Game/Assets/Plugins/
+Fantasy 
+Battle Game/Assets/Plugins/
+.idea/
 
 ###
 # Visual Studio cache directory
