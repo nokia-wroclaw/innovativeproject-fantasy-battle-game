@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
 
 namespace assets.scripts.map
@@ -14,12 +15,11 @@ namespace assets.scripts.map
         public bool Available = false;
         public TileMetrics.HexCoordinate Coordinate;
         public GameObject TileGameObject;
-
+        public GameObject Champion { set; get; } //PO
         private GameObject labelGameObject_;
         private GameObject projectorGameObject_;
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
-        private GameObject champion_;
 
         void Start()
         {
@@ -57,14 +57,20 @@ namespace assets.scripts.map
                 AddLabel(tile, grid);
             }
 
+
             if (championsManager_.GetChampionToSpawn() != null && Available == true)
             {
-                if (champion_ == null)
+                if (Champion == null)
                 {
                     GameObject championToSpawn = championsManager_.GetChampionToSpawn();
-                    champion_ = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                    Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
                     championsManager_.SetChampionToSpawn(null);
                 }
+            }
+
+            if (Champion)
+            {
+                championsManager_.SelectTile(this);
             }
         }
 

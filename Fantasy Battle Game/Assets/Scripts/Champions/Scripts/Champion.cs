@@ -8,7 +8,7 @@ public class Champion : MonoBehaviour
     public int CurrentHp { set; get; }
     public bool IsFirstPlayer;
     public int Damage;
-
+   
     public void SetPosition(float x, float y, float z)
     {
         CurrentX = x;
