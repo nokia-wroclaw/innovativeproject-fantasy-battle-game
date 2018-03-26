@@ -43,36 +43,38 @@ namespace assets.scripts.map
 
         private void OnMouseDown()
         {
-            var grid = Grid.Instance;
-            var gridHexRadius = grid.HexRadius;
-            
-            foreach (var tiles in grid.TilesInRangeDictionary)
-                tiles.Value.DeleteChildsGO();
-            
-            var tilesInRange = grid.TilesInRange(this, 20);
-
-            foreach (Tile tile in tilesInRange.Values)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                AddProjector(tile, grid);
-                AddLabel(tile, grid);
-            }
+                var grid = Grid.Instance;
+                var gridHexRadius = grid.HexRadius;
 
-           
-            if (championsManager_.GetChampionToSpawn() != null && Available == true)
-            {
-                if (Champion == null)
+                foreach (var tiles in grid.TilesInRangeDictionary)
+                    tiles.Value.DeleteChildsGO();
+
+                var tilesInRange = grid.TilesInRange(this, 20);
+
+                foreach (Tile tile in tilesInRange.Values)
                 {
-                    GameObject championToSpawn = championsManager_.GetChampionToSpawn();
-                    Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
-                    championsManager_.SetChampionToSpawn(null);
+                    AddProjector(tile, grid);
+                    AddLabel(tile, grid);
+                }
+
+
+                if (championsManager_.GetChampionToSpawn() != null && Available == true)
+                {
+                    if (Champion == null)
+                    {
+                        GameObject championToSpawn = championsManager_.GetChampionToSpawn();
+                        Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                        championsManager_.SetChampionToSpawn(null);
+                    }
+                }
+
+                if (Champion)
+                {
+                    championsManager_.SelectTile(this);
                 }
             }
-
-            if (Champion)
-            {
-                championsManager_.SelectTile(this);
-            }
-            
         }
 
         private void AddLabel(Tile tile, Grid grid)
