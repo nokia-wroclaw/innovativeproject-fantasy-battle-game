@@ -11,18 +11,16 @@ public class ChampionsManager : MonoBehaviour
     public List<GameObject> ChampionsPrefabs;
     private GameObject championToSpawn_;
     private assets.scripts.map.Tile selectedTile_;
-
+    public GameObject SelectedChampion { set; get; }
 
     public void SelectTile(assets.scripts.map.Tile tile)
     {
         selectedTile_ = tile;
         championToSpawn_ = null;
+        SelectedChampion = selectedTile_.Champion;
     }
 
-    public GameObject GetSelectedChampion()
-    {
-            return selectedTile_.Champion;
-    }
+
     void Awake()
     {
         if (Instance != null)

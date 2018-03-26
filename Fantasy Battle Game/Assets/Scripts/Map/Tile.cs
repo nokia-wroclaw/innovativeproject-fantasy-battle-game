@@ -15,7 +15,7 @@ namespace assets.scripts.map
         public bool Available = false;
         public TileMetrics.HexCoordinate Coordinate;
         public GameObject TileGameObject;
-        public GameObject Champion { set; get; } //PO
+        public GameObject Champion { set; get; }
         private GameObject labelGameObject_;
         private GameObject projectorGameObject_;
         private readonly List<Tile> neighbours_ = new List<Tile>();
@@ -57,7 +57,7 @@ namespace assets.scripts.map
                 AddLabel(tile, grid);
             }
 
-
+           
             if (championsManager_.GetChampionToSpawn() != null && Available == true)
             {
                 if (Champion == null)
@@ -72,6 +72,7 @@ namespace assets.scripts.map
             {
                 championsManager_.SelectTile(this);
             }
+            
         }
 
         private void AddLabel(Tile tile, Grid grid)
