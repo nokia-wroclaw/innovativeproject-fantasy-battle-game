@@ -57,12 +57,13 @@ namespace assets.scripts.map
                 AddLabel(tile, grid);
             }
 
-            if (championsManager_.GetChampionToSpawn() != null)
+            if (championsManager_.GetChampionToSpawn() != null && Available == true)
             {
                 if (champion_ == null)
                 {
                     GameObject championToSpawn = championsManager_.GetChampionToSpawn();
-                    champion_ = (GameObject) Instantiate(championToSpawn, transform.position, transform.rotation);
+                    champion_ = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                    championsManager_.SetChampionToSpawn(null);
                 }
             }
         }
