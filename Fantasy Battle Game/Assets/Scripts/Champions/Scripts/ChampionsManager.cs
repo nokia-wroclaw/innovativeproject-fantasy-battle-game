@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Map;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class ChampionsManager : MonoBehaviour
 {
     public static ChampionsManager Instance;
     public List<GameObject> ChampionsPrefabs;
     private GameObject championToSpawn_;
-    private assets.scripts.map.Tile selectedTile_;
+    private Tile selectedTile_;
     public GameObject SelectedChampion { set; get; }
 
-    public void SelectTile(assets.scripts.map.Tile tile)
+    public void SelectTile(Tile tile)
     {
         selectedTile_ = tile;
         championToSpawn_ = null;

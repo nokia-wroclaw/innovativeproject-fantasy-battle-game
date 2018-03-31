@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace assets.scripts.map
+namespace Map
 {
     public class Grid
     {

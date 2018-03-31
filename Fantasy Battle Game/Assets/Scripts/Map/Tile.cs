@@ -4,8 +4,9 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
+using Grid = UnityEngine.Grid;
 
-namespace assets.scripts.map
+namespace Map
 {
     public class Tile : MonoBehaviour
     {
