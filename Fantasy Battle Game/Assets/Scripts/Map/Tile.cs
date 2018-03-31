@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CharacterUtilities.Movements;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = UnityEngine.Debug;
@@ -67,6 +68,7 @@ namespace Map
                     {
                         GameObject championToSpawn = championsManager_.GetChampionToSpawn();
                         Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                        Champion.AddComponent<ClassicMovement>();
                         championsManager_.SetChampionToSpawn(null);
                     }
                 }

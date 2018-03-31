@@ -1,8 +1,10 @@
-﻿namespace CharacterUtilities.Interfaces
+﻿using Map;
+
+namespace CharacterUtilities.Interfaces
 {
     public interface IMovement
     {
-        void SetTargetPosition();
+        void SetTargetPosition(Tile tile);
         void Move();
     }
 }
