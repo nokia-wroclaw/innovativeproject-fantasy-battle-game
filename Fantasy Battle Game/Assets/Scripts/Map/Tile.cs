@@ -75,9 +75,13 @@ namespace Map
                 {
                     championsManager_.SelectTile(this);
                 }
+
+                else
+                {
+                    championsManager_.SelectTile(null);
+                }
             }
         }
-
         private void AddLabel(Tile tile, Grid grid)
         {
             GameObject labelGameObject = new GameObject("Label");

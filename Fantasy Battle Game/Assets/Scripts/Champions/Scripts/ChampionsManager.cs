@@ -17,7 +17,12 @@ public class ChampionsManager : MonoBehaviour
     {
         selectedTile_ = tile;
         championToSpawn_ = null;
-        SelectedChampion = selectedTile_.Champion;
+        if (selectedTile_.Champion)
+        { SelectedChampion = selectedTile_.Champion; }
+        else
+        {
+                SelectedChampion = null;
+        }     
     }
 
 
