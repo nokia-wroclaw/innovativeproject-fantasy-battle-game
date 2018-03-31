@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Map;
+using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,20 +10,29 @@ public class ChampionsManager : MonoBehaviour
 {
     public static ChampionsManager Instance;
     public List<GameObject> ChampionsPrefabs;
-    private GameObject championToSpawn_;
-    private Tile selectedTile_;
+    public Tile SelectedTile { get; set; }
     public GameObject SelectedChampion { set; get; }
+
+    private GameObject championToSpawn_;
+    
 
     public void SelectTile(Tile tile)
     {
-        selectedTile_ = tile;
-        championToSpawn_ = null;
-        if (selectedTile_.Champion)
-        { SelectedChampion = selectedTile_.Champion; }
+        SelectedTile = tile;
+        if (SelectedTile == null)
+        {
+            SelectedChampion = null;
+            return;
+        }
+
+        if (SelectedTile.Champion)
+        {
+            SelectedChampion = SelectedTile.Champion;
+        }
         else
         {
                 SelectedChampion = null;
-        }     
+        }
     }
 
 

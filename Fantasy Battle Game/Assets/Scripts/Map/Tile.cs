@@ -70,16 +70,7 @@ namespace Map
                         championsManager_.SetChampionToSpawn(null);
                     }
                 }
-
-                if (Champion)
-                {
-                    championsManager_.SelectTile(this);
-                }
-
-                else
-                {
-                    championsManager_.SelectTile(null);
-                }
+                championsManager_.SelectTile(this);
             }
         }
         private void AddLabel(Tile tile, Grid grid)
