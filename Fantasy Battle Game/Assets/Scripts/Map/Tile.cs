@@ -27,7 +27,7 @@ namespace Map
             championsManager_ = ChampionsManager.Instance;
         }
 
-        public void DeleteChildsGO()
+        public void DeleteChildsGameObject()
         {
             if (labelGameObject_)
                 Destroy(labelGameObject_);
@@ -50,7 +50,7 @@ namespace Map
                 var gridHexRadius = grid.HexRadius;
 
                 foreach (var tiles in grid.TilesInRangeDictionary)
-                    tiles.Value.DeleteChildsGO();
+                    tiles.Value.DeleteChildsGameObject();
 
                 var tilesInRange = grid.TilesInRange(this, 20);
 
