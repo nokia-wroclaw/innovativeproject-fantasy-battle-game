@@ -31,6 +31,7 @@ namespace CharacterUtilities.Movements
                  Move();   
             }
         }
+        
         public void SetTargetPosition(Tile tile)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
