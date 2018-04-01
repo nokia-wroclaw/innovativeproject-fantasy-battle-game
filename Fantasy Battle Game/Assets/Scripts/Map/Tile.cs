@@ -72,14 +72,9 @@ namespace Map
                         championsManager_.SetChampionToSpawn(null);
                     }
                 }
-
-                if (Champion)
-                {
-                    championsManager_.SelectTile(this);
-                }
+                championsManager_.SelectTile(this);
             }
         }
-
         private void AddLabel(Tile tile, Grid grid)
         {
             GameObject labelGameObject = new GameObject("Label");
