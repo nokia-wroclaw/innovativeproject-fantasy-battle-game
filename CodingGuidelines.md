@@ -137,9 +137,7 @@ protected int prop{get;set;}
 ### Public
 
 ```C#
-private class ClassName{}
-private FuntionName(){}
-private struct StructName{}
+private int Prop{get;set;}
 ```
 
 ## Field naming convention
