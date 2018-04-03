@@ -23,8 +23,9 @@ using ANY_OTHER_PACKAGE;
 ```
 
 ## Namespaces and file naming convention
+
 Every script file which has been created should be named, as _Namespace_
-it contains, and the namespace should be named with __ *PascalCase* __ rules.
+it contains, and the namespace should be named with *PascalCase* rules.
 
 >Active file -> Map
 
@@ -137,9 +138,7 @@ protected int prop{get;set;}
 ### Public
 
 ```C#
-private class ClassName{}
-private FuntionName(){}
-private struct StructName{}
+private int Prop{get;set;}
 ```
 
 ## Field naming convention
