@@ -23,7 +23,7 @@ using ANY_OTHER_PACKAGE;
 ```
 
 ## Namespaces and file naming convention
-Every script file which have been created should be named, as _Namespace_
+Every script file which has been created should be named, as _Namespace_
 it contains, and the namespace should be named with __ *PascalCase* __ rules.
 
 >Active file -> Map
@@ -53,7 +53,7 @@ void someFunction(int x, int y)
 }
 ```
 
-in this case, you can notice TAB aligment on break, and space after `(` or `x,y`
+in this case, you can notice TAB alignment on break, and space after `(` or `x,y`
 call. It is best to remove any other white spaces than `\n`.
 
 ## Braces
@@ -84,14 +84,14 @@ and initializers (props).
 public void prop{get;set;}
 public int func()
 {
-	if(true){return 1;}
+	if(true) {return 1;}
 	else {return 2;}
 }
 ```
 
 ## Class/Method/Struct naming conventions
 
-It may appear strange, but class and method got a lot in common. In out project
+It may appear strange, but class and method got a lot in common. In our project
 we shall follow same naming conventions for all of them.
 
 ### Private & Protected
