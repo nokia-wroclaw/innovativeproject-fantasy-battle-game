@@ -44,8 +44,8 @@ namespace assets.scripts.map
         [System.Serializable]
         public struct HexCoordinate
         {
-            public readonly int Q;
-            public readonly int R;
+            public int Q;
+            public int R;
 
             public HexCoordinate(int q, int r)
             {
@@ -53,9 +53,9 @@ namespace assets.scripts.map
                 R = r;
             }
 
-            public static HexCoordinate operator +(HexCoordinate one, HexCoordinate two)
+            public static HexCoordinate operator +(HexCoordinate first, HexCoordinate second)
             {
-                return new HexCoordinate(one.Q + two.Q, one.R + two.R);
+                return new HexCoordinate(first.Q + second.Q, first.R + second.R);
             }
 
             public override bool Equals(object obj)
