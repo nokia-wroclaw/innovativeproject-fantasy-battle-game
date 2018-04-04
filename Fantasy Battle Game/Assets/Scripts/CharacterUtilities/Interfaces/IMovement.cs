@@ -4,7 +4,7 @@ namespace CharacterUtilities.Interfaces
 {
     public interface IMovement
     {
-        void SetTargetPosition(Tile tile);
+        void SetTargetPosition();
         void Move();
     }
 }

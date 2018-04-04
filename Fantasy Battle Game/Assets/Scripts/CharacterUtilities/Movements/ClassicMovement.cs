@@ -23,7 +23,7 @@ namespace CharacterUtilities.Movements
         {
             if (Input.GetMouseButton(0))
             {
-                SetTargetPosition(null);
+                SetTargetPosition();
             }
 
             if (moving_)
@@ -32,7 +32,7 @@ namespace CharacterUtilities.Movements
             }
         }
         
-        public void SetTargetPosition(Tile tile)
+        public void SetTargetPosition()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
