@@ -8,7 +8,6 @@ namespace Menu
 {
     public class OptionsMenu : MonoBehaviour
     {
-
         public AudioMixer audioMixer;
         public Dropdown resolutionDropDown;
         Resolution[] resolutions;
@@ -16,7 +15,6 @@ namespace Menu
         public void Start()
         {
             resolutions = Screen.resolutions;
-
             resolutionDropDown.ClearOptions();
 
             List<string> options = new List<string>();

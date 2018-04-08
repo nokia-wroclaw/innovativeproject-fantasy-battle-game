@@ -24,7 +24,9 @@ namespace SelectUnitsMenu
         public void Select(int index)
         {
             if (index == selectionIndex_ || index < 0 || index >= models_.Count)
+            {
                 return;
+            }
 
             models_[selectionIndex_].SetActive(false);
             selectionIndex_ = index;
