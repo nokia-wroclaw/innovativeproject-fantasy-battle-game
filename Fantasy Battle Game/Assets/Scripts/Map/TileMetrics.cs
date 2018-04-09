@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace assets.scripts.map
+namespace Assets.Scripts.Map
 {
     public class TileMetrics
     {
@@ -44,18 +44,18 @@ namespace assets.scripts.map
         [System.Serializable]
         public struct HexCoordinate
         {
-            public int Q;
-            public int R;
+            public int FirstCoord;
+            public int SecondCoord;
 
-            public HexCoordinate(int q, int r)
+            public HexCoordinate(int firstCoord, int secondCoord)
             {
-                Q = q;
-                R = r;
+                FirstCoord = firstCoord;
+                SecondCoord = secondCoord;
             }
 
             public static HexCoordinate operator +(HexCoordinate first, HexCoordinate second)
             {
-                return new HexCoordinate(first.Q + second.Q, first.R + second.R);
+                return new HexCoordinate(first.FirstCoord + second.FirstCoord, first.SecondCoord + second.SecondCoord);
             }
 
             public override bool Equals(object obj)
@@ -63,20 +63,20 @@ namespace assets.scripts.map
                 if (obj == null)
                     return false;
                 HexCoordinate o = (HexCoordinate)obj;
-                return ((Q == o.Q) && (R == o.R));
+                return ((FirstCoord == o.FirstCoord) && (SecondCoord == o.SecondCoord));
             }
 
             public override string ToString()
             {
-                return string.Format("[" + Q + "," + R + "]");
+                return string.Format("[" + FirstCoord + "," + SecondCoord + "]");
             }
 
             public override int GetHashCode()
             {
                 var hashCode = -1997189103;
                 hashCode = hashCode * -1521134295 + base.GetHashCode();
-                hashCode = hashCode * -1521134295 + Q.GetHashCode();
-                hashCode = hashCode * -1521134295 + R.GetHashCode();
+                hashCode = hashCode * -1521134295 + FirstCoord.GetHashCode();
+                hashCode = hashCode * -1521134295 + SecondCoord.GetHashCode();
                 return hashCode;
             }
         }

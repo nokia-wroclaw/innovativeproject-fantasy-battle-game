@@ -1,88 +1,93 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Assets.Scripts.Map.Interfaces;
 
-namespace assets.scripts.map
+namespace Assets.Scripts.Map
 {
-    public class Grid
+    /// <summary>
+    /// Class represent map based at hexagonal tiles.
+    /// <para>To get instance of map you should use property Instance.</para>
+    /// <para>Tiles are stored at dictionary tiles_. Keys are hexCoordiante
+    /// based at axial coordinate system </para>
+    /// <para>https://www.redblobgames.com/grids/hexagons/#coordinates-axial </para>
+    /// </summary>
+    public class Map : IMap
     {
-        public float HexRadius { get; set; }
-        public Material ProjectorsMaterial { get; set; }
-        public static Grid Instance { get; private set; }
-        private static TileMetrics.HexCoordinate[] directions_ =
-        {
-            new TileMetrics.HexCoordinate(1, -1),
-            new TileMetrics.HexCoordinate(1, 0),
-            new TileMetrics.HexCoordinate(0, 1),
-            new TileMetrics.HexCoordinate(-1, 1),
-            new TileMetrics.HexCoordinate(-1, 0),
-            new TileMetrics.HexCoordinate(0, -1)
-        };
-
+        private static Map instance_;
         private Dictionary<TileMetrics.HexCoordinate, Tile> tilesInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
-
         private Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
 
         #region Public_Methods
-
-        public Grid()
+        public Map()
         {
             if (Instance == null)
             {
-                Instance = this;
+                instance_ = this;
             }
-                
+        }
+
+        #region Properties
+        public static Map Instance
+        {
+            get { return instance_; }
+            set { instance_ = value; }
+        }
+
+        public Dictionary<TileMetrics.HexCoordinate, Tile> Tiles
+        {
+            get { return this.tiles_; }
+            set { this.tiles_ = value; }
         }
 
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRangeDictionary
         {
             get { return tilesInRange_; }
-            set { tilesInRange_ = value; }
         }
-
+        #endregion
+        
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
-            TilesInRangeDictionary.Clear();
+            tilesInRange_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
             visited.Add(center.Coordinate, center);
 
-            var queue = new Queue<Tile>();
+            var queueTiles = new Queue<Tile>();
 
             var neighbours = AvailableNeighbours(center);
             foreach (var tile in neighbours)
+            {
                 if (center.Drag / 2 + tile.Drag / 2 <= range)
                 {
-                    TilesInRangeDictionary.Add(tile.Coordinate, tile);
+                    tilesInRange_.Add(tile.Coordinate, tile);
                     tile.DistanceFromStart = center.Drag / 2 + tile.Drag / 2;
-                    queue.Enqueue(tile);
+                    queueTiles.Enqueue(tile);
                 }
+            }
 
-            while (queue.Count != 0)
+            while (queueTiles.Count != 0)
             {
-                var currentTile = queue.Dequeue();
+                var currentTile = queueTiles.Dequeue();
                 neighbours = AvailableNeighbours(currentTile);
                 foreach (var tile in neighbours)
-                    if (TilesInRangeDictionary.ContainsKey(tile.Coordinate))
+                    if (tilesInRange_.ContainsKey(tile.Coordinate))
                     {
                         if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <
                             tile.DistanceFromStart)
                         {
                             tile.DistanceFromStart =
                                 currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
-                            queue.Enqueue(tile);
+                            queueTiles.Enqueue(tile);
                         }
                     }
                     else if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <= range)
                     {
-                        TilesInRangeDictionary.Add(tile.Coordinate, tile);
+                        tilesInRange_.Add(tile.Coordinate, tile);
                         tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
-                        queue.Enqueue(tile);
+                        queueTiles.Enqueue(tile);
                     }
             }
-
-            TilesInRangeDictionary.Remove(center.Coordinate);
-
-            return TilesInRangeDictionary;
+            tilesInRange_.Remove(center.Coordinate);
+            return tilesInRange_;
         }
 
 
@@ -91,11 +96,14 @@ namespace assets.scripts.map
             var listToReturn = new List<Tile>();
             var neighbours = center.GetNeighbours();
             foreach (var tile in neighbours)
+            {
                 if (tile.Available)
+                {
                     listToReturn.Add(tile);
+                }
+            }
             return listToReturn;
         }
-
         #endregion
     }
 }
