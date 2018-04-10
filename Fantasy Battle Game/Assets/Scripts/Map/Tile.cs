@@ -95,7 +95,7 @@ namespace Assets.Scripts.Map
                 foreach (var tiles in map.TilesInRangeDictionary)
                     tiles.Value.DeleteChildsGO();
 
-                var tilesInRange = map.TilesInRange(this, 20);
+                var tilesInRange = map.TilesInRange(this, 5);
 
                 foreach (Tile tile in tilesInRange.Values)
                 {
@@ -128,16 +128,12 @@ namespace Assets.Scripts.Map
         /// <param name="tile">selected tile</param>
         private void AddLabel(Tile tile)
         {
-            GameObject labelGameObject = new GameObject("Label");
-            labelGameObject.transform.parent = tile.TileGameObject.transform;
-            labelGameObject.transform.position = tile.position_;
-            labelGameObject.transform.Rotate(new Vector3(90, 0, 0));
-            tile.labelGameObject_ = labelGameObject;
-            var text = labelGameObject.AddComponent<TextMesh>();
+            var label = Instantiate(GridMetrics.Instance.Label);
+            label.transform.parent = tile.TileGameObject.transform;
+            label.transform.position = tile.position_;
+            var text = label.GetComponent<TextMesh>();
             text.text = Convert.ToString(Math.Round(tile.distanceFromStart_, 1));
-            text.fontSize = (int)(GridMetrics.HexRadius * 9);
-            text.anchor = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            tile.labelGameObject_ = label;
         }
 
         /// <summary>
@@ -146,15 +142,13 @@ namespace Assets.Scripts.Map
         /// <param name="tile">The tile.</param>
         private void AddProjector(Tile tile)
         {
-            GameObject go = new GameObject("Shadow");
-            go.transform.parent = tile.TileGameObject.transform;
-            go.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
-            go.transform.Rotate(new Vector3(90, 0, 0));
-            tile.projectorGameObject_ = go;
-            go.AddComponent<Projector>();
-            var projector = go.GetComponent<Projector>();
+            var projector = Instantiate(GridMetrics.Instance.Projector);
 
-            projector.material = GridMetrics.Instance.ProjectorMaterial;
+            projector.transform.parent = tile.TileGameObject.transform;
+            projector.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            
+
+            tile.projectorGameObject_ = projector;
         }
         #endregion
        

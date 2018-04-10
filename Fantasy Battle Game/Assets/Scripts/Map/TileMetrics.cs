@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Map
@@ -30,6 +31,10 @@ namespace Assets.Scripts.Map
             mesh.name = "Hexagonal Plane";
 
             mesh.RecalculateNormals();
+
+            //AssetDatabase.CreateAsset(mesh, "Assets/mesh.prefab");
+            //AssetDatabase.SaveAssets();
+            //AssetDatabase.Refresh();
         }
 
         public static Vector3 Corner(Vector3 origin, float radius, int corner, GridMetrics.HexOrientation orientation)

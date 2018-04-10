@@ -24,7 +24,10 @@ namespace Assets.Scripts.Map
         public const float HexRadius = 10;
         public Material LineMaterial;
         public Material ProjectorMaterial; // used to show range of move
-        public List<HexParameter> HexParameters = new List<HexParameter>();
+        public List<GameObject> Prefabs = new List<GameObject>();
+        public GameObject Label;
+        public GameObject Projector;
+
         public static TileMetrics.HexCoordinate[] Directions =
         {
             new TileMetrics.HexCoordinate(0, -1),
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Map
             new TileMetrics.HexCoordinate(1, 0),
             new TileMetrics.HexCoordinate(0, 1)
         };
+
 
         private static GridMetrics instance_;
 
