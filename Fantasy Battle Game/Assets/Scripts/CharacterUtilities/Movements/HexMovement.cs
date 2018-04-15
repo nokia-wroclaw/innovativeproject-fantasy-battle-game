@@ -29,35 +29,49 @@ namespace CharacterUtilities.Movements
 
         private void Update()
         {
-            if (CheckCurrentChampion())
+            
+            Debug.Log("Znajdujesz sie na " + SelectedTile);
+            
+            if(CheckCurrentChampion())
             {
-                SetTargetPosition();
+                if (CheckCurrentTarget())
+                {
+                    CalculateVectors();
+                    SetTargetPosition();
+                }
             }
             else
             {
+                
                 SetCurrentChampion();
             }
         }
 
         public void SetTargetPosition()
         {
-            if (CalculateVectors())
+            foreach (var tile in tilesVectors_)
             {
-                foreach (var tile in tilesVectors_)
-                {
-                    var lookAtTarget = new Vector3(tile.Position.x - transform.position.x,
-                        transform.position.y, tile.Position.z - transform.position.z);
-                    if (lookAtTarget != Vector3.zero)
-                    {
-                        var playerRotation = Quaternion.LookRotation(lookAtTarget);    
-                        transform.rotation = Quaternion.Slerp(transform.rotation, 
-                            playerRotation, RotationSpeed * Time.deltaTime);
-                    }
-                   
-                    transform.position = Vector3.MoveTowards(transform.position, tile.Position,
-                        Speed * Time.deltaTime);
-                }   
+                Debug.Log("Przechodzisz na " + tile);    
             }
+            
+            Debug.Log("W liscie jest tyle obiektow: " + tilesVectors_.Count);
+            foreach (var tile in tilesVectors_)
+            {
+                var lookAtTarget = new Vector3(tile.Position.x - transform.position.x,
+                transform.position.y, tile.Position.z - transform.position.z);
+                if (lookAtTarget != Vector3.zero)
+                {
+                    var playerRotation = Quaternion.LookRotation(lookAtTarget);    
+                    transform.rotation = Quaternion.Slerp(transform.rotation, 
+                    playerRotation, RotationSpeed * Time.deltaTime);
+                }
+                transform.position = Vector3.MoveTowards(transform.position, tile.Position,
+                Speed * Time.deltaTime);
+
+            }
+                
+            Debug.Log("DOTARLO DO STOPA - STOP!");
+            
         }
 
         public void Move()
@@ -85,6 +99,21 @@ namespace CharacterUtilities.Movements
                 return false;
             }
         }
+
+        private bool CheckCurrentTarget()
+        {
+            
+            if (manager_.SelectedTile != SelectedTile)
+            {
+                return true;
+            }
+            else
+            {
+                Debug.Log("Champion already at destination target.");
+                return false;
+            }
+        }
+        
         private bool CalculateVectors()
         {
             int count = 0;
@@ -130,8 +159,9 @@ namespace CharacterUtilities.Movements
             }
             else
             {
-                return false;
                 Debug.Log("Please, select any champion or select different tile than your champion tile.");
+                return false;
+                
             }
         }
     }
