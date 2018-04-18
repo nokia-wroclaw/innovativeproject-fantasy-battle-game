@@ -88,9 +88,11 @@ namespace Assets.Scripts.Map
 
         private void OnMouseDown()
         {
+
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 var map = Map.Instance;
+                //var x = map.RandomPositions(4, 3);
 
                 foreach (var tiles in map.TilesInRangeDictionary)
                     tiles.Value.DeleteChildsGO();

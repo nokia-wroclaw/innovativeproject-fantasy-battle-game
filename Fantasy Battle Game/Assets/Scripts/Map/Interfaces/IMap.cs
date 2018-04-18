@@ -35,5 +35,16 @@ namespace Assets.Scripts.Map.Interfaces
         /// <returns>dictionary with all tiles in range</returns>
         Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRangeDictionary { get; }
 
+        /// <summary>
+        /// Method return random positions
+        /// </summary>
+        /// <param name="amountofCreaturesFirstPlayer"></param>
+        /// <param name="amountofCreaturesSecondPlayer"></param>
+        /// <returns>Key-HexCoordinate</para>
+        ///  Value-0 if creature was owned by first player,  1 if creature was owned by first player
+        ///  </returns>
+        List<KeyValuePair<TileMetrics.HexCoordinate, int>> RandomPositions(int amountofCreaturesFirstPlayer,
+            int amountofCreaturesSecondPlayer);
+
     }
 }

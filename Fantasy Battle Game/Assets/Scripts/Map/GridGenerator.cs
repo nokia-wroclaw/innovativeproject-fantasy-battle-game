@@ -56,6 +56,7 @@ namespace Assets.Scripts.Map
             }
 
             Map map = new Map();
+            map.Tiles = tiles_;
 
             foreach (var tile in tiles_.Values)
             {
@@ -68,6 +69,7 @@ namespace Assets.Scripts.Map
                     }
                 }
             }
+
         }
 
         public void ClearGrid()
