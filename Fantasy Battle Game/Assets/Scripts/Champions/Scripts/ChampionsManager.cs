@@ -1,28 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Map;
+using Assets.Scripts.Map;
 using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
 
 namespace Champions.Scripts
 {
-    public static ChampionsManager Instance;
-    public List<GameObject> ChampionsPrefabs;
-    private GameObject championToSpawn_;
-    private Assets.Scripts.Map.Tile selectedTile_;
-    public GameObject SelectedChampion { set; get; }
-
-    public void SelectTile(Assets.Scripts.Map.Tile tile)
+    public class ChampionsManager:MonoBehaviour
     {
         public static ChampionsManager Instance;
         public List<GameObject> ChampionsPrefabs;
-        public Tile SelectedTile { get; set; }
-        public GameObject SelectedChampion { set; get; }
-
         private GameObject championToSpawn_;
-    
+        public GameObject SelectedChampion { set; get; }
+        public Tile SelectedTile { get; set; }
 
         public void SelectTile(Tile tile)
         {
@@ -66,5 +58,4 @@ namespace Champions.Scripts
         }
 
     }
-
 }

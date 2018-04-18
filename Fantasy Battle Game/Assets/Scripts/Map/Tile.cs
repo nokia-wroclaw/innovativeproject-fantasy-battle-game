@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Map.Interfaces;
+using Champions.Scripts;
+using CharacterUtilities.Movements;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

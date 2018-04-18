@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Map;
+using Assets.Scripts.Map;
 
 namespace CharacterUtilities.Interfaces
 {

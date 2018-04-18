@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Map;
 using CharacterUtilities.Interfaces;
-using Map;
 
 namespace CharacterUtilities.Algorithms
 {

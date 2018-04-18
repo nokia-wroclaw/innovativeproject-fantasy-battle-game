@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Map;
 using Champions.Scripts;
 using CharacterUtilities.Interfaces;
-using Map;
 using UnityEditor.UI;
 using UnityEngine;
-using Grid = Map.Grid;
 
 namespace CharacterUtilities.Movements
 {
@@ -14,7 +13,7 @@ namespace CharacterUtilities.Movements
         public float Speed = 10;
         
         private ChampionsManager manager_;
-        private Map.Grid map_;
+        private Map map_;
         private GameObject SelectedChampion { get; set; }
         private Tile ChampionsPosition { get; set; }
         private Tile DestinationTile { get; set; }
@@ -30,7 +29,7 @@ namespace CharacterUtilities.Movements
         private void Start()
         {
             manager_ = ChampionsManager.Instance;
-            map_ = Grid.Instance;
+            map_ = Map.Instance;
             route_ = new List<Tile>();
         }
 

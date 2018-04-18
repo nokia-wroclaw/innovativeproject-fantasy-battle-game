@@ -1,5 +1,4 @@
-﻿using Map;
-
+﻿
 namespace CharacterUtilities.Interfaces
 {
     public interface IMovement

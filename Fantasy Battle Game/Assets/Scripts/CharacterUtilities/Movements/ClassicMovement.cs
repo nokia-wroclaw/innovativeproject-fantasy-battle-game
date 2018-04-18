@@ -1,5 +1,4 @@
 ﻿using CharacterUtilities.Interfaces;
-using Map;
 using UnityEngine;
 
 namespace CharacterUtilities.Movements
