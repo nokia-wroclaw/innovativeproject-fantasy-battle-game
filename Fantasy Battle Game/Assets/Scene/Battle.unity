@@ -461,7 +461,7 @@ RectTransform:
   m_GameObject: {fileID: 162605236}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 610300701}
   - {fileID: 1866872304}
@@ -2906,40 +2906,15 @@ MonoBehaviour:
   MapWidth: 10
   MapHeight: 0
   SelectedHexOrientation: 1
-  HexRadius: 5
   LineMaterial: {fileID: 2100000, guid: a2bb29413886117438d548505a01b202, type: 2}
   ProjectorMaterial: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
-  HexParametrs:
-  - Material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-    Available: 1
-    Drag: 3
-  - Material: {fileID: 2100000, guid: 9e1d2e2bbc853ab4b84bf85eb0519b49, type: 2}
-    Available: 1
-    Drag: 3
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: f1a9b0463a6932447b67c08457d5528f, type: 2}
-    Available: 1
-    Drag: 1
-  - Material: {fileID: 2100000, guid: a3a479b3aac2aee49b58be334d43bc7b, type: 2}
-    Available: 0
-    Drag: 0
-  - Material: {fileID: 2100000, guid: 0223b5ff8e6cb2b44808922cce063641, type: 2}
-    Available: 0
-    Drag: 0
+  Prefabs:
+  - {fileID: 1038847452543722, guid: 08e3bde9f99ad8d46bc8a1467d7c7ec2, type: 2}
+  - {fileID: 1038847452543722, guid: 00121ea1f27cf564ca82ece072a7a88a, type: 2}
+  - {fileID: 1787173399720464, guid: 24603d69c29980b418cbba1eaa1d2015, type: 2}
+  - {fileID: 1038847452543722, guid: 00121ea1f27cf564ca82ece072a7a88a, type: 2}
+  Label: {fileID: 1777406515334076, guid: 889b05042a13f9e46a3f71d076d12204, type: 2}
+  Projector: {fileID: 1725340035275564, guid: 3333dfdd380a06f48a39d878f923d73c, type: 2}
 --- !u!4 &660150433
 Transform:
   m_ObjectHideFlags: 0
@@ -3800,7 +3775,7 @@ RectTransform:
   m_GameObject: {fileID: 857514714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 1963888505}
   - {fileID: 24894964}
@@ -5776,7 +5751,7 @@ RectTransform:
   m_GameObject: {fileID: 1334482505}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.9999998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 1787724922}
   - {fileID: 1078776020}
@@ -8979,7 +8954,7 @@ RectTransform:
   m_GameObject: {fileID: 1976867748}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 1625872828}
   - {fileID: 1554068520}
@@ -9599,7 +9574,7 @@ RectTransform:
   m_GameObject: {fileID: 2126966000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 224651218}
   - {fileID: 1717691766}
@@ -9672,7 +9647,7 @@ RectTransform:
   m_GameObject: {fileID: 2136130493}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.9999998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 214508199}
   - {fileID: 580884567}

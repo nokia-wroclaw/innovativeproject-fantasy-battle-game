@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-namespace Map
+namespace Assets.Scripts.Map
 {
     public class TileMetrics
     {
@@ -30,6 +31,10 @@ namespace Map
             mesh.name = "Hexagonal Plane";
 
             mesh.RecalculateNormals();
+
+            //AssetDatabase.CreateAsset(mesh, "Assets/mesh.prefab");
+            //AssetDatabase.SaveAssets();
+            //AssetDatabase.Refresh();
         }
 
         public static Vector3 Corner(Vector3 origin, float radius, int corner, GridMetrics.HexOrientation orientation)
@@ -44,18 +49,18 @@ namespace Map
         [System.Serializable]
         public struct HexCoordinate
         {
-            public readonly int Q;
-            public readonly int R;
+            public int FirstCoord;
+            public int SecondCoord;
 
-            public HexCoordinate(int q, int r)
+            public HexCoordinate(int firstCoord, int secondCoord)
             {
-                Q = q;
-                R = r;
+                FirstCoord = firstCoord;
+                SecondCoord = secondCoord;
             }
 
-            public static HexCoordinate operator +(HexCoordinate one, HexCoordinate two)
+            public static HexCoordinate operator +(HexCoordinate first, HexCoordinate second)
             {
-                return new HexCoordinate(one.Q + two.Q, one.R + two.R);
+                return new HexCoordinate(first.FirstCoord + second.FirstCoord, first.SecondCoord + second.SecondCoord);
             }
 
             public override bool Equals(object obj)
@@ -63,20 +68,20 @@ namespace Map
                 if (obj == null)
                     return false;
                 HexCoordinate o = (HexCoordinate)obj;
-                return ((Q == o.Q) && (R == o.R));
+                return ((FirstCoord == o.FirstCoord) && (SecondCoord == o.SecondCoord));
             }
 
             public override string ToString()
             {
-                return string.Format("[" + Q + "," + R + "]");
+                return string.Format("[" + FirstCoord + "," + SecondCoord + "]");
             }
 
             public override int GetHashCode()
             {
                 var hashCode = -1997189103;
                 hashCode = hashCode * -1521134295 + base.GetHashCode();
-                hashCode = hashCode * -1521134295 + Q.GetHashCode();
-                hashCode = hashCode * -1521134295 + R.GetHashCode();
+                hashCode = hashCode * -1521134295 + FirstCoord.GetHashCode();
+                hashCode = hashCode * -1521134295 + SecondCoord.GetHashCode();
                 return hashCode;
             }
         }

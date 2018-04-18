@@ -8,7 +8,13 @@ using UnityEngine;
 
 namespace Champions.Scripts
 {
-    public class ChampionsManager : MonoBehaviour
+    public static ChampionsManager Instance;
+    public List<GameObject> ChampionsPrefabs;
+    private GameObject championToSpawn_;
+    private Assets.Scripts.Map.Tile selectedTile_;
+    public GameObject SelectedChampion { set; get; }
+
+    public void SelectTile(Assets.Scripts.Map.Tile tile)
     {
         public static ChampionsManager Instance;
         public List<GameObject> ChampionsPrefabs;
