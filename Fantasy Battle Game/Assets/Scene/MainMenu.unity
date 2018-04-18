@@ -1030,8 +1030,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicClips:
-  - {fileID: 8300000, guid: 15903e8a25a0f9149a95c798eca366e0, type: 3}
-  - {fileID: 8300000, guid: f62fe7ec73864ac43bf0c959fc5a9707, type: 3}
   - {fileID: 8300000, guid: 7795a4bfdbcb89a41bc6aed685e738a1, type: 3}
 --- !u!4 &339066227
 Transform:
