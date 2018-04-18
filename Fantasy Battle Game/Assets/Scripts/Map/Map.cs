@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Map.Interfaces;
+using UnityEngine;
+using System;
 
 namespace Assets.Scripts.Map
 {
@@ -42,6 +44,53 @@ namespace Assets.Scripts.Map
         {
             get { return tilesInRange_; }
         }
+
+        public List<KeyValuePair<TileMetrics.HexCoordinate, int>> RandomPositions(int amountofCreaturesFirstPlayer, int amountofCreaturesSecondPlayer)
+        {
+            List<KeyValuePair<TileMetrics.HexCoordinate, int>> list = new List<KeyValuePair<TileMetrics.HexCoordinate, int>>();
+
+            var mapSize = Mathf.Max(GridMetrics.Instance.MapHeight, GridMetrics.Instance.MapWidth);
+            System.Random random = new System.Random();
+
+            for (int i = 0; i < amountofCreaturesFirstPlayer;)
+            {
+                TileMetrics.HexCoordinate coordinate;
+                coordinate.FirstCoord = random.Next(0, 2)-mapSize;
+                coordinate.SecondCoord = random.Next(0, mapSize);
+                if (tiles_.ContainsKey(coordinate))
+                {
+                    if (!list.Contains(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 0)))
+                    {
+                        var randTile = tiles_[coordinate];
+                        if (randTile.Available)
+                        {
+                            i++;
+                            list.Add(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 0));
+                            Debug.Log("first player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < amountofCreaturesSecondPlayer;)
+            {
+                TileMetrics.HexCoordinate coordinate;
+                coordinate.FirstCoord = mapSize - random.Next(0, 2);
+                coordinate.SecondCoord = -random.Next(0, mapSize);
+                if (tiles_.ContainsKey(coordinate) && !list.Contains(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 1)))
+                {
+                    
+                    var randTile = tiles_[coordinate];
+                    if (randTile.Available)
+                    {
+                        i++;
+                        list.Add(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 1));
+                        Debug.Log("second player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
+                    }
+                }
+            }
+            return list;
+        }
+
         #endregion
         
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
