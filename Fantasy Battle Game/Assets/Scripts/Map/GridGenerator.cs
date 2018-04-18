@@ -4,27 +4,18 @@ using UnityEditor;
 using UnityEngine;
 using Random = System.Random;
 
-namespace assets.scripts.map
+namespace Assets.Scripts.Map
 {
+    /// <summary>
+    /// Class used to generate map, it should be attached to GameObject
+    /// </summary>
     public class GridGenerator : GridMetrics
     {
         //Internal variables
         private static Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
-        private static Mesh hexMesh_;
         private static Random rand_;
 
-        private static TileMetrics.HexCoordinate[] directions_ =
-        {
-            new TileMetrics.HexCoordinate(1, -1),
-            new TileMetrics.HexCoordinate(1, 0),
-            new TileMetrics.HexCoordinate(0, 1),
-            new TileMetrics.HexCoordinate(-1, 1),
-            new TileMetrics.HexCoordinate(-1, 0),
-            new TileMetrics.HexCoordinate(0, -1)
-        };
-
         #region Public_Methods
-
         public void Awake()
         {
             if (Seed == 0)
@@ -34,16 +25,14 @@ namespace assets.scripts.map
             GenerateGrid();
         }
 
-        public Grid GenerateGrid()
+        public void GenerateGrid()
         {
             ClearGrid();
-            GetMesh();
 
-            if (HexParametrs.Count == 0)
+            if (GridMetrics.Instance.Prefabs.Count == 0)
             {
-                Debug.Log(HexParametrs.Count);
-                Debug.Log("HexParametrs.Count should be greater than 0");
-                return null;
+                Debug.Log("Prefabs.Count should be greater than 0");
+                return;
             }
 
             //Generate the grid shape
@@ -57,8 +46,8 @@ namespace assets.scripts.map
                     GenerateRectangleShape();
                     break;
 
-                case MapShape.Parrallelogram:
-                    GenerateParrallelogramShape();
+                case MapShape.Parallelogram:
+                    GenerateParallelogramShape();
                     break;
 
                 case MapShape.Triangle:
@@ -66,50 +55,41 @@ namespace assets.scripts.map
                     break;
             }
 
-            Grid grid = new Grid
-            {
-                TilesInRangeDictionary = tiles_,
-                ProjectorsMaterial = ProjectorMaterial,
-                HexRadius = HexRadius
-            };
+            Map map = new Map();
 
             foreach (var tile in tiles_.Values)
             {
                 for (var i = 0; i < 6; i++)
                 {
-                    var index = tile.Coordinate + directions_[i];
+                    var index = tile.Coordinate + GridMetrics.Directions[i];
                     if (tiles_.ContainsKey(index))
+                    {
                         tile.GetNeighbours().Add(tiles_[index]);
+                    }
                 }
             }
-
-            return grid;
         }
 
         public void ClearGrid()
         {
             Debug.Log("Clearing grid...");
-            GameObject[] allTileAtScean = GameObject.FindGameObjectsWithTag("Tile");
-            foreach (var tile in allTileAtScean)
+            GameObject[] allTileAtScene = GameObject.FindGameObjectsWithTag("Tile");
+            foreach (var tile in allTileAtScene)
+            {
                 DestroyImmediate(tile, false);
+            }
         }
 
         #endregion
 
         #region Private_Methods
 
-        private void GetMesh()
-        {
-            hexMesh_ = null;
-            TileMetrics.GetHexMesh(HexRadius, SelectedHexOrientation, ref hexMesh_);
-        }
-
         private void GenerateTriangleShape()
         {
             throw new NotImplementedException();
         }
 
-        private void GenerateParrallelogramShape()
+        private void GenerateParallelogramShape()
         {
             throw new NotImplementedException();
         }
@@ -125,73 +105,45 @@ namespace assets.scripts.map
             var position = Vector3.zero;
             var mapSize = Mathf.Max(MapWidth, MapHeight);
 
-            for (var q = -mapSize; q <= mapSize; q++)
+            for (var firstCoord = -mapSize; firstCoord <= mapSize; firstCoord++)
             {
-                var r1 = Mathf.Max(-mapSize, -q - mapSize);
-                var r2 = Mathf.Min(mapSize, -q + mapSize);
-                for (var r = r1; r <= r2; r++)
+                var r1 = Mathf.Max(-mapSize, -firstCoord - mapSize);
+                var r2 = Mathf.Min(mapSize, -firstCoord + mapSize);
+                for (var secondCoord = r1; secondCoord <= r2; secondCoord++)
                 {
                     switch (SelectedHexOrientation)
                     {
                         case HexOrientation.Flat:
-                            position.x = HexRadius * 3.0f / 2.0f * q;
-                            position.z = HexRadius * Mathf.Sqrt(3.0f) * (r + q / 2.0f);
+                            position.x = HexRadius * 3.0f / 2.0f * firstCoord;
+                            position.z = HexRadius * Mathf.Sqrt(3.0f) * (secondCoord + firstCoord / 2.0f);
                             break;
 
                         case HexOrientation.Pointy:
-                            position.x = HexRadius * Mathf.Sqrt(3.0f) * (q + r / 2.0f);
-                            position.z = HexRadius * 3.0f / 2.0f * r;
+                            position.x = HexRadius * Mathf.Sqrt(3.0f) * (firstCoord + secondCoord / 2.0f);
+                            position.z = HexRadius * 3.0f / 2.0f * secondCoord;
                             break;
                     }
 
-                    int typeOfHex = rand_.Next(HexParametrs.Count);
-                    var tile = createHexGameObject(position, "Hex[" + q + "," + r + "]", typeOfHex);
-                    tile.Coordinate = new TileMetrics.HexCoordinate(q, r);
-                    tile.Position = position;
-                    tile.Drag = HexParametrs[typeOfHex].Drag;
-                    tile.Available = HexParametrs[typeOfHex].Available;
-                    tiles_.Add(tile.Coordinate, tile);
+                    int typeOfHex = rand_.Next(GridMetrics.Instance.Prefabs.Count);
+                    createHexGameObject(position, firstCoord, secondCoord, typeOfHex);
                 }
             }
         }
 
-        private Tile createHexGameObject(Vector3 position, string nameOfGameObject, int typeOfHex)
+        private Tile createHexGameObject(Vector3 position, int firstCoord, int secondCoord, int typeOfHex)
         {
-            var go = new GameObject(nameOfGameObject, typeof(MeshFilter), typeof(LineRenderer),
-                typeof(MeshRenderer), typeof(Tile), typeof(MeshCollider));
-            go.transform.position = position;
-            go.transform.parent = transform;
+            var go = Instantiate(GridMetrics.Instance.Prefabs[typeOfHex]);
 
-            var tile = go.GetComponent<Tile>();
-            var renderer = go.GetComponent<Renderer>();
-            renderer.material.shader = Shader.Find("Specular");
-            renderer.material.SetColor("_SpecColor", Color.red);
-            go.GetComponent<MeshCollider>().sharedMesh = hexMesh_;
-            go.GetComponent<MeshFilter>().sharedMesh = hexMesh_;
-            go.GetComponent<MeshRenderer>().material = HexParametrs[typeOfHex].Material
-                ? HexParametrs[typeOfHex].Material
-                : AssetDatabase.GetBuiltinExtraResource<Material>("Default-Diffuse.mat");
+            var tileGO = go.GetComponent<Tile>();
+            tileGO.name = "Hex["+firstCoord+";"+secondCoord+"]";
+            tileGO.Position = position;
+            tileGO.transform.position = position;
+            tileGO.transform.parent = transform;
+            tileGO.Coordinate = new TileMetrics.HexCoordinate(firstCoord, secondCoord);
 
-            if (DrawOutlines)
-            {
-                var lines = go.GetComponent<LineRenderer>();
-
-                lines.useLightProbes = false;
-                lines.receiveShadows = false;
-
-                lines.SetWidth(0.1f, 0.1f);
-                lines.SetColors(Color.black, Color.black);
-                lines.material = LineMaterial;
-
-                lines.SetVertexCount(7);
-
-                for (var vert = 0; vert <= 6; vert++)
-                    lines.SetPosition(vert,
-                        TileMetrics.Corner(tile.transform.position, HexRadius, vert, SelectedHexOrientation));
-            }
-
-            tile.TileGameObject = go;
-            return tile;
+            go.transform.Rotate(Vector3.up*rand_.Next(5)*60);
+            tiles_.Add(tileGO.Coordinate, tileGO);
+            return tileGO;
         }
 
         #endregion
