@@ -27,6 +27,7 @@ public class MusicPlayer : MonoBehaviour
         automaticPlayer = new AutomaticPlayer(musicClips);
 
         musicSource_ = GetComponent<AudioSource>();
+        musicSource_.volume = 0.25f;
 
         StartAutomaticMusic();
     }
