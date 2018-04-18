@@ -141,6 +141,23 @@ namespace Assets.Scripts.Map
             tileGO.transform.parent = transform;
             tileGO.Coordinate = new TileMetrics.HexCoordinate(firstCoord, secondCoord);
 
+            // lines
+            var lines = tileGO.GetComponent<LineRenderer>();
+            lines.SetWidth(0.3f, 0.3f);
+            lines.SetColors(Color.black, Color.black);
+            lines.material = LineMaterial;
+            lines.SetVertexCount(7);
+            for (var vert = 0; vert <= 6; vert++)
+            {
+                lines.SetPosition(
+                    vert,
+                    TileMetrics.Corner(
+                        tileGO.transform.position,
+                        HexRadius, 
+                        vert,
+                        SelectedHexOrientation));
+            }
+
             go.transform.Rotate(Vector3.up*rand_.Next(5)*60);
             tiles_.Add(tileGO.Coordinate, tileGO);
             return tileGO;

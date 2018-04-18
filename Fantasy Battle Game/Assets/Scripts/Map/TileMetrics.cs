@@ -43,7 +43,7 @@ namespace Assets.Scripts.Map
             if (orientation == GridMetrics.HexOrientation.Pointy)
                 angle += 30;
             angle *= Mathf.PI / 180;
-            return new Vector3(origin.x + radius * Mathf.Cos(angle), 0.0f, origin.z + radius * Mathf.Sin(angle));
+            return new Vector3(origin.x + radius * Mathf.Cos(angle), 0.1f, origin.z + radius * Mathf.Sin(angle));
         }
 
         [System.Serializable]
