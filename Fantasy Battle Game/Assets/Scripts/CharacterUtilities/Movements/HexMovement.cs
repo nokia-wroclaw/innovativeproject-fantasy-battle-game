@@ -15,154 +15,140 @@ namespace CharacterUtilities.Movements
         
         private ChampionsManager manager_;
         private Map.Grid map_;
-        private List<Tile> tilesVectors_;
         private GameObject SelectedChampion { get; set; }
-        private Tile SelectedTile { get; set; }
-        private Tile TempTile { get; set; }
+        private Tile ChampionsPosition { get; set; }
+        private Tile DestinationTile { get; set; }
+        private Tile TempDestinationTile { get; set; }
+        private Quaternion playerRotation_;
+        private List<Tile> route_;
+        private bool calculate_;
+        private bool move_;
+        private bool nextMove_;
+        private int iterator_ = 1;
+
         
         private void Start()
         {
             manager_ = ChampionsManager.Instance;
             map_ = Grid.Instance;
-            tilesVectors_ = new List<Tile>();
+            route_ = new List<Tile>();
         }
 
         private void Update()
         {
-            
-            Debug.Log("Znajdujesz sie na " + SelectedTile);
-            
-            if(CheckCurrentChampion())
+            SetTargetPosition();
+            SetDestinationPoint();
+
+            if (calculate_)
             {
-                if (CheckCurrentTarget())
+                CalculateRoute();
+            }
+            
+            if (move_)
+            {
+                if (nextMove_)
                 {
-                    CalculateVectors();
-                    SetTargetPosition();
+                    iterator_++;
+                    nextMove_ = false;
                 }
+                Move();
             }
-            else
-            {
-                
-                SetCurrentChampion();
-            }
+            
         }
 
         public void SetTargetPosition()
         {
-            foreach (var tile in tilesVectors_)
+            if (manager_.SelectedChampion != null)
             {
-                Debug.Log("Przechodzisz na " + tile);    
+                SelectedChampion = manager_.SelectedChampion;
+                ChampionsPosition = manager_.SelectedTile;
+                Debug.Log("Champion has been set " + ChampionsPosition.Coordinate);
             }
-            
-            Debug.Log("W liscie jest tyle obiektow: " + tilesVectors_.Count);
-            foreach (var tile in tilesVectors_)
-            {
-                var lookAtTarget = new Vector3(tile.Position.x - transform.position.x,
-                transform.position.y, tile.Position.z - transform.position.z);
-                if (lookAtTarget != Vector3.zero)
-                {
-                    var playerRotation = Quaternion.LookRotation(lookAtTarget);    
-                    transform.rotation = Quaternion.Slerp(transform.rotation, 
-                    playerRotation, RotationSpeed * Time.deltaTime);
-                }
-                transform.position = Vector3.MoveTowards(transform.position, tile.Position,
-                Speed * Time.deltaTime);
-
-            }
-                
-            Debug.Log("DOTARLO DO STOPA - STOP!");
-            
         }
 
         public void Move()
         {
-            throw new System.NotImplementedException();
-        }
+            Debug.Log("Moving...");
+            var lookAtTarget = new Vector3(route_[iterator_].Position.x - SelectedChampion.transform.position.x,
+                transform.position.y, route_[iterator_].Position.z - transform.position.z);
+            playerRotation_ = Quaternion.LookRotation(lookAtTarget);
 
-        private void SetCurrentChampion()
-        {
-            SelectedChampion = manager_.SelectedChampion;
-            SelectedTile = manager_.SelectedTile;
-
-        }
-        
-        private bool CheckCurrentChampion()
-        {
-            if (SelectedChampion != null)
-            {
-                return true;
-            }
-            else
-            {
-                Debug.Log("Please, make sure you selected any champion");
-
-                return false;
-            }
-        }
-
-        private bool CheckCurrentTarget()
-        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation_, RotationSpeed * Time.deltaTime);
             
-            if (manager_.SelectedTile != SelectedTile)
+            SelectedChampion.transform.position = Vector3.MoveTowards(transform.position, route_[iterator_].Position, Speed*Time.deltaTime);
+
+            if (transform.position == route_[iterator_].Position)
             {
-                return true;
+                nextMove_ = true;
             }
-            else
+
+            if (transform.position == DestinationTile.Position)
             {
-                Debug.Log("Champion already at destination target.");
-                return false;
+                move_ = false;
+                nextMove_ = false;
+
+                ChampionsPosition.Champion = null;
+                ChampionsPosition = DestinationTile;
+                ChampionsPosition.Champion = SelectedChampion;
+                iterator_ = 0;
             }
         }
-        
-        private bool CalculateVectors()
+
+        private void SetDestinationPoint()
         {
-            int count = 0;
-            
-            if (SelectedChampion && manager_.SelectedTile != SelectedTile)
+            if (manager_.SelectedChampion == null)
             {
-                TempTile = SelectedTile;
-                var neighbours = map_.AvailableNeighbours(SelectedTile);
-                
-                while (TempTile != manager_.SelectedTile)
+                if (manager_.SelectedTile != ChampionsPosition)
                 {
-                    Tile shortestLength = SelectedTile;
-                    float distance = Vector3.Distance(shortestLength.Position, manager_.SelectedTile.Position);
+                    Debug.Log("Destination point has been set - calculating route...");
+                    DestinationTile = manager_.SelectedTile;
+                    calculate_ = true;
                     
-                    foreach (var tile in neighbours)
-                    {
-                        var tempDist = Vector3.Distance(tile.Position, manager_.SelectedTile.Position);
-                        if (tempDist < distance)
-                        {
-                            distance = tempDist;
-                            shortestLength = tile;
-                        }
-                    }
-                    
-                    tilesVectors_.Add(shortestLength);
-                    neighbours = map_.AvailableNeighbours(shortestLength);
-                    TempTile = shortestLength;
-                    count++;
-                    if (count > 100)
-                    {
-                        foreach (var tile in tilesVectors_)
-                        {
-                            Debug.Log(tile.Coordinate);
-                        }
-                        Debug.Log(manager_.SelectedTile.Coordinate);
-                        
-                        Debug.Log("Cannot find path by specified algorithm.");
-                        return false;
-                    };
                 }
-
-                return true;
-            }
-            else
-            {
-                Debug.Log("Please, select any champion or select different tile than your champion tile.");
-                return false;
-                
             }
         }
+
+        private void CalculateRoute()
+        {
+            route_.Clear();
+            TempDestinationTile = ChampionsPosition;
+            route_.Add(TempDestinationTile);
+            while (TempDestinationTile != DestinationTile)
+            {
+                var list = SortList(TempDestinationTile, DestinationTile);
+
+                var position = 0;
+                while (route_.Contains(list[position]))
+                {
+                    position++;
+                }
+                route_.Add(list[position]);
+                TempDestinationTile = list[position];
+            }
+            calculate_ = false;
+            move_ = true;
+            Debug.Log("Route calculated");
+        }
+
+        private List<Tile> SortList(Tile center, Tile endPoint)
+        {
+            var list = map_.AvailableNeighbours(center);
+            var i = 1;
+            while(i < list.Count)
+            {
+                var j = i;
+                while (j > 0 && Vector3.Distance(list[j-1].Position, endPoint.Position) > Vector3.Distance(list[j].Position, endPoint.Position))
+                {
+                    var temp = list[j];
+                    list[j] = list[j - 1];
+                    list[j - 1] = temp;
+
+                    j--;
+                }
+                i++;
+            }
+            return list;
+        }
+
     }
 }
