@@ -27,12 +27,12 @@ public class MusicPlayer : MonoBehaviour
         automaticPlayer = new AutomaticPlayer(musicClips);
 
         musicSource_ = GetComponent<AudioSource>();
-        musicSource_.volume = 0.25f;
+        musicSource_.volume = 0.15f;
 
         StartAutomaticMusic();
     }
 
-
+   
     public void PlayMusicClip(AudioClip music)
     {
         musicSource_.Stop();
