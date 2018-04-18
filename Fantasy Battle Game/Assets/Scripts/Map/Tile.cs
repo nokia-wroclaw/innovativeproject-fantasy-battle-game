@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Map.Interfaces;
+using Champions.Scripts;
+using CharacterUtilities.Movements;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -112,14 +114,11 @@ namespace Assets.Scripts.Map
                     {
                         GameObject championToSpawn = championsManager_.GetChampionToSpawn();
                         Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                        Champion.AddComponent<HexMovement>();
                         championsManager_.SetChampionToSpawn(null);
                     }
                 }
-
-                if (Champion)
-                {
-                    championsManager_.SelectTile(this);
-                }
+                championsManager_.SelectTile(this);
             }
         }
 

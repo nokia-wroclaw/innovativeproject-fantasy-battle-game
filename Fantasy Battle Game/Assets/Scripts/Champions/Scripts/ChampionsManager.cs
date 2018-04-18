@@ -1,45 +1,61 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Map;
+using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public class ChampionsManager : MonoBehaviour
+namespace Champions.Scripts
 {
-    public static ChampionsManager Instance;
-    public List<GameObject> ChampionsPrefabs;
-    private GameObject championToSpawn_;
-    private Assets.Scripts.Map.Tile selectedTile_;
-    public GameObject SelectedChampion { set; get; }
-
-    public void SelectTile(Assets.Scripts.Map.Tile tile)
+    public class ChampionsManager:MonoBehaviour
     {
-        selectedTile_ = tile;
-        championToSpawn_ = null;
-        SelectedChampion = selectedTile_.Champion;
-    }
+        public static ChampionsManager Instance;
+        public List<GameObject> ChampionsPrefabs;
+        private GameObject championToSpawn_;
+        public GameObject SelectedChampion { set; get; }
+        public Tile SelectedTile { get; set; }
 
-
-    void Awake()
-    {
-        if (Instance != null)
+        public void SelectTile(Tile tile)
         {
-            Debug.LogError("More than one ChampionsManager.");
-            return;
+            SelectedTile = tile;
+            if (SelectedTile == null)
+            {
+                SelectedChampion = null;
+                return;
+            }
+
+            if (SelectedTile.Champion)
+            {
+                SelectedChampion = SelectedTile.Champion;
+            }
+            else
+            {
+                SelectedChampion = null;
+            }
         }
 
-        Instance = this;
-    }
 
-    public GameObject GetChampionToSpawn()
-    {
-        return championToSpawn_;
-    }
+        void Awake()
+        {
+            if (Instance != null)
+            {
+                Debug.LogError("More than one ChampionsManager.");
+                return;
+            }
 
-    public void SetChampionToSpawn(GameObject champion)
-    {
-        championToSpawn_ = champion;
-    }
+            Instance = this;
+        }
 
+        public GameObject GetChampionToSpawn()
+        {
+            return championToSpawn_;
+        }
+
+        public void SetChampionToSpawn(GameObject champion)
+        {
+            championToSpawn_ = champion;
+        }
+
+    }
 }

@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+namespace Champions.Scripts
 {
-    private ChampionsManager _champiopManager;
-
-    void Start()
+    public class Shop : MonoBehaviour
     {
-        _champiopManager = ChampionsManager.Instance;
-    }
+        private ChampionsManager _champiopManager;
 
-    public void ChooseChampion(int index)
-    {
-        Debug.Log(index);
-        _champiopManager.SetChampionToSpawn(_champiopManager.ChampionsPrefabs[index]);
+        void Start()
+        {
+            _champiopManager = ChampionsManager.Instance;
+        }
+
+        public void ChooseChampion(int index)
+        {
+            Debug.Log(index);
+            _champiopManager.SetChampionToSpawn(_champiopManager.ChampionsPrefabs[index]);
+        }
+
     }
 }

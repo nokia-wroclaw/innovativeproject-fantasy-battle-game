@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Grid = UnityEngine.Grid;
 using Random = System.Random;
 
 namespace Assets.Scripts.Map
