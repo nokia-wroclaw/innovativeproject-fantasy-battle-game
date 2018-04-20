@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Map.Interfaces
+namespace Map.Interfaces
 {
     public interface ITile
     {

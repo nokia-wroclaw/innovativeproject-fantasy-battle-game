@@ -1,4 +1,5 @@
-﻿using CharacterUtilities.Interfaces;
+﻿using Map;
+using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
 
 namespace CharacterUtilities.Movements
@@ -57,6 +58,12 @@ namespace CharacterUtilities.Movements
             {
                 moving_ = false;
             }
+        }
+
+        public Tile DestinationTile { get; set; }
+        public void GoToDestination()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

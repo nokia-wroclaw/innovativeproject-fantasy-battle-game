@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Map.Interfaces;
-using Champions.Scripts;
+using Champions;
+using Champions.CharacterUtilities.Movements;
 using CharacterUtilities.Movements;
+using Map.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Represent basic element in map- hex
@@ -14,7 +15,7 @@ namespace Assets.Scripts.Map
     public class Tile : MonoBehaviour, ITile
     {
         public GameObject TileGameObject;
-        public GameObject Champion { set; get; }
+        public Champion Champion { set; get; }
 
         [SerializeField]
         private double distanceFromStart_ = 0;
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Map
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
 
-        void Start()
+        void Awake()
         {
             championsManager_ = ChampionsManager.Instance;
         }
@@ -94,40 +95,49 @@ namespace Assets.Scripts.Map
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 var map = Map.Instance;
-                //var x = map.RandomPositions(4, 3);
+                map.SelectedTile = this;
 
-                foreach (var tiles in map.TilesInRangeDictionary)
-                    tiles.Value.DeleteChildsGO();
-
-                var tilesInRange = map.TilesInRange(this, 5);
-
-                foreach (Tile tile in tilesInRange.Values)
+                if (championsManager_.GetChampionToSpawn() != null)
                 {
-                    AddProjector(tile);
-                    AddLabel(tile);
+                    SpawnChampion();
                 }
-
-
-                if (championsManager_.GetChampionToSpawn() != null && Available == true)
+                else
                 {
-                    if (Champion == null)
+                    if (Champion)
                     {
-                        GameObject championToSpawn = championsManager_.GetChampionToSpawn();
-                        Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
-                        Champion.AddComponent<HexMovement>();
-                        championsManager_.SetChampionToSpawn(null);
+                        Debug.Log("Champion selected");
+                        championsManager_.SelectedChampion = Champion;
+                    }
+                    else
+                    {
+                        if (championsManager_.SelectedChampion)
+                        {
+                            if (map.TilesInRangeDictionary.ContainsKey(this.coordinate_))
+                            {
+                                Debug.Log("SetDestinationPoint");
+                                championsManager_.SelectedChampion.DestinationTile = this;
+                                championsManager_.SelectedChampion.GoToDestination();
+                                championsManager_.SelectedChampion.CurrentPossition = this;
+                            }
+                            else
+                            {
+                                Debug.Log("Champion not selected");
+                            }
+                        }
+                        
                     }
                 }
-                championsManager_.SelectTile(this);
             }
         }
+
+        #endregion
 
 
         /// <summary>
         /// Adds game object to selected tile to show distance from start
         /// </summary>
         /// <param name="tile">selected tile</param>
-        private void AddLabel(Tile tile)
+        public static void AddLabel(Tile tile)
         {
             var label = Instantiate(GridMetrics.Instance.Label);
             label.transform.parent = tile.TileGameObject.transform;
@@ -141,17 +151,32 @@ namespace Assets.Scripts.Map
         /// Adds the projector to selected tile
         /// </summary>
         /// <param name="tile">The tile.</param>
-        private void AddProjector(Tile tile)
+        public static void AddProjector(Tile tile)
         {
             var projector = Instantiate(GridMetrics.Instance.Projector);
-
             projector.transform.parent = tile.TileGameObject.transform;
             projector.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
-            
-
             tile.projectorGameObject_ = projector;
         }
-        #endregion
-       
+
+        
+        public bool SpawnChampion()
+        {
+            if (championsManager_.GetChampionToSpawn() != null && Available == true)
+            {
+                if (Champion == null)
+                {
+                    GameObject championToSpawn = championsManager_.GetChampionToSpawn();
+                    var newChampion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                    var champion = newChampion.GetComponent<Champion>();
+                    champion.CurrentPossition = this;
+                    championsManager_.SetChampionToSpawn(null);
+                    championsManager_.SetChampionToSpawn(null);
+
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

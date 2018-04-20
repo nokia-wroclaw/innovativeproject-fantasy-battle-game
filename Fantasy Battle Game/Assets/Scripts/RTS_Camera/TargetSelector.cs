@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using RTS_Cam;
 
 [RequireComponent(typeof(RTS_Camera))]

@@ -14,10 +14,12 @@ namespace SelectUnitsMenu
             if(counter_%2 == 1)
             {
                 textMeshH.text = "SELECTED";
+                CharacterCreation.Instance.SelectUnitsMenu();
             }
             else
             {
                 textMeshH.text = "SELECT";
+                CharacterCreation.Instance.UnselectUnitsMenu();
             }
         }
     }

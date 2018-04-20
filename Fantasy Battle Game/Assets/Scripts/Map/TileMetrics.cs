@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     public class TileMetrics
     {
+        //not in use, but it can be used to make new Mesh
         public static void GetHexMesh(float radius, GridMetrics.HexOrientation orientation, ref Mesh mesh)
         {
             mesh = new Mesh();

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Map;
-using CharacterUtilities.Interfaces;
+using Map;
+using Champions.ChampionsUtilities.Interfaces;
 
-namespace CharacterUtilities.Algorithms
+namespace Champions.ChampionsUtilities.Algorithms
 {
     public class PathFinding:IFindRoute
     {

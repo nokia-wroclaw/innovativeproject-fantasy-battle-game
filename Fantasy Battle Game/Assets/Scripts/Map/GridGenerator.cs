@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
+using Champions;
+using SelectUnitsMenu;
 using UnityEngine;
-using Grid = UnityEngine.Grid;
 using Random = System.Random;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Class used to generate map, it should be attached to GameObject
@@ -24,8 +24,30 @@ namespace Assets.Scripts.Map
             else
                 rand_ = new Random(Seed);
             GenerateGrid();
+            spawnChampions();
         }
 
+        private void spawnChampions()
+        {
+            var map = Map.Instance;
+            var championsManager = ChampionsManager.Instance;
+            var selectedCharacters = CharacterCreation.Instance.Models;
+            var pairs = Map.Instance.RandomPositions(selectedCharacters.Count, selectedCharacters.Count);
+
+            foreach (var gameObject in selectedCharacters)
+            {
+                gameObject.SetActive(true);
+                gameObject.transform.localScale *= 5;
+            }
+
+            for (int i = 0; i < selectedCharacters.Count * 2; i++)
+            {
+                championsManager.SetChampionToSpawn(selectedCharacters[i % selectedCharacters.Count]);
+                map.GetTile(pairs[i].Key).SpawnChampion();
+            }
+
+            GameObject.Find("UnitsContainer").SetActive(false);
+        }
         public void GenerateGrid()
         {
             ClearGrid();
