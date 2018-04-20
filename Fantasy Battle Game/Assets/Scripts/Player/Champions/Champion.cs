@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Map;
+﻿using Map;
 using Champions.CharacterUtilities.Movements;
 using UnityEngine;
 using Player;
@@ -8,7 +8,7 @@ namespace Champions
     public class Champion : HexMovement
     {
         public Player.Player Owner { get; set; }
-
+        public GameObject GameObject { get; set; }
         //stats
         public int MaxHp { set; get; }
         public int CurrentHp { set; get; }

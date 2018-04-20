@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Map;
+using Map;
 using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
 using System.Collections;
@@ -20,9 +20,9 @@ namespace Champions.CharacterUtilities.Movements
         private float orientation_;
         private Tile destinationTile_;
         private List<Tile> route_ = new List<Tile>();
-        private Map map_ = Map.Instance;
+        private Map.Map map_ = Map.Map.Instance;
         private bool move_;
-
+         
 
         public float Orientation
         {
@@ -39,7 +39,7 @@ namespace Champions.CharacterUtilities.Movements
             get { return destinationTile_; }
             set
             {
-                destinationTile_ = Map.Instance.SelectedTile;
+                destinationTile_ = Map.Map.Instance.SelectedTile;
                 CalculateRoute();
                 Debug.Log(route_.Count);
             }
@@ -51,8 +51,7 @@ namespace Champions.CharacterUtilities.Movements
             {
                 return;
             }
-
-            StopAllCoroutines();
+            
             StartCoroutine(Move());
         }
 

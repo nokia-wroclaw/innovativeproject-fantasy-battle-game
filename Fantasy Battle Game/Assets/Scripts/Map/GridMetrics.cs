@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Class contain setting of map

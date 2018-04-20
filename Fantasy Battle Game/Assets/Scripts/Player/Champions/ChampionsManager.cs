@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Map;
+using Map;
 using UnityEngine;
 
 namespace Champions
@@ -16,7 +16,7 @@ namespace Champions
             set
             {
                 selectedChampion_=value;
-                Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, 8);
+                Map.Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, 8);
             }
             get { return selectedChampion_; }
         }
@@ -48,7 +48,8 @@ namespace Champions
             {
                 return false;
             }
-            var tile = Map.Instance.GetTile(coord);
+            var tile = Map.Map.Instance.GetTile(coord);
+            
             if (!tile)
             {
                 return false;

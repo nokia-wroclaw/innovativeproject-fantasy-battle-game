@@ -4,17 +4,17 @@ namespace Champions
 {
     public class Shop : MonoBehaviour
     {
-        private ChampionsManager _champiopManager;
+        private ChampionsManager championsManager_;
 
         void Start()
         {
-            _champiopManager = ChampionsManager.Instance;
+            championsManager_ = ChampionsManager.Instance;
         }
 
         public void ChooseChampion(int index)
         {
             Debug.Log(index);
-            _champiopManager.SetChampionToSpawn(_champiopManager.ChampionsPrefabs[index]);
+            championsManager_.SetChampionToSpawn(championsManager_.ChampionsPrefabs[index]);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.Scripts.Map.Interfaces
+namespace Map.Interfaces
 {
     public interface IMap
     {

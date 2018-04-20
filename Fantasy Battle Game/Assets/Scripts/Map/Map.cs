@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Map.Interfaces;
 using UnityEngine;
 using System;
+using Map.Interfaces;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Class represent map based at hexagonal tiles.
@@ -18,6 +18,7 @@ namespace Assets.Scripts.Map
         private Tile selectedTile_;
         private Dictionary<TileMetrics.HexCoordinate, Tile> tilesInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
         private Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+        private Dictionary<TileMetrics.HexCoordinate, Tile> tilesWithEnemies_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
 
         #region Public_Methods
         public Map()
@@ -113,47 +114,74 @@ namespace Assets.Scripts.Map
         {
             ClearMarkTilesInRange();
             tilesInRange_.Clear();
+            tilesWithEnemies_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
             visited.Add(center.Coordinate, center);
 
             var queueTiles = new Queue<Tile>();
 
-            var neighbours = AvailableNeighbours(center);
+            var neighbours = center.GetNeighbours();
+
             foreach (var tile in neighbours)
             {
-                if (center.Drag / 2 + tile.Drag / 2 <= range)
+                if (tile.Available)
                 {
-                    tilesInRange_.Add(tile.Coordinate, tile);
-                    tile.DistanceFromStart = center.Drag / 2 + tile.Drag / 2;
-                    queueTiles.Enqueue(tile);
+                    if (center.Drag / 2 + tile.Drag / 2 <= range)
+                    {
+                        tilesInRange_.Add(tile.Coordinate, tile);
+                        tile.DistanceFromStart = center.Drag / 2 + tile.Drag / 2;
+                        queueTiles.Enqueue(tile);
+                    }
+                }
+                else
+                {
+                    if (tile.Champion && !tilesWithEnemies_.ContainsKey(tile.Coordinate))
+                    {
+                        tilesWithEnemies_.Add(tile.Coordinate, tile);
+                    }
                 }
             }
 
             while (queueTiles.Count != 0)
             {
                 var currentTile = queueTiles.Dequeue();
-                neighbours = AvailableNeighbours(currentTile);
+                neighbours = currentTile.GetNeighbours();
                 foreach (var tile in neighbours)
-                    if (tilesInRange_.ContainsKey(tile.Coordinate))
+                {
+                    if (tile.Available)
                     {
-                        if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <
-                            tile.DistanceFromStart)
+                        if (tilesInRange_.ContainsKey(tile.Coordinate))
                         {
+                            if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <
+                                tile.DistanceFromStart)
+                            {
+                                tile.DistanceFromStart =
+                                    currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
+                                queueTiles.Enqueue(tile);
+                            }
+                        }
+                        else if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <= range)
+                        {
+                            tilesInRange_.Add(tile.Coordinate, tile);
                             tile.DistanceFromStart =
                                 currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
                             queueTiles.Enqueue(tile);
                         }
                     }
-                    else if (currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2 <= range)
+                    else
                     {
-                        tilesInRange_.Add(tile.Coordinate, tile);
-                        tile.DistanceFromStart = currentTile.DistanceFromStart + currentTile.Drag / 2 + tile.Drag / 2;
-                        queueTiles.Enqueue(tile);
+                        if (tile.Champion && !tilesWithEnemies_.ContainsKey(tile.Coordinate))
+                        {
+
+                            tilesWithEnemies_.Add(tile.Coordinate, tile);
+                        }
                     }
+                }
             }
             tilesInRange_.Remove(center.Coordinate);
             markTilesInRange();
+            Debug.Log(tilesWithEnemies_.Count);
             return tilesInRange_;
         }
 

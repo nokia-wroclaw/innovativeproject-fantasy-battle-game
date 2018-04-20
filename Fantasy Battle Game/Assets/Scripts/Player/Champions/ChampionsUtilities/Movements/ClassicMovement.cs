@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Map;
+﻿using Map;
 using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
 

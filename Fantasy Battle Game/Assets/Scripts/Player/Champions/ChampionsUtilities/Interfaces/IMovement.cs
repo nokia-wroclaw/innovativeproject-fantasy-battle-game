@@ -1,6 +1,6 @@
 ﻿
 using System.Collections;
-using Assets.Scripts.Map;
+using Map;
 using UnityEngine;
 
 namespace Champions.ChampionsUtilities.Interfaces

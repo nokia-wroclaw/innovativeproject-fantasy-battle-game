@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Map;
+using Map;
 using Champions.ChampionsUtilities.Interfaces;
 
 namespace Champions.ChampionsUtilities.Algorithms

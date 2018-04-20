@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Map.Interfaces;
 using Champions;
 using Champions.CharacterUtilities.Movements;
 using CharacterUtilities.Movements;
+using Map.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Represent basic element in map- hex
@@ -107,8 +107,6 @@ namespace Assets.Scripts.Map
                     {
                         Debug.Log("Champion selected");
                         championsManager_.SelectedChampion = Champion;
-                        //championsManager_.SelectedChampion.GetComponent<HexMovement>().SetTargetPosition();
-                        map.TilesInRange(this, 8);
                     }
                     else
                     {
@@ -120,7 +118,6 @@ namespace Assets.Scripts.Map
                                 championsManager_.SelectedChampion.DestinationTile = this;
                                 championsManager_.SelectedChampion.GoToDestination();
                                 championsManager_.SelectedChampion.CurrentPossition = this;
-                                //championsManager_.SelectedChampion.GetComponent<HexMovement>().SetDestinationPoint();
                             }
                             else
                             {

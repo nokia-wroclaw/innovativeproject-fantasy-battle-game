@@ -5,7 +5,7 @@ using SelectUnitsMenu;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Scripts.Map
+namespace Map
 {
     /// <summary>
     /// Class used to generate map, it should be attached to GameObject
