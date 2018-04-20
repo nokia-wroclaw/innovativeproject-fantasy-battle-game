@@ -1,5 +1,5 @@
 ﻿
-namespace CharacterUtilities.Interfaces
+namespace Champions.ChampionsUtilities.Interfaces
 {
     public interface IMovement
     {

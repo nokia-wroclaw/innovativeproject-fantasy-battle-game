@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Champions.Scripts
+namespace Champions
 {
     public class Shop : MonoBehaviour
     {
@@ -18,6 +16,5 @@ namespace Champions.Scripts
             Debug.Log(index);
             _champiopManager.SetChampionToSpawn(_champiopManager.ChampionsPrefabs[index]);
         }
-
     }
 }

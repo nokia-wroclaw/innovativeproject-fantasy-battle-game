@@ -1,4 +1,4 @@
-﻿using CharacterUtilities.Interfaces;
+﻿using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
 
 namespace CharacterUtilities.Movements

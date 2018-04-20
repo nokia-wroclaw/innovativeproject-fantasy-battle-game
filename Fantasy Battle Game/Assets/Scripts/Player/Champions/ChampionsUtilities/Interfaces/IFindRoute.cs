@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Map;
 
-namespace CharacterUtilities.Interfaces
+namespace Champions.ChampionsUtilities.Interfaces
 {
     public interface IFindRoute
     {

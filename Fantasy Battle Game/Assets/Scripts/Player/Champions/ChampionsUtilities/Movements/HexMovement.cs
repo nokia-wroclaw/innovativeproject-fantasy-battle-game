@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Map;
-using Champions.Scripts;
-using CharacterUtilities.Interfaces;
-using UnityEditor.UI;
+using Champions.ChampionsUtilities.Interfaces;
+using Champions;
 using UnityEngine;
 
 namespace CharacterUtilities.Movements
@@ -57,10 +56,10 @@ namespace CharacterUtilities.Movements
 
         public void SetTargetPosition()
         {
-            if (manager_.SelectedChampion != null)
+            if (manager_ && manager_.SelectedChampion != null)
             {
                 SelectedChampion = manager_.SelectedChampion;
-                ChampionsPosition = manager_.SelectedTile;
+                ChampionsPosition = map_.SelectedTile;
                 Debug.Log("Champion has been set " + ChampionsPosition.Coordinate);
             }
         }
@@ -95,12 +94,12 @@ namespace CharacterUtilities.Movements
 
         private void SetDestinationPoint()
         {
-            if (manager_.SelectedChampion == null)
+            if (manager_ && manager_.SelectedChampion == null)
             {
-                if (manager_.SelectedTile != ChampionsPosition)
+                if (map_.SelectedTile != ChampionsPosition)
                 {
                     Debug.Log("Destination point has been set - calculating route...");
-                    DestinationTile = manager_.SelectedTile;
+                    DestinationTile = map_.SelectedTile;
                     calculate_ = true;
                     
                 }

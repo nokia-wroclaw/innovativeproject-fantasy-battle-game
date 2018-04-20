@@ -9,6 +9,7 @@ namespace SelectUnitsMenu
     {
         public void PlayGame()
         {
+            CharacterCreation.Instance.NotDestroyObjects();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

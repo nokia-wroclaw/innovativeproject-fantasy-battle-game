@@ -15,6 +15,7 @@ namespace Assets.Scripts.Map
     public class Map : IMap
     {
         private static Map instance_;
+        private Tile selectedTile_;
         private Dictionary<TileMetrics.HexCoordinate, Tile> tilesInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
         private Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
 
@@ -45,6 +46,14 @@ namespace Assets.Scripts.Map
             get { return tilesInRange_; }
         }
 
+        public Tile SelectedTile
+        {
+            get { return selectedTile_; }
+            set { selectedTile_ = value; }
+        }
+
+        #endregion
+
         public List<KeyValuePair<TileMetrics.HexCoordinate, int>> RandomPositions(int amountofCreaturesFirstPlayer, int amountofCreaturesSecondPlayer)
         {
             List<KeyValuePair<TileMetrics.HexCoordinate, int>> list = new List<KeyValuePair<TileMetrics.HexCoordinate, int>>();
@@ -66,7 +75,7 @@ namespace Assets.Scripts.Map
                         {
                             i++;
                             list.Add(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 0));
-                            Debug.Log("first player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
+                            //Debug.Log("first player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
                         }
                     }
                 }
@@ -84,17 +93,25 @@ namespace Assets.Scripts.Map
                     {
                         i++;
                         list.Add(new KeyValuePair<TileMetrics.HexCoordinate, int>(coordinate, 1));
-                        Debug.Log("second player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
+                        //Debug.Log("second player:" + coordinate.FirstCoord + " " + coordinate.SecondCoord);
                     }
                 }
             }
             return list;
         }
 
-        #endregion
+        public Tile GetTile(TileMetrics.HexCoordinate hexCoordinate)
+        {
+            if (tiles_.ContainsKey(hexCoordinate))
+            {
+                    return tiles_[hexCoordinate];
+            }
+            return null;
+        }
         
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
+            clearMarkTilesInRange();
             tilesInRange_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
@@ -136,9 +153,9 @@ namespace Assets.Scripts.Map
                     }
             }
             tilesInRange_.Remove(center.Coordinate);
+            markTilesInRange();
             return tilesInRange_;
         }
-
 
         public List<Tile> AvailableNeighbours(Tile center)
         {
@@ -152,6 +169,26 @@ namespace Assets.Scripts.Map
                 }
             }
             return listToReturn;
+        }
+        #endregion
+
+        #region Private_Methods
+        
+        private void clearMarkTilesInRange()
+        {
+            foreach (var tiles in TilesInRangeDictionary)
+            {
+                tiles.Value.DeleteChildsGO();
+            }
+        }
+
+        private void markTilesInRange()
+        {
+            foreach (Tile tile in TilesInRangeDictionary.Values)
+            {
+                Tile.AddProjector(tile);
+                Tile.AddLabel(tile);
+            }
         }
         #endregion
     }

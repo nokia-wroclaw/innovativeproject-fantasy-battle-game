@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Champions;
+using SelectUnitsMenu;
 using UnityEditor;
 using UnityEngine;
 using Grid = UnityEngine.Grid;
@@ -26,6 +28,27 @@ namespace Assets.Scripts.Map
             GenerateGrid();
         }
 
+        private void spawnChampions()
+        {
+            var map = Map.Instance;
+            var championsManager = ChampionsManager.Instance;
+            var selectedCharacters = CharacterCreation.Instance.Models;
+            var pairs = Map.Instance.RandomPositions(selectedCharacters.Count, selectedCharacters.Count);
+
+            foreach (var gameObject in selectedCharacters)
+            {
+                gameObject.SetActive(true);
+                gameObject.transform.localScale *= 5;
+            }
+
+            for (int i = 0; i < selectedCharacters.Count * 2; i++)
+            {
+                championsManager.SetChampionToSpawn(selectedCharacters[i % selectedCharacters.Count]);
+                map.GetTile(pairs[i].Key).SpawnChampion();
+            }
+
+            GameObject.Find("UnitsContainer").SetActive(false);
+        }
         public void GenerateGrid()
         {
             ClearGrid();
