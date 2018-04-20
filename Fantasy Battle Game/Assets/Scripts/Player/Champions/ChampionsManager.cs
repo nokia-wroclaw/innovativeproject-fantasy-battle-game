@@ -8,8 +8,18 @@ namespace Champions
     {
         public static ChampionsManager Instance;
         public List<GameObject> ChampionsPrefabs;
-        public GameObject SelectedChampion { set; get; }
         private GameObject championToSpawn_;
+        private Champion selectedChampion_;
+
+        public Champion SelectedChampion
+        {
+            set
+            {
+                selectedChampion_=value;
+                Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, 8);
+            }
+            get { return selectedChampion_; }
+        }
 
         public ChampionsManager()
         {

@@ -1,115 +1,135 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Assets.Scripts.Map;
 using Champions.ChampionsUtilities.Interfaces;
-using Champions;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
-namespace CharacterUtilities.Movements
+namespace Champions.CharacterUtilities.Movements
 {
-    public class HexMovement:MonoBehaviour, IMovement
+    public class HexMovement : MonoBehaviour, IMovement
     {
         public float RotationSpeed = 5;
         public float Speed = 10;
-        
-        private ChampionsManager manager_;
-        private Map map_;
-        private GameObject SelectedChampion { get; set; }
-        private Tile ChampionsPosition { get; set; }
-        private Tile DestinationTile { get; set; }
-        private Tile TempDestinationTile { get; set; }
-        private Quaternion playerRotation_;
-        private List<Tile> route_;
-        private bool calculate_;
+
+        protected Tile currentTile { set; get; }
+
+        private float orientation_;
+        private Tile destinationTile_;
+        private List<Tile> route_ = new List<Tile>();
+        private Map map_ = Map.Instance;
         private bool move_;
-        private bool nextMove_;
-        private int iterator_ = 1;
 
-        
-        private void Start()
+
+        public float Orientation
         {
-            manager_ = ChampionsManager.Instance;
-            map_ = Map.Instance;
-            route_ = new List<Tile>();
+            get { return orientation_; }
+            set
+            {
+                orientation_ = value;
+                transform.localRotation = Quaternion.Euler(0f, value, 0f);
+            }
         }
 
-        private void Update()
+        public Tile DestinationTile
         {
-            SetTargetPosition();
-            SetDestinationPoint();
-
-            if (calculate_)
+            get { return destinationTile_; }
+            set
             {
+                destinationTile_ = Map.Instance.SelectedTile;
                 CalculateRoute();
+                Debug.Log(route_.Count);
             }
-            
-            if (move_)
+        }
+
+        public void GoToDestination()
+        {
+            if (route_==null || route_.Count==0)
             {
-                if (nextMove_)
+                return;
+            }
+
+            StopAllCoroutines();
+            StartCoroutine(Move());
+        }
+
+        IEnumerator Move()
+        {
+            Vector3 pointA, pointB, pointC = route_[0].Position;
+
+            float t = Time.deltaTime * Speed;
+            Tile currentTravelLocation;
+            for (int i = 1; i < route_.Count; i++)
+            {
+                
+                currentTravelLocation = route_[i];
+                pointA = pointC;
+                pointB = route_[i - 1].Position;
+                pointC = (pointB + currentTravelLocation.Position) * 0.5f;
+               
+                for (; t < 1f; t += Time.deltaTime * Speed)
                 {
-                    iterator_++;
-                    nextMove_ = false;
+                    transform.localPosition = Bezier.GetPoint(pointA, pointB, pointC, t);
+                    Vector3 d = Bezier.GetDerivative(pointA, pointB, pointC, t);
+                    d.y = 0f;
+                    transform.localRotation = Quaternion.LookRotation(d);
+                    //Debug.Log(Time.deltaTime);
+                    yield return null;
                 }
-                Move();
+                t -= 1f;
             }
+            currentTravelLocation = null;
+
+            pointA = pointC;
+            pointB = currentTile.Position;
+            pointC = pointB;
             
-        }
-
-        public void SetTargetPosition()
-        {
-            if (manager_ && manager_.SelectedChampion != null)
+            for (; t < 1f; t += Time.deltaTime * Speed)
             {
-                SelectedChampion = manager_.SelectedChampion;
-                ChampionsPosition = map_.SelectedTile;
-                Debug.Log("Champion has been set " + ChampionsPosition.Coordinate);
-            }
-        }
-
-        public void Move()
-        {
-            Debug.Log("Moving...");
-            var lookAtTarget = new Vector3(route_[iterator_].Position.x - SelectedChampion.transform.position.x,
-                transform.position.y, route_[iterator_].Position.z - transform.position.z);
-            playerRotation_ = Quaternion.LookRotation(lookAtTarget);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, playerRotation_, RotationSpeed * Time.deltaTime);
-            
-            SelectedChampion.transform.position = Vector3.MoveTowards(transform.position, route_[iterator_].Position, Speed*Time.deltaTime);
-
-            if (transform.position == route_[iterator_].Position)
-            {
-                nextMove_ = true;
+                transform.localPosition = Bezier.GetPoint(pointA, pointB, pointC, t);
+                Vector3 d = Bezier.GetDerivative(pointA, pointB, pointC, t);
+                d.y = 0f;
+                transform.localRotation = Quaternion.LookRotation(d);
+                yield return null;
             }
 
-            if (transform.position == DestinationTile.Position)
-            {
-                move_ = false;
-                nextMove_ = false;
-
-                ChampionsPosition.Champion = null;
-                ChampionsPosition = DestinationTile;
-                ChampionsPosition.Champion = SelectedChampion;
-                iterator_ = 0;
-            }
+            map_.TilesInRange(currentTile, 0);
         }
 
-        private void SetDestinationPoint()
+        public IEnumerator LookAt(Vector3 point)
         {
-            if (manager_ && manager_.SelectedChampion == null)
+            point.y = transform.localPosition.y;
+            Quaternion fromRotation = transform.localRotation;
+            Quaternion toRotation =
+                Quaternion.LookRotation(point - transform.localPosition);
+            float angle = Quaternion.Angle(fromRotation, toRotation);
+
+            if (angle > 0f)
             {
-                if (map_.SelectedTile != ChampionsPosition)
+                float speed = RotationSpeed / angle;
+                for (
+                    float t = Time.deltaTime * speed;
+                    t < 1f;
+                    t += Time.deltaTime * speed
+                )
                 {
-                    Debug.Log("Destination point has been set - calculating route...");
-                    DestinationTile = map_.SelectedTile;
-                    calculate_ = true;
-                    
+                    transform.localRotation =
+                        Quaternion.Slerp(fromRotation, toRotation, t);
+                    yield return null;
                 }
             }
+
+            transform.LookAt(point);
+            orientation_ = transform.localRotation.eulerAngles.y;
         }
 
-        private void CalculateRoute()
+        protected void CalculateRoute()
         {
             route_.Clear();
-            TempDestinationTile = ChampionsPosition;
+            Tile TempDestinationTile = currentTile;
             route_.Add(TempDestinationTile);
             while (TempDestinationTile != DestinationTile)
             {
@@ -123,19 +143,18 @@ namespace CharacterUtilities.Movements
                 route_.Add(list[position]);
                 TempDestinationTile = list[position];
             }
-            calculate_ = false;
-            move_ = true;
             Debug.Log("Route calculated");
         }
 
         private List<Tile> SortList(Tile center, Tile endPoint)
         {
+
             var list = map_.AvailableNeighbours(center);
             var i = 1;
-            while(i < list.Count)
+            while (i < list.Count)
             {
                 var j = i;
-                while (j > 0 && Vector3.Distance(list[j-1].Position, endPoint.Position) > Vector3.Distance(list[j].Position, endPoint.Position))
+                while (j > 0 && Vector3.Distance(list[j - 1].Position, endPoint.Position) > Vector3.Distance(list[j].Position, endPoint.Position))
                 {
                     var temp = list[j];
                     list[j] = list[j - 1];

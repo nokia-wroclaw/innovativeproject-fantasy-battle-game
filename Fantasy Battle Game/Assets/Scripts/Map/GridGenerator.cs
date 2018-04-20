@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using Champions;
 using SelectUnitsMenu;
-using UnityEditor;
 using UnityEngine;
-using Grid = UnityEngine.Grid;
 using Random = System.Random;
 
 namespace Assets.Scripts.Map
@@ -26,6 +24,7 @@ namespace Assets.Scripts.Map
             else
                 rand_ = new Random(Seed);
             GenerateGrid();
+            spawnChampions();
         }
 
         private void spawnChampions()

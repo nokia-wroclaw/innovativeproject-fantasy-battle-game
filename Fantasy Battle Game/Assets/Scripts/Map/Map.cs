@@ -111,7 +111,7 @@ namespace Assets.Scripts.Map
         
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
-            clearMarkTilesInRange();
+            ClearMarkTilesInRange();
             tilesInRange_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
@@ -170,17 +170,20 @@ namespace Assets.Scripts.Map
             }
             return listToReturn;
         }
-        #endregion
 
-        #region Private_Methods
-        
-        private void clearMarkTilesInRange()
+        public void ClearMarkTilesInRange()
         {
             foreach (var tiles in TilesInRangeDictionary)
             {
                 tiles.Value.DeleteChildsGO();
             }
         }
+
+        #endregion
+
+        #region Private_Methods
+
+
 
         private void markTilesInRange()
         {

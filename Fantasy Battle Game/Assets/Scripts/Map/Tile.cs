@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Map.Interfaces;
 using Champions;
+using Champions.CharacterUtilities.Movements;
 using CharacterUtilities.Movements;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,7 +15,7 @@ namespace Assets.Scripts.Map
     public class Tile : MonoBehaviour, ITile
     {
         public GameObject TileGameObject;
-        public GameObject Champion { set; get; }
+        public Champion Champion { set; get; }
 
         [SerializeField]
         private double distanceFromStart_ = 0;
@@ -93,9 +94,42 @@ namespace Assets.Scripts.Map
 
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                Map.Instance.TilesInRange(this, 8);
+                var map = Map.Instance;
+                map.SelectedTile = this;
 
-                //championsManager_.SelectTile(this);
+                if (championsManager_.GetChampionToSpawn() != null)
+                {
+                    SpawnChampion();
+                }
+                else
+                {
+                    if (Champion)
+                    {
+                        Debug.Log("Champion selected");
+                        championsManager_.SelectedChampion = Champion;
+                        //championsManager_.SelectedChampion.GetComponent<HexMovement>().SetTargetPosition();
+                        map.TilesInRange(this, 8);
+                    }
+                    else
+                    {
+                        if (championsManager_.SelectedChampion)
+                        {
+                            if (map.TilesInRangeDictionary.ContainsKey(this.coordinate_))
+                            {
+                                Debug.Log("SetDestinationPoint");
+                                championsManager_.SelectedChampion.DestinationTile = this;
+                                championsManager_.SelectedChampion.GoToDestination();
+                                championsManager_.SelectedChampion.CurrentPossition = this;
+                                //championsManager_.SelectedChampion.GetComponent<HexMovement>().SetDestinationPoint();
+                            }
+                            else
+                            {
+                                Debug.Log("Champion not selected");
+                            }
+                        }
+                        
+                    }
+                }
             }
         }
 
@@ -136,10 +170,12 @@ namespace Assets.Scripts.Map
                 if (Champion == null)
                 {
                     GameObject championToSpawn = championsManager_.GetChampionToSpawn();
-                    Champion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
-                    //Champion.AddComponent<HexMovement>();
+                    var newChampion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                    var champion = newChampion.GetComponent<Champion>();
+                    champion.CurrentPossition = this;
                     championsManager_.SetChampionToSpawn(null);
-                    available_ = false;
+                    championsManager_.SetChampionToSpawn(null);
+
                     return true;
                 }
             }

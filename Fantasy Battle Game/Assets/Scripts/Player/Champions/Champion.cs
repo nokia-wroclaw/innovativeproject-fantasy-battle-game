@@ -1,22 +1,39 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Map;
+using Champions.CharacterUtilities.Movements;
+using UnityEngine;
 using Player;
 
 namespace Champions
 {
-    public class Champion : MonoBehaviour
+    public class Champion : HexMovement
     {
-        public Player.Player Owner { get; set; } 
-        public float CurrentX { set; get; }
-        public float CurrentY { set; get; }
-        public float CurrentZ { set; get; }
+        public Player.Player Owner { get; set; }
+
+        //stats
+        public int MaxHp { set; get; }
         public int CurrentHp { set; get; }
         public int Damage;
-   
-        public void SetPosition(float x, float y, float z)
+
+        public Tile CurrentPossition
         {
-            CurrentX = x;
-            CurrentY = y;
-            CurrentZ = z;
+            get
+            {
+                return currentTile;
+            }
+            set
+            {
+                if (currentTile)
+                {
+                    currentTile.Champion = null;
+                    currentTile.Available = true;
+                }
+
+                currentTile = value;
+                value.Champion = this;
+                value.Available = false;
+                //transform.localPosition = value.Position;
+
+            }
         }
     }
 }
