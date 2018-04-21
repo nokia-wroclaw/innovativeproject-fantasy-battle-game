@@ -41,7 +41,7 @@ namespace Champions.CharacterUtilities.Movements
             {
                 destinationTile_ = Map.Map.Instance.SelectedTile;
                 CalculateRoute();
-                Debug.Log(route_.Count);
+                //Debug.Log(route_.Count);
             }
         }
 

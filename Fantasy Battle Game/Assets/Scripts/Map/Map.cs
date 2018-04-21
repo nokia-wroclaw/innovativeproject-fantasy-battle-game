@@ -180,7 +180,6 @@ namespace Map
             tilesInRange_.Remove(center.Coordinate);
             tilesWithEnemies_.Remove(center.Coordinate);
             markTilesInRange();
-            Debug.Log(tilesWithEnemies_.Count);
             return tilesInRange_;
         }
 

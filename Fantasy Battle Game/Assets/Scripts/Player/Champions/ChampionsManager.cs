@@ -16,7 +16,7 @@ namespace Champions
             set
             {
                 selectedChampion_=value;
-                Map.Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, 8);
+                Map.Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, value.Range);
             }
             get { return selectedChampion_; }
         }

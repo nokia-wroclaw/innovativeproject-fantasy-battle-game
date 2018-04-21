@@ -597,6 +597,7 @@ MonoBehaviour:
   RotationSpeed: 100
   Speed: 1
   Damage: 0
+  Range: 10
 --- !u!114 &191821402 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114509072551805932, guid: 04f7eb3a3214eb24da284fba8e2e1b7f,
@@ -1656,7 +1657,7 @@ RectTransform:
   m_Children:
   - {fileID: 1839061695}
   m_Father: {fileID: 1188761601}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1702,15 +1703,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372778382}
-        m_MethodName: LoadLevel
-        m_Mode: 3
+      - m_Target: {fileID: 1188761604}
+        m_MethodName: PlayGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PlayGame
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -2661,6 +2662,7 @@ MonoBehaviour:
   RotationSpeed: 150
   Speed: 1
   Damage: 0
+  Range: 5
 --- !u!224 &919922072 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224489473437129670, guid: 1b1ca66d889fc0849971e8cd4c5bb495,
@@ -3096,6 +3098,7 @@ MonoBehaviour:
   RotationSpeed: 250
   Speed: 5
   Damage: 0
+  Range: 20
 --- !u!4 &1110237678 stripped
 Transform:
   m_PrefabParentObject: {fileID: 493048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
@@ -3466,8 +3469,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 637755071}
   - {fileID: 2013867363}
+  - {fileID: 637755071}
   m_Father: {fileID: 391519247}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3964,12 +3967,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMeshH: {fileID: 951384961}
---- !u!114 &1372778382 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114755552633640082, guid: 2d819d8a2666720469cb200b5b660e40,
-    type: 2}
-  m_PrefabInternal: {fileID: 1811541036}
-  m_Script: {fileID: 11500000, guid: 3f36266e44d6b9b4db4ed71cffc9cebf, type: 3}
 --- !u!1001 &1390606543
 Prefab:
   m_ObjectHideFlags: 0
@@ -5298,6 +5295,7 @@ MonoBehaviour:
   RotationSpeed: 140
   Speed: 1.2
   Damage: 0
+  Range: 7
 --- !u!1 &1814552602
 GameObject:
   m_ObjectHideFlags: 0
@@ -6085,7 +6083,7 @@ RectTransform:
   - {fileID: 1628136352}
   - {fileID: 1829039838}
   m_Father: {fileID: 1188761601}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6389,6 +6387,7 @@ MonoBehaviour:
   RotationSpeed: 170
   Speed: 2
   Damage: 0
+  Range: 15
 --- !u!1 &2119390020
 GameObject:
   m_ObjectHideFlags: 0

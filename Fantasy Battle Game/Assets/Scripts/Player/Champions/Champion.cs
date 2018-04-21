@@ -13,6 +13,7 @@ namespace Champions
         public int MaxHp { set; get; }
         public int CurrentHp { set; get; }
         public int Damage;
+        public int Range = 10;
 
         public Tile CurrentPossition
         {
