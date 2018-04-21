@@ -2916,6 +2916,8 @@ MonoBehaviour:
   - {fileID: 1038847452543722, guid: 08e3bde9f99ad8d46bc8a1467d7c7ec2, type: 2}
   Label: {fileID: 1777406515334076, guid: 889b05042a13f9e46a3f71d076d12204, type: 2}
   Projector: {fileID: 1725340035275564, guid: 3333dfdd380a06f48a39d878f923d73c, type: 2}
+  ProjectorUnitsInRange: {fileID: 1208287457945774, guid: b7c7b865e3a5cc84cbb37238d203a691,
+    type: 2}
 --- !u!4 &660150433
 Transform:
   m_ObjectHideFlags: 0

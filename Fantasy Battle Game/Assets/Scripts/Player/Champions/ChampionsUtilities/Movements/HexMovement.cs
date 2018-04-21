@@ -51,14 +51,16 @@ namespace Champions.CharacterUtilities.Movements
             {
                 return;
             }
-            
+
+           
             StartCoroutine(Move());
         }
 
         IEnumerator Move()
         {
+            
             Vector3 pointA, pointB, pointC = route_[0].Position;
-
+            yield return LookAt(route_[1].Position);
             float t = Time.deltaTime * Speed;
             Tile currentTravelLocation;
             for (int i = 1; i < route_.Count; i++)
@@ -95,7 +97,7 @@ namespace Champions.CharacterUtilities.Movements
                 yield return null;
             }
 
-            map_.TilesInRange(currentTile, 0);
+            map_.ClearMarkTilesInRange();
         }
 
         public IEnumerator LookAt(Vector3 point)

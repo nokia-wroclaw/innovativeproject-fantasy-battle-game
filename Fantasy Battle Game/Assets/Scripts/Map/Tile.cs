@@ -30,6 +30,8 @@ namespace Map
         
         private GameObject labelGameObject_;
         private GameObject projectorGameObject_;
+        private GameObject projectorOnMouseGameObject_;
+        private GameObject projectorUnitInRange_;
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
 
@@ -47,6 +49,10 @@ namespace Map
             if (projectorGameObject_)
             {
                 Destroy(projectorGameObject_);
+            }
+            if (projectorUnitInRange_)
+            {
+                Destroy(projectorUnitInRange_);
             }
         }
         
@@ -88,6 +94,22 @@ namespace Map
         #endregion
 
         #region Interaction_with_user
+
+
+        void OnMouseEnter()
+        {
+            var projector = Instantiate(GridMetrics.Instance.Projector);
+            projector.transform.parent = TileGameObject.transform;
+            projector.transform.position = position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            projectorOnMouseGameObject_ = projector;
+        }
+        void OnMouseExit()
+        {
+            if (projectorOnMouseGameObject_)
+            {
+                Destroy(projectorOnMouseGameObject_);
+            }
+        }
 
         private void OnMouseDown()
         {
@@ -159,7 +181,15 @@ namespace Map
             tile.projectorGameObject_ = projector;
         }
 
-        
+        public static void AddProjectorUnitInRange(Tile tile)
+        {
+            var projector = Instantiate(GridMetrics.Instance.ProjectorUnitsInRange);
+            projector.transform.parent = tile.TileGameObject.transform;
+            projector.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            tile.projectorUnitInRange_= projector;
+        }
+
+
         public bool SpawnChampion()
         {
             if (championsManager_.GetChampionToSpawn() != null && Available == true)
@@ -168,6 +198,7 @@ namespace Map
                 {
                     GameObject championToSpawn = championsManager_.GetChampionToSpawn();
                     var newChampion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
+                    
                     var champion = newChampion.GetComponent<Champion>();
                     champion.CurrentPossition = this;
                     championsManager_.SetChampionToSpawn(null);

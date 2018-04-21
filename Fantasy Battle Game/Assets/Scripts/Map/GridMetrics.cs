@@ -27,6 +27,7 @@ namespace Map
         public List<GameObject> Prefabs = new List<GameObject>();
         public GameObject Label;
         public GameObject Projector;
+        public GameObject ProjectorUnitsInRange;
 
         public static TileMetrics.HexCoordinate[] Directions =
         {
