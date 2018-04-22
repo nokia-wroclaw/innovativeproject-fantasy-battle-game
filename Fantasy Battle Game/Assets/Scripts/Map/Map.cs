@@ -113,8 +113,6 @@ namespace Map
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
             ClearMarkTilesInRange();
-            tilesInRange_.Clear();
-            tilesWithEnemies_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
             visited.Add(center.Coordinate, center);
@@ -180,8 +178,8 @@ namespace Map
                 }
             }
             tilesInRange_.Remove(center.Coordinate);
+            tilesWithEnemies_.Remove(center.Coordinate);
             markTilesInRange();
-            Debug.Log(tilesWithEnemies_.Count);
             return tilesInRange_;
         }
 
@@ -205,22 +203,36 @@ namespace Map
             {
                 tiles.Value.DeleteChildsGO();
             }
+            foreach (var tiles in tilesWithEnemies_)
+            {
+                tiles.Value.DeleteChildsGO();
+            }
+            tilesWithEnemies_.Clear();
+            tilesInRange_.Clear();
         }
 
         #endregion
 
         #region Private_Methods
-
-
-
+        
         private void markTilesInRange()
         {
+            markUnitsInRange();
             foreach (Tile tile in TilesInRangeDictionary.Values)
             {
                 Tile.AddProjector(tile);
                 Tile.AddLabel(tile);
             }
         }
+
+        private void markUnitsInRange()
+        {
+            foreach (Tile tile in tilesWithEnemies_.Values)
+            {
+                Tile.AddProjectorUnitInRange(tile);
+            }
+        }
+
         #endregion
     }
 }

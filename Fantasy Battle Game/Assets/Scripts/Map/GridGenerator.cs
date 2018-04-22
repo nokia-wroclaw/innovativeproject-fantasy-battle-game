@@ -46,6 +46,8 @@ namespace Map
                 map.GetTile(pairs[i].Key).SpawnChampion();
             }
 
+
+
             GameObject.Find("UnitsContainer").SetActive(false);
         }
         public void GenerateGrid()
