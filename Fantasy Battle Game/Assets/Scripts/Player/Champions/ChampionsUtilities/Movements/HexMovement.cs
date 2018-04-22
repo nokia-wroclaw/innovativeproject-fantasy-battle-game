@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using BattleManagement;
 
 namespace Champions.CharacterUtilities.Movements
 {
@@ -14,6 +15,7 @@ namespace Champions.CharacterUtilities.Movements
     {
         public float RotationSpeed = 5;
         public float Speed = 10;
+        public bool Moving = false;
 
         protected Tile currentTile { set; get; }
 
@@ -41,7 +43,6 @@ namespace Champions.CharacterUtilities.Movements
             {
                 destinationTile_ = Map.Map.Instance.SelectedTile;
                 CalculateRoute();
-                //Debug.Log(route_.Count);
             }
         }
 
@@ -52,13 +53,12 @@ namespace Champions.CharacterUtilities.Movements
                 return;
             }
 
-           
-            StartCoroutine(Move());
+            Moving = true;
+            StartCoroutine(move());
         }
 
-        IEnumerator Move()
+        IEnumerator move()
         {
-            
             Vector3 pointA, pointB, pointC = route_[0].Position;
             yield return LookAt(route_[1].Position);
             float t = Time.deltaTime * Speed;
@@ -96,8 +96,8 @@ namespace Champions.CharacterUtilities.Movements
                 transform.localRotation = Quaternion.LookRotation(d);
                 yield return null;
             }
-
-            map_.ClearMarkTilesInRange();
+            Moving = false;
+            TurnManagement.Instance.NextTurn();
         }
 
         public IEnumerator LookAt(Vector3 point)
