@@ -118,36 +118,29 @@ namespace Map
             {
                 var map = Map.Instance;
                 map.SelectedTile = this;
-
-                if (championsManager_.GetChampionToSpawn() != null)
+                if (Champion && Champion != championsManager_.SelectedChampion)
                 {
-                    SpawnChampion();
+                    Champion.Destroy();
+                    return;
+                }
+                    
+
+                if (championsManager_.SelectedChampion)
+                {
+                    if (map.TilesInRangeDictionary.ContainsKey(this.coordinate_))
+                    {
+                        if (!championsManager_.SelectedChampion.Moving)
+                        {
+                            Debug.Log("SetDestinationPoint");
+                            championsManager_.SelectedChampion.DestinationTile = this;
+                            championsManager_.SelectedChampion.GoToDestination();
+                            championsManager_.SelectedChampion.CurrentPossition = this;
+                        }
+                    }
                 }
                 else
                 {
-                    if (Champion)
-                    {
-                        Debug.Log("Champion selected");
-                        championsManager_.SelectedChampion = Champion;
-                    }
-                    else
-                    {
-                        if (championsManager_.SelectedChampion)
-                        {
-                            if (map.TilesInRangeDictionary.ContainsKey(this.coordinate_))
-                            {
-                                Debug.Log("SetDestinationPoint");
-                                championsManager_.SelectedChampion.DestinationTile = this;
-                                championsManager_.SelectedChampion.GoToDestination();
-                                championsManager_.SelectedChampion.CurrentPossition = this;
-                            }
-                            else
-                            {
-                                Debug.Log("Champion not selected");
-                            }
-                        }
-                        
-                    }
+                    Debug.Log("Champion not selected");
                 }
             }
         }
@@ -200,8 +193,8 @@ namespace Map
                     var newChampion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
                     
                     var champion = newChampion.GetComponent<Champion>();
+                    champion.GameObject = newChampion;
                     champion.CurrentPossition = this;
-                    championsManager_.SetChampionToSpawn(null);
                     championsManager_.SetChampionToSpawn(null);
 
                     return true;

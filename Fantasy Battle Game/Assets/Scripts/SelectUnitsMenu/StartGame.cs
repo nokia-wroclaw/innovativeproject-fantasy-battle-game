@@ -18,7 +18,6 @@ namespace SelectUnitsMenu
             {
                 Debug.LogError("Select 3 units");
             }
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
