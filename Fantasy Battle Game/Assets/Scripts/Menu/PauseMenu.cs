@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using BattleManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,11 @@ namespace Menu
                 {
                     Pause();
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                TurnManagement.Instance.NextTurn();
             }
         }
 
