@@ -23,10 +23,7 @@ namespace Map
         #region Public_Methods
         public Map()
         {
-            if (Instance == null)
-            {
-                instance_ = this;
-            }
+            instance_ = Instance == null ? this : null;
         }
 
         #region Properties

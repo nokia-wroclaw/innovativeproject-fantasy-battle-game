@@ -121,10 +121,7 @@ namespace BattleManagement
 
         public TurnManagement()
         {
-            if (Instance == null)
-            {
-                instance_ = this;
-            }
+            instance_ = Instance == null ? this : null;
         }
         
         public static TurnManagement Instance
