@@ -39,3 +39,15 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+
+###
+# Rider
+###
+Fantasy Battle Game/Assets/Plugins/
+Fantasy Battle Game/.idea/
+
+###
+# Visual Studio cache directory
+###
+/.vs/
+Fantasy Battle Game/.vs/
