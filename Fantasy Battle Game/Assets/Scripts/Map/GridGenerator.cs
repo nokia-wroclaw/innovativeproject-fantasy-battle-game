@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using BattleManagement;
 using Champions;
 using SelectUnitsMenu;
 using UnityEngine;
 using Random = System.Random;
+using Player;
 
 namespace Map
 {
@@ -27,29 +30,6 @@ namespace Map
             spawnChampions();
         }
 
-        private void spawnChampions()
-        {
-            var map = Map.Instance;
-            var championsManager = ChampionsManager.Instance;
-            var selectedCharacters = CharacterCreation.Instance.Models;
-            var pairs = Map.Instance.RandomPositions(selectedCharacters.Count, selectedCharacters.Count);
-
-            foreach (var gameObject in selectedCharacters)
-            {
-                gameObject.SetActive(true);
-                gameObject.transform.localScale *= 5;
-            }
-
-            for (int i = 0; i < selectedCharacters.Count * 2; i++)
-            {
-                championsManager.SetChampionToSpawn(selectedCharacters[i % selectedCharacters.Count]);
-                map.GetTile(pairs[i].Key).SpawnChampion();
-            }
-
-
-
-            GameObject.Find("UnitsContainer").SetActive(false);
-        }
         public void GenerateGrid()
         {
             ClearGrid();
@@ -64,7 +44,7 @@ namespace Map
             switch (SelectedMapShape)
             {
                 case MapShape.Hexagon:
-                    GenerateHexagonShape();
+                    generateHexagonShape();
                     break;
 
                 case MapShape.Rectangle:
@@ -111,6 +91,36 @@ namespace Map
 
         #region Private_Methods
 
+        private void spawnChampions()
+        {
+            var map = Map.Instance;
+            var championsManager = ChampionsManager.Instance;
+            var selectedCharacters = CharacterCreation.Instance.Models;
+            var pairs = Map.Instance.RandomPositions(selectedCharacters.Count, selectedCharacters.Count);
+            Player.Player firstPlayer = new Player.Player();
+            Player.Player secondPlayer = new Player.Player();
+            firstPlayer.Name = "First Player";
+            secondPlayer.Name = "Second Player";
+
+
+            foreach (var gameObject in selectedCharacters)
+            {
+                gameObject.SetActive(true);
+                gameObject.transform.localScale *= 5;
+            }
+
+            for (int i = 0; i < selectedCharacters.Count * 2; i++)
+            {
+                championsManager.SetChampionToSpawn(selectedCharacters[i % selectedCharacters.Count]);
+                map.GetTile(pairs[i].Key).SpawnChampion();
+                map.GetTile(pairs[i].Key).Champion.Owner = i < selectedCharacters.Count ? firstPlayer : secondPlayer;
+            }
+
+            GameObject.Find("UnitsContainer").SetActive(false);
+            TurnManagement.Instance.SetPlayers(firstPlayer, secondPlayer);
+            TurnManagement.Instance.StartBattle();
+        }
+
         private void GenerateTriangleShape()
         {
             throw new NotImplementedException();
@@ -126,7 +136,7 @@ namespace Map
             throw new NotImplementedException();
         }
 
-        private void GenerateHexagonShape()
+        private void generateHexagonShape()
         {
             Debug.Log("Generating hexagonal shaped grid...");
             var position = Vector3.zero;

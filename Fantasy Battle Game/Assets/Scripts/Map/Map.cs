@@ -23,10 +23,7 @@ namespace Map
         #region Public_Methods
         public Map()
         {
-            if (Instance == null)
-            {
-                instance_ = this;
-            }
+            instance_ = Instance == null ? this : null;
         }
 
         #region Properties
@@ -115,36 +112,16 @@ namespace Map
             ClearMarkTilesInRange();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
-            visited.Add(center.Coordinate, center);
-
             var queueTiles = new Queue<Tile>();
 
-            var neighbours = center.GetNeighbours();
-
-            foreach (var tile in neighbours)
-            {
-                if (tile.Available)
-                {
-                    if (center.Drag / 2 + tile.Drag / 2 <= range)
-                    {
-                        tilesInRange_.Add(tile.Coordinate, tile);
-                        tile.DistanceFromStart = center.Drag / 2 + tile.Drag / 2;
-                        queueTiles.Enqueue(tile);
-                    }
-                }
-                else
-                {
-                    if (tile.Champion && !tilesWithEnemies_.ContainsKey(tile.Coordinate))
-                    {
-                        tilesWithEnemies_.Add(tile.Coordinate, tile);
-                    }
-                }
-            }
+            visited.Add(center.Coordinate, center);
+            queueTiles.Enqueue(center);
+            center.DistanceFromStart = 0;
 
             while (queueTiles.Count != 0)
             {
                 var currentTile = queueTiles.Dequeue();
-                neighbours = currentTile.GetNeighbours();
+                var neighbours = currentTile.GetNeighbours();
                 foreach (var tile in neighbours)
                 {
                     if (tile.Available)
