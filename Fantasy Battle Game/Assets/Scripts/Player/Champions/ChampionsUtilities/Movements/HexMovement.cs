@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BattleManagement;
 
 namespace Champions.CharacterUtilities.Movements
@@ -42,7 +43,7 @@ namespace Champions.CharacterUtilities.Movements
             set
             {
                 destinationTile_ = Map.Map.Instance.SelectedTile;
-                CalculateRoute();
+                CalculateRoute(2);
             }
         }
 
@@ -127,23 +128,92 @@ namespace Champions.CharacterUtilities.Movements
             orientation_ = transform.localRotation.eulerAngles.y;
         }
 
-        protected void CalculateRoute()
+        protected void CalculateRoute(int kindOfAlgorithm)
         {
             route_.Clear();
-            Tile TempDestinationTile = currentTile;
-            route_.Add(TempDestinationTile);
-            while (TempDestinationTile != DestinationTile)
-            {
-                var list = SortList(TempDestinationTile, DestinationTile);
+                                
+            List<Tile> openList = new List<Tile>();
+            List<Tile> closedList = new List<Tile>();
+                        
+            Tile tempCurrentTile = currentTile;
 
-                var position = 0;
-                while (route_.Contains(list[position]))
-                {
-                    position++;
-                }
-                route_.Add(list[position]);
-                TempDestinationTile = list[position];
+            switch (kindOfAlgorithm)
+            {
+                case 1:
+                    tempCurrentTile.Cost = 0;
+                    tempCurrentTile.MovementCost = 0;
+                    tempCurrentTile.DistanceToTarget = Vector3.Distance(tempCurrentTile.Position, DestinationTile.Position);
+                        
+                    openList.Add(tempCurrentTile);
+            
+                    while (openList.Any())
+                    {
+                        Tile bestTile = tempCurrentTile;
+                        foreach (var elem in openList)
+                        {
+                            if (elem.Cost < bestTile.Cost) bestTile = elem;
+                        }
+                        openList.RemoveAt(openList.IndexOf(bestTile));
+            
+                        List<Tile> neighbours = map_.AvailableNeighbours(bestTile);
+            
+                        foreach (var elem in neighbours)
+                        {
+                            elem.Parent = bestTile;
+            
+                            if (elem == DestinationTile) break;
+            
+                            elem.MovementCost = bestTile.Drag / 2 + elem.Drag / 2;
+                            elem.DistanceToTarget = Vector3.Distance(elem.Position, DestinationTile.Position);
+            
+                            elem.Cost = elem.MovementCost + elem.DistanceToTarget;
+            
+                            if (openList.Contains(elem))
+                            {
+                                if (openList[openList.IndexOf(elem)].Cost < elem.Cost) ;
+                            }
+                            else if (closedList.Contains(elem))
+                            {
+                                if (closedList[closedList.IndexOf(elem)].Cost < elem.Cost) ;
+                                else openList.Add(elem);
+                            }
+                        }
+                            
+                        closedList.Add(bestTile);
+                    }
+            
+                    Tile destination = DestinationTile;
+            
+                    while (destination != currentTile)
+                    {
+                        route_.Add(destination);
+                        destination = destination.Parent;
+                    }
+                    route_.Add(currentTile);
+                    route_.Reverse();
+
+                    break;
+                    
+                    
+                case 2:
+                    route_.Add(tempCurrentTile);
+                    while (tempCurrentTile != DestinationTile)
+                    {
+                        var list = SortList(tempCurrentTile, DestinationTile);
+
+                        var position = 0;
+                        while (route_.Contains(list[position]))
+                        {
+                            position++;
+                        }
+                        route_.Add(list[position]);
+                        tempCurrentTile = list[position];
+                    }
+
+                    break;                
             }
+            
+            
             Debug.Log("Route calculated");
         }
 

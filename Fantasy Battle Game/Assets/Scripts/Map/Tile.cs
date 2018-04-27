@@ -16,6 +16,11 @@ namespace Map
     {
         public GameObject TileGameObject;
         public Champion Champion { set; get; }
+        
+        public Tile Parent { get; set; }
+        public double Cost { get; set; }
+        public double MovementCost { get; set; }
+        public double DistanceToTarget { get; set; }
 
         [SerializeField]
         private double distanceFromStart_ = 0;
@@ -34,6 +39,7 @@ namespace Map
         private GameObject projectorUnitInRange_;
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
+
 
         void Awake()
         {
