@@ -141,7 +141,7 @@ namespace Map
             Debug.Log("Generating hexagonal shaped grid...");
             var position = Vector3.zero;
             var mapSize = Mathf.Max(MapWidth, MapHeight);
-
+            int typeOfHex;
             for (var firstCoord = -mapSize; firstCoord <= mapSize; firstCoord++)
             {
                 var r1 = Mathf.Max(-mapSize, -firstCoord - mapSize);
@@ -161,7 +161,18 @@ namespace Map
                             break;
                     }
 
-                    int typeOfHex = rand_.Next(GridMetrics.Instance.Prefabs.Count);
+                    if(Math.Abs(firstCoord) > mapSize-2 || Math.Abs(secondCoord) > mapSize - 2)
+                    {
+                        do
+                        {
+                            typeOfHex = rand_.Next(GridMetrics.Instance.Prefabs.Count);
+                        } while (!GridMetrics.Instance.Prefabs[typeOfHex].GetComponent<Tile>().Available);
+                    }
+                    else
+                    {
+                        typeOfHex = rand_.Next(GridMetrics.Instance.Prefabs.Count);
+                    }
+                    
                     createHexGameObject(position, firstCoord, secondCoord, typeOfHex);
                 }
             }

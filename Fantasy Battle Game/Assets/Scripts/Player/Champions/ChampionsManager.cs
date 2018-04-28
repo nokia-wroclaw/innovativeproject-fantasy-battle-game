@@ -10,22 +10,29 @@ namespace Champions
         public List<GameObject> ChampionsPrefabs;
         private GameObject championToSpawn_;
         private Champion selectedChampion_;
+        private Champion selectedEnemyChampion_;
+        private BattleManagement.MouseManagement mouseManagement_;
 
         public Champion SelectedChampion
         {
             set
             {
                 selectedChampion_=value;
-                Map.Map.Instance.SelectedTile = null;
-                Map.Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, value.Range);
+                mouseManagement_.UpdateSelectedChampion(value);
             }
             get { return selectedChampion_; }
+        }
+
+        public Champion SelectedEnemyChampion
+        {
+            get { return selectedEnemyChampion_; }
+            set { selectedEnemyChampion_ = value; }
         }
 
         public ChampionsManager()
         {
             if (Instance == null) Instance = this;
-            
+            mouseManagement_ = BattleManagement.MouseManagement.Instance;
         }
 
         private void Start()

@@ -41,26 +41,34 @@ namespace Champions.CharacterUtilities.Movements
             get { return destinationTile_; }
             set
             {
-                destinationTile_ = Map.Map.Instance.SelectedTile;
+                destinationTile_ = value;
                 CalculateRoute();
             }
         }
 
         public void GoToDestination()
         {
+
             if (route_==null || route_.Count==0)
             {
                 return;
             }
-
             Moving = true;
-            StartCoroutine(move());
+            StartCoroutine(goToDestination());
         }
 
-        IEnumerator move()
+        IEnumerator goToDestination()
         {
+            yield return Move();
+            TurnManagement.Instance.NextTurn();
+        }
+
+
+        public IEnumerator Move()
+        {
+            //yield return new WaitUntil(() => !Moving);
             Vector3 pointA, pointB, pointC = route_[0].Position;
-            yield return LookAt(route_[1].Position);
+            yield return LookAtIEnumerator(route_[1].Position);
             float t = Time.deltaTime * Speed;
             Tile currentTravelLocation;
             for (int i = 1; i < route_.Count; i++)
@@ -97,10 +105,14 @@ namespace Champions.CharacterUtilities.Movements
                 yield return null;
             }
             Moving = false;
-            TurnManagement.Instance.NextTurn();
         }
 
-        public IEnumerator LookAt(Vector3 point)
+        public void LookAt(Vector3 point)
+        {
+            StartCoroutine(LookAtIEnumerator(point));
+        }
+
+        public IEnumerator LookAtIEnumerator(Vector3 point)
         {
             point.y = transform.localPosition.y;
             Quaternion fromRotation = transform.localRotation;

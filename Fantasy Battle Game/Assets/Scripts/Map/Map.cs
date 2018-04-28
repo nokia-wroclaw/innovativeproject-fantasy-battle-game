@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using BattleManagement;
+using Champions;
 using Map.Interfaces;
 
 namespace Map
@@ -18,12 +20,15 @@ namespace Map
         private Tile selectedTile_;
         private Dictionary<TileMetrics.HexCoordinate, Tile> tilesInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
         private Dictionary<TileMetrics.HexCoordinate, Tile> tiles_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
-        private Dictionary<TileMetrics.HexCoordinate, Tile> tilesWithEnemies_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+        private Dictionary<TileMetrics.HexCoordinate, Tile> tilesWithChampions_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+        private Dictionary<TileMetrics.HexCoordinate, Tile> tilesNextToEnemyInRange_ = new Dictionary<TileMetrics.HexCoordinate, Tile>();
+        private TurnManagement turnManagement_;
 
         #region Public_Methods
         public Map()
         {
             instance_ = Instance == null ? this : null;
+            turnManagement_ = TurnManagement.Instance;
         }
 
         #region Properties
@@ -50,7 +55,41 @@ namespace Map
             set { selectedTile_ = value; }
         }
 
+        public Dictionary<TileMetrics.HexCoordinate, Tile> TilesWithChampions
+        {
+            get { return tilesWithChampions_; }
+            set { tilesWithChampions_ = value; }
+        }
+
+        public Dictionary<TileMetrics.HexCoordinate, Tile> TilesNextToEnemyInRange
+        {
+            get { return tilesNextToEnemyInRange_; }
+            set { tilesNextToEnemyInRange_ = value; }
+        }
+
         #endregion
+
+        public void MarkTilesNextToEnemyInRange(Tile tileWithEnemy)
+        {
+            tilesNextToEnemyInRange_.Clear();
+            foreach (var tile in tileWithEnemy.GetNeighbours())
+            {
+                if (tilesInRange_.ContainsKey(tile.Coordinate))
+                {
+                    tilesNextToEnemyInRange_.Add(tile.Coordinate, tile);
+                }
+                else if(tile == ChampionsManager.Instance.SelectedChampion.CurrentPossition)
+                {
+                    tilesNextToEnemyInRange_.Add(tile.Coordinate, tile);
+                }
+            }
+            foreach (Tile tile in tilesNextToEnemyInRange_.Values)
+            {
+                Tile.AddProjector(tile);
+            }
+
+        }
+
 
         public List<KeyValuePair<TileMetrics.HexCoordinate, int>> RandomPositions(int amountofCreaturesFirstPlayer, int amountofCreaturesSecondPlayer)
         {
@@ -110,6 +149,8 @@ namespace Map
         public Dictionary<TileMetrics.HexCoordinate, Tile> TilesInRange(Tile center, double range)
         {
             ClearMarkTilesInRange();
+            TilesWithChampions.Clear();
+            tilesInRange_.Clear();
 
             var visited = new Dictionary<TileMetrics.HexCoordinate, bool>();
             var queueTiles = new Queue<Tile>();
@@ -146,17 +187,17 @@ namespace Map
                     }
                     else
                     {
-                        if (tile.Champion && !tilesWithEnemies_.ContainsKey(tile.Coordinate))
+                        if (tile.Champion && !TilesWithChampions.ContainsKey(tile.Coordinate) && tile.Champion.Owner == turnManagement_.CurrentPlayer)
                         {
 
-                            tilesWithEnemies_.Add(tile.Coordinate, tile);
+                            TilesWithChampions.Add(tile.Coordinate, tile);
                         }
                     }
                 }
             }
             tilesInRange_.Remove(center.Coordinate);
-            tilesWithEnemies_.Remove(center.Coordinate);
-            markTilesInRange();
+            TilesWithChampions.Remove(center.Coordinate);
+
             return tilesInRange_;
         }
 
@@ -180,35 +221,39 @@ namespace Map
             {
                 tiles.Value.DeleteChildsGO();
             }
-            foreach (var tiles in tilesWithEnemies_)
+            foreach (var tiles in TilesWithChampions)
             {
                 tiles.Value.DeleteChildsGO();
             }
-            tilesWithEnemies_.Clear();
-            tilesInRange_.Clear();
+            foreach (var tiles in TilesNextToEnemyInRange)
+            {
+                tiles.Value.DeleteChildsGO();
+            }
+        }
+
+        public void MarkUnitInRange(Player.Player currentPlayer)
+        {
+            foreach (Tile tile in TilesWithChampions.Values)
+            {
+                Tile.AddProjectorUnitInRange(tile);
+            }
+        }
+
+        public void MarkTilesInRange()
+        {
+            //markUnitsInRange();
+            foreach (Tile tile in TilesInRangeDictionary.Values)
+            {
+                Tile.AddProjector(tile);
+            }
         }
 
         #endregion
 
         #region Private_Methods
-        
-        private void markTilesInRange()
-        {
-            markUnitsInRange();
-            foreach (Tile tile in TilesInRangeDictionary.Values)
-            {
-                Tile.AddProjector(tile);
-                Tile.AddLabel(tile);
-            }
-        }
 
-        private void markUnitsInRange()
-        {
-            foreach (Tile tile in tilesWithEnemies_.Values)
-            {
-                Tile.AddProjectorUnitInRange(tile);
-            }
-        }
+
+
 
         #endregion
     }
