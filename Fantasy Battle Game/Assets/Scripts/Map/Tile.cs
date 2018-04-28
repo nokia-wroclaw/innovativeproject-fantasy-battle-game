@@ -34,10 +34,12 @@ namespace Map
         private GameObject projectorUnitInRange_;
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
+        private BattleManagement.MouseManagement mouseManagement_;
 
         void Awake()
         {
             championsManager_ = ChampionsManager.Instance;
+            mouseManagement_ = BattleManagement.MouseManagement.Instance;
         }
         
         public void DeleteChildsGO()
@@ -95,12 +97,20 @@ namespace Map
 
         #region Interaction_with_user
 
+        void OnMouseDrag()
+        {
+            //if (tile.Champion && turnManagement_.CurrentEnemyPlayer != tile.Champion.Owner)
+           // {
+            
+            // }
+
+        }
 
         void OnMouseEnter()
         {
-            var projector = Instantiate(GridMetrics.Instance.Projector);
+            var projector = Instantiate(GridMetrics.Instance.ProjectorCurrentTile);
             projector.transform.parent = TileGameObject.transform;
-            projector.transform.position = position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            projector.transform.position = position_ + projector.transform.position;
             projectorOnMouseGameObject_ = projector;
         }
         void OnMouseExit()
@@ -113,35 +123,17 @@ namespace Map
 
         private void OnMouseDown()
         {
-
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                var map = Map.Instance;
-                map.SelectedTile = this;
-                if (Champion && Champion != championsManager_.SelectedChampion)
-                {
-                    Champion.Destroy();
-                    return;
-                }
-                    
+                mouseManagement_.MouseDown(this);
+            }
+        }
 
-                if (championsManager_.SelectedChampion)
-                {
-                    if (map.TilesInRangeDictionary.ContainsKey(this.coordinate_))
-                    {
-                        if (!championsManager_.SelectedChampion.Moving)
-                        {
-                            Debug.Log("SetDestinationPoint");
-                            championsManager_.SelectedChampion.DestinationTile = this;
-                            championsManager_.SelectedChampion.GoToDestination();
-                            championsManager_.SelectedChampion.CurrentPossition = this;
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.Log("Champion not selected");
-                }
+        private void OnMouseUp()
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                mouseManagement_.MouseUp(this);
             }
         }
 
@@ -168,17 +160,17 @@ namespace Map
         /// <param name="tile">The tile.</param>
         public static void AddProjector(Tile tile)
         {
-            var projector = Instantiate(GridMetrics.Instance.Projector);
+            var projector = Instantiate(GridMetrics.Instance.ProjectorTileInRange);
             projector.transform.parent = tile.TileGameObject.transform;
-            projector.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            projector.transform.position = tile.position_ + projector.transform.position;
             tile.projectorGameObject_ = projector;
         }
 
         public static void AddProjectorUnitInRange(Tile tile)
         {
-            var projector = Instantiate(GridMetrics.Instance.ProjectorUnitsInRange);
+            var projector = Instantiate(GridMetrics.Instance.ProjectorEnemyInRange);
             projector.transform.parent = tile.TileGameObject.transform;
-            projector.transform.position = tile.position_ + new Vector3(0, GridMetrics.HexRadius * 2, 0);
+            projector.transform.position = tile.position_ + projector.transform.position;
             tile.projectorUnitInRange_= projector;
         }
 
@@ -191,7 +183,7 @@ namespace Map
                 {
                     GameObject championToSpawn = championsManager_.GetChampionToSpawn();
                     var newChampion = (GameObject)Instantiate(championToSpawn, transform.position, transform.rotation);
-                    
+                    //newChampion.transform.parent = TileGameObject.transform;
                     var champion = newChampion.GetComponent<Champion>();
                     champion.GameObject = newChampion;
                     champion.CurrentPossition = this;

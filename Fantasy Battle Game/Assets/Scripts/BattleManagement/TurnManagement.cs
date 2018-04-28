@@ -13,14 +13,15 @@ namespace BattleManagement
     {
         private static TurnManagement instance_;
 
+        public Player.Player CurrentPlayer { get; private set; }
         private Player.Player firstPlayer_;
         private Player.Player secondPlayer_;
-        private Player.Player winnerPlayer_;
         private List<Champion> firstPlayerTurnList_;
         private List<Champion> secondPlayerTurnList_;
         private ChampionsManager championsManager_;
         private bool lastMoveFirstPlayer_ = false;
         private bool endGame_ = false;
+        public TurnPhase turnPhase_;
         
         void Start()
         {
@@ -52,6 +53,7 @@ namespace BattleManagement
 
             championsManager_ = ChampionsManager.Instance;
             firstPlayerTurnList_ = new List<Champion>();
+            CurrentPlayer = secondPlayer_;
             secondPlayerTurnList_ = new List<Champion>();
         }
 
@@ -62,16 +64,21 @@ namespace BattleManagement
                 Winner();
                 return false;
             }
-            if (lastMoveFirstPlayer_)
+            if (CurrentPlayer == firstPlayer_)
             {
                 lastMoveFirstPlayer_ = false;
                 endGame_ = secondPlayerTurn();
+                Debug.Log(CurrentPlayer.Name);
             }
             else
             {
                 lastMoveFirstPlayer_ = true;
                 endGame_ = firstPlayerTurn();
+                Debug.Log(CurrentPlayer.Name);
             }
+
+            turnPhase_ = TurnPhase.FirstPhase;
+            
             return !endGame_;
         }
 
@@ -94,6 +101,8 @@ namespace BattleManagement
 
             Debug.Log("first player turn");
             championsManager_.SelectedChampion = selectedChampion;
+
+            CurrentPlayer = firstPlayer_;
             return true;
         }
 
@@ -116,6 +125,8 @@ namespace BattleManagement
 
             Debug.Log("second player turn");
             championsManager_.SelectedChampion = selectedChampion;
+
+            CurrentPlayer = secondPlayer_;
             return true;
         }
 
@@ -130,5 +141,19 @@ namespace BattleManagement
             set { instance_ = value; }
         }
 
+        public TurnPhase Phase
+        {
+            get { return turnPhase_; }
+            set { turnPhase_ = value; }
+        }
+    }
+
+    enum TurnPhase
+    {
+        FirstPhase,
+        AttackDetailsPhase,
+        MovingPhase,
+        AttackPhase,
+        LastPhase,
     }
 }

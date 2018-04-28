@@ -26,8 +26,11 @@ namespace Map
         public Material ProjectorMaterial; // used to show range of move
         public List<GameObject> Prefabs = new List<GameObject>();
         public GameObject Label;
-        public GameObject Projector;
-        public GameObject ProjectorUnitsInRange;
+        public GameObject ProjectorCurrentTile;
+        public GameObject ProjectorTileInRange;
+        public GameObject ProjectorEnemyInRange;
+        public GameObject DamagePopup; 
+        
 
         public static TileMetrics.HexCoordinate[] Directions =
         {
