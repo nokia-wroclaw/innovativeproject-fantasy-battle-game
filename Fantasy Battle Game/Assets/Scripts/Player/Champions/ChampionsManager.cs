@@ -12,6 +12,7 @@ namespace Champions
         private Champion selectedChampion_;
         private Champion selectedEnemyChampion_;
         private BattleManagement.MouseManagement mouseManagement_;
+        private static GameObject projectorSelectedChampion_;
 
         public Champion SelectedChampion
         {
@@ -19,6 +20,10 @@ namespace Champions
             {
                 selectedChampion_=value;
                 mouseManagement_.UpdateSelectedChampion(value);
+                if (projectorSelectedChampion_) Destroy(projectorSelectedChampion_);
+                projectorSelectedChampion_ = Instantiate(GridMetrics.Instance.ProjectorSelectedChampion);
+                projectorSelectedChampion_.transform.parent = selectedChampion_.GameObject.transform;
+                projectorSelectedChampion_.transform.position = GridMetrics.Instance.ProjectorSelectedChampion.transform.position + selectedChampion_.GameObject.transform.position;
             }
             get { return selectedChampion_; }
         }
@@ -28,16 +33,14 @@ namespace Champions
             get { return selectedEnemyChampion_; }
             set { selectedEnemyChampion_ = value; }
         }
-
+        
         public ChampionsManager()
         {
-            if (Instance == null) Instance = this;
-            mouseManagement_ = BattleManagement.MouseManagement.Instance;
-        }
-
-        private void Start()
-        {
-            if (Instance == null) Instance = this;
+            if (Instance == null)
+            {
+                Instance = this;
+                mouseManagement_ = BattleManagement.MouseManagement.Instance;
+            }
         }
 
         public GameObject GetChampionToSpawn()
