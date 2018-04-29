@@ -29,6 +29,7 @@ namespace Map
         public GameObject ProjectorCurrentTile;
         public GameObject ProjectorTileInRange;
         public GameObject ProjectorEnemyInRange;
+        public GameObject ProjectorSelectedChampion;
         public GameObject DamagePopup; 
         
 

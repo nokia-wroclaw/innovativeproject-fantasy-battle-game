@@ -2924,6 +2924,8 @@ MonoBehaviour:
     type: 2}
   ProjectorEnemyInRange: {fileID: 1762813246582716, guid: c47a81820ac5f864a80fb9fc7c91bfdf,
     type: 2}
+  ProjectorSelectedChampion: {fileID: 1762813246582716, guid: b5ceaf2f9fe48614988b607df47832c3,
+    type: 2}
   DamagePopup: {fileID: 1017967393347768, guid: aa1f4c30b88289d43afcdf27b337781b,
     type: 2}
 --- !u!4 &660150433
