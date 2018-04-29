@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4572269302871214}
   - component: {fileID: 119055966670276402}
   m_Layer: 0
-  m_Name: ProjectorSelectedEnemy
+  m_Name: ProjectorSecondTeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1762813246582716}
   m_LocalRotation: {x: -0.61237246, y: -0.35355332, z: 0.35355335, w: -0.6123725}
-  m_LocalPosition: {x: 0, y: 40, z: 0}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
   m_LocalScale: {x: 0.20000014, y: 0.20000018, z: 0.20000017}
   m_Children: []
   m_Father: {fileID: 0}
@@ -54,7 +54,7 @@ Projector:
   m_AspectRatio: 1
   m_Orthographic: 0
   m_OrthographicSize: 9
-  m_Material: {fileID: 2100000, guid: 995611865b5e75044884bcc0bdadee7b, type: 2}
+  m_Material: {fileID: 2100000, guid: 29b5e010632f36749a94368e3e7e6eb0, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 256

@@ -30,8 +30,9 @@ namespace Map
         public GameObject ProjectorTileInRange;
         public GameObject ProjectorEnemyInRange;
         public GameObject ProjectorSelectedChampion;
+        public GameObject ProjectorFirstTeam;
+        public GameObject ProjectorSecondTeam;
         public GameObject DamagePopup; 
-        
 
         public static TileMetrics.HexCoordinate[] Directions =
         {
