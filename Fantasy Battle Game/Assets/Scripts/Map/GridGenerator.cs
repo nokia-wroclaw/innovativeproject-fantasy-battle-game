@@ -118,6 +118,15 @@ namespace Map
 
             GameObject.Find("UnitsContainer").SetActive(false);
             TurnManagement.Instance.SetPlayers(firstPlayer, secondPlayer);
+            foreach (var champion in firstPlayer.Champions)
+            {
+                champion.AddProjector(GridMetrics.Instance.ProjectorFirstTeam);
+            }
+            foreach (var champion in secondPlayer.Champions)
+            {
+                champion.AddProjector(GridMetrics.Instance.ProjectorSecondTeam);
+            }
+
             TurnManagement.Instance.StartBattle();
         }
 

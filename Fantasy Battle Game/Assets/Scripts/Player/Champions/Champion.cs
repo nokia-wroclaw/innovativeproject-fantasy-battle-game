@@ -100,6 +100,12 @@ namespace Champions
             CurrentPossition.Champion = null;
             CurrentPossition.Available = true;
         }
-        
+
+        public void AddProjector(GameObject projector)
+        {
+            var newProjector = Instantiate(projector);
+            newProjector.transform.parent = transform;
+            newProjector.transform.position = projector.transform.position + transform.position;
+        }
     }
 }
