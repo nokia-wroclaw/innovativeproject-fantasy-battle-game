@@ -2883,6 +2883,8 @@ GameObject:
   - component: {fileID: 660150433}
   - component: {fileID: 660150432}
   - component: {fileID: 660150434}
+  - component: {fileID: 660150435}
+  - component: {fileID: 660150436}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -2904,7 +2906,7 @@ MonoBehaviour:
   DrawOutlines: 1
   Seed: 0
   SelectedMapShape: 1
-  MapWidth: 5
+  MapWidth: 7
   MapHeight: 0
   SelectedHexOrientation: 1
   LineMaterial: {fileID: 2100000, guid: a2bb29413886117438d548505a01b202, type: 2}
@@ -2916,8 +2918,19 @@ MonoBehaviour:
   - {fileID: 1204597182660240, guid: ce04bf2f735ea2144bb0b942f11fae8f, type: 2}
   - {fileID: 1038847452543722, guid: 08e3bde9f99ad8d46bc8a1467d7c7ec2, type: 2}
   Label: {fileID: 1777406515334076, guid: 889b05042a13f9e46a3f71d076d12204, type: 2}
-  Projector: {fileID: 1725340035275564, guid: 3333dfdd380a06f48a39d878f923d73c, type: 2}
-  ProjectorUnitsInRange: {fileID: 1208287457945774, guid: b7c7b865e3a5cc84cbb37238d203a691,
+  ProjectorCurrentTile: {fileID: 1762813246582716, guid: 9d6b935b3d42ead4e9aa23cc46412df8,
+    type: 2}
+  ProjectorTileInRange: {fileID: 1762813246582716, guid: fb57bfeadff7cdb48829e8840a92d1be,
+    type: 2}
+  ProjectorEnemyInRange: {fileID: 1762813246582716, guid: c47a81820ac5f864a80fb9fc7c91bfdf,
+    type: 2}
+  ProjectorSelectedChampion: {fileID: 1762813246582716, guid: b5ceaf2f9fe48614988b607df47832c3,
+    type: 2}
+  ProjectorFirstTeam: {fileID: 1762813246582716, guid: bb5c3e34f252f6948861d336efa89da1,
+    type: 2}
+  ProjectorSecondTeam: {fileID: 1762813246582716, guid: 04b72ed53c5b60d40b026524b385bc01,
+    type: 2}
+  DamagePopup: {fileID: 1017967393347768, guid: aa1f4c30b88289d43afcdf27b337781b,
     type: 2}
 --- !u!4 &660150433
 Transform:
@@ -2943,6 +2956,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f42b82720dac3448e5a80dc68e0bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnPhase_: 0
+--- !u!114 &660150435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 660150431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d49def66492a8a458df859a602ce5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &660150436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 660150431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d355026f9139c9946947ed20de970296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 2800000, guid: ca2b4eb210a3ffa40ab36d5ae6f6edf8, type: 3}
+  cursorMode: 1
+  hotSpot: {x: 0, y: 0}
 --- !u!1 &662949850
 GameObject:
   m_ObjectHideFlags: 0

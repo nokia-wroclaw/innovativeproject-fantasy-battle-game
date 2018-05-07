@@ -10,27 +10,37 @@ namespace Champions
         public List<GameObject> ChampionsPrefabs;
         private GameObject championToSpawn_;
         private Champion selectedChampion_;
+        private Champion selectedEnemyChampion_;
+        private BattleManagement.MouseManagement mouseManagement_;
+        private static GameObject projectorSelectedChampion_;
 
         public Champion SelectedChampion
         {
             set
             {
                 selectedChampion_=value;
-                Map.Map.Instance.SelectedTile = null;
-                Map.Map.Instance.TilesInRange(selectedChampion_.CurrentPossition, value.Range);
+                mouseManagement_.UpdateSelectedChampion(value);
+                if (projectorSelectedChampion_) Destroy(projectorSelectedChampion_);
+                projectorSelectedChampion_ = Instantiate(GridMetrics.Instance.ProjectorSelectedChampion);
+                projectorSelectedChampion_.transform.parent = selectedChampion_.GameObject.transform;
+                projectorSelectedChampion_.transform.position = GridMetrics.Instance.ProjectorSelectedChampion.transform.position + selectedChampion_.GameObject.transform.position;
             }
             get { return selectedChampion_; }
         }
 
+        public Champion SelectedEnemyChampion
+        {
+            get { return selectedEnemyChampion_; }
+            set { selectedEnemyChampion_ = value; }
+        }
+        
         public ChampionsManager()
         {
-            if (Instance == null) Instance = this;
-            
-        }
-
-        private void Start()
-        {
-            if (Instance == null) Instance = this;
+            if (Instance == null)
+            {
+                Instance = this;
+                mouseManagement_ = BattleManagement.MouseManagement.Instance;
+            }
         }
 
         public GameObject GetChampionToSpawn()

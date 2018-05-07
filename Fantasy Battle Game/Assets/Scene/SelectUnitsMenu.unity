@@ -594,10 +594,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12b4ae438de6a24ea51c070ffff3e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 100
-  Speed: 1
-  Damage: 0
-  Range: 10
+  RotationSpeed: 250
+  Speed: 4
+  Moving: 0
+  MaxHp: 50
+  CurrentHp: 0
+  Damage: 10
+  Range: 4
 --- !u!114 &191821402 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114509072551805932, guid: 04f7eb3a3214eb24da284fba8e2e1b7f,
@@ -2659,9 +2662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12b4ae438de6a24ea51c070ffff3e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 150
-  Speed: 1
-  Damage: 0
+  RotationSpeed: 250
+  Speed: 4
+  Moving: 0
+  MaxHp: 20
+  CurrentHp: 0
+  Damage: 5
   Range: 5
 --- !u!224 &919922072 stripped
 RectTransform:
@@ -3097,8 +3103,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RotationSpeed: 250
   Speed: 5
-  Damage: 0
-  Range: 20
+  Moving: 0
+  MaxHp: 10
+  CurrentHp: 0
+  Damage: 3
+  Range: 10
 --- !u!4 &1110237678 stripped
 Transform:
   m_PrefabParentObject: {fileID: 493048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
@@ -5292,9 +5301,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12b4ae438de6a24ea51c070ffff3e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 140
-  Speed: 1.2
-  Damage: 0
+  RotationSpeed: 250
+  Speed: 4
+  Moving: 0
+  MaxHp: 20
+  CurrentHp: 0
+  Damage: 7
   Range: 7
 --- !u!1 &1814552602
 GameObject:
@@ -6384,10 +6396,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12b4ae438de6a24ea51c070ffff3e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationSpeed: 170
-  Speed: 2
-  Damage: 0
-  Range: 15
+  RotationSpeed: 250
+  Speed: 4
+  Moving: 0
+  MaxHp: 25
+  CurrentHp: 0
+  Damage: 6
+  Range: 8
 --- !u!1 &2119390020
 GameObject:
   m_ObjectHideFlags: 0

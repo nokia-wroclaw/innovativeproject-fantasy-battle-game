@@ -15,6 +15,6 @@ namespace Champions.ChampionsUtilities.Interfaces
 
         void GoToDestination();
         //IEnumerator Move();
-        //IEnumerator LookAt(Vector3 point);
+        //IEnumerator LookAtIEnumerator(Vector3 point);
     }
 }
