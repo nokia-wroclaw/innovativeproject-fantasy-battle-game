@@ -6,13 +6,24 @@ using Champions.CharacterUtilities.Movements;
 using UnityEngine;
 using Player;
 using UnityEngine.EventSystems;
+using System;
 
 namespace Champions
 {
-    public class Champion : HexMovement
+    public class Champion : HexMovement, IDescription
     {
         public GameObject GameObject { get; set; }
         private Player.Player owner_;
+
+        public String GetName(){return "My name is Jeff.";}
+        public String GetBrief(){
+            return 
+                "\nMax Health: " + MaxHp.ToString() +
+                "\nCurrent Health: " + CurrentHp.ToString() +
+                "\nDamage: " + Damage.ToString() +
+                "\nRange: " + Range.ToString();
+            }
+        public String GetLore(){return "Lorem ipsum";}
 
         //stats
         public int MaxHp;

@@ -126,6 +126,11 @@ namespace Map
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 mouseManagement_.MouseDown(this);
+                if (Champion!=null){
+                    GameObject.Find("Description").GetComponent<DSCController>()
+                        .UpdateStatus(Champion);
+                }
+
             }
         }
 
