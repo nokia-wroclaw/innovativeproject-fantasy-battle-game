@@ -13,12 +13,15 @@ public class DSCController : MonoBehaviour {
 		foreach (Transform child in transform)
 		{
 			var obj = child.gameObject.GetComponent<Text>();
-			if(obj.name == "DSC_Name")
+			if(obj.name == "DSC_Name"){
 				Name = obj;
-			else if(obj.name == "DSC_Brief")
+			}
+			else if(obj.name == "DSC_Brief"){
 				Brief = obj;
-			else if(obj.name == "DSC_Lore")
+			}
+			else if(obj.name == "DSC_Lore"){
 				Lore = obj;
+			}
 
 			obj.text="";
 		}
