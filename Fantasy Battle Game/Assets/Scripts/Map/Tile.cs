@@ -35,6 +35,7 @@ namespace Map
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
         private BattleManagement.MouseManagement mouseManagement_;
+        private DSCController dscController_;
 
         void Awake()
         {
@@ -121,17 +122,20 @@ namespace Map
             }
         }
 
+        private void OnMouseOver(){
+            if (EventSystem.current.IsPointerOverGameObject() || dscController_ == null){
+                dscController_ = GameObject.Find("Description").GetComponent<DSCController>();
+                return;
+            }
+            if(Champion == null) Debug.Log("Champion is a null");
+            dscController_.UpdateStatus(Champion);
+        }
+
         private void OnMouseDown()
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                mouseManagement_.MouseDown(this);
-                if (Champion!=null){
-                    GameObject.Find("Description").GetComponent<DSCController>()
-                        .UpdateStatus(Champion);
-                }
-
-            }
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            
+            mouseManagement_.MouseDown(this);
         }
 
         private void OnMouseUp()

@@ -70,7 +70,7 @@ namespace Champions
 
             var x = defenderChampion.GameObject.GetComponent<DamagePopup>();
 
-            Debug.Log(defenderChampion.CurrentHp+"/"+MaxHp);
+            Debug.Log(defenderChampion.CurrentHp.ToString() +"/"+MaxHp.ToString());
             yield return new WaitForSeconds(2);
             TurnManagement.Instance.NextTurn();
         }
