@@ -22,7 +22,8 @@ namespace BattleManagement
         private bool lastMoveFirstPlayer_ = false;
         private bool endGame_ = false;
         public TurnPhase turnPhase_;
-        
+        private int counter_;
+
         void Start()
         {
             NextTurn();
@@ -57,12 +58,13 @@ namespace BattleManagement
             secondPlayerTurnList_ = new List<Champion>();
         }
 
-        public bool NextTurn()
+        public void NextTurn()
         {
+            counter_++;
             if (firstPlayer_.Champions.Count == 0 || secondPlayer_.Champions.Count == 0)
             {
                 Winner();
-                return false;
+                return;
             }
             if (CurrentPlayer == firstPlayer_)
             {
@@ -79,7 +81,7 @@ namespace BattleManagement
 
             turnPhase_ = TurnPhase.FirstPhase;
             
-            return !endGame_;
+            return;
         }
 
         private bool firstPlayerTurn()
