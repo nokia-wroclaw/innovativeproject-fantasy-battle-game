@@ -43,7 +43,7 @@ namespace Champions.CharacterUtilities.Movements
             set
             {
                 destinationTile_ = value;
-                CalculateRoute();
+                CalculateRoute(2);
             }
         }
 
