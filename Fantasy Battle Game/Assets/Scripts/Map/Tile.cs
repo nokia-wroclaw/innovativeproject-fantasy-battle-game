@@ -113,6 +113,13 @@ namespace Map
             projector.transform.parent = TileGameObject.transform;
             projector.transform.position = position_ + projector.transform.position;
             projectorOnMouseGameObject_ = projector;
+            
+            if (EventSystem.current.IsPointerOverGameObject() || dscController_ == null){
+                dscController_ = GameObject.Find("Description").GetComponent<DSCController>();
+                return;
+            }
+            if(Champion == null) Debug.Log("Champion is a null");
+            dscController_.UpdateStatus(Champion);
         }
         void OnMouseExit()
         {
@@ -120,15 +127,6 @@ namespace Map
             {
                 Destroy(projectorOnMouseGameObject_);
             }
-        }
-
-        private void OnMouseOver(){
-            if (EventSystem.current.IsPointerOverGameObject() || dscController_ == null){
-                dscController_ = GameObject.Find("Description").GetComponent<DSCController>();
-                return;
-            }
-            if(Champion == null) Debug.Log("Champion is a null");
-            dscController_.UpdateStatus(Champion);
         }
 
         private void OnMouseDown()

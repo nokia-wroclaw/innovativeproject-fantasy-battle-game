@@ -28,7 +28,9 @@ public class DSCController : MonoBehaviour{
             setStatus(description.GetName(),description.GetBrief(),description.GetLore());
         }
         else{
-            setStatus();
+            if (Name!=null && Brief!=null && Lore!=null){
+                setStatus();
+            }
         }
     }
 
