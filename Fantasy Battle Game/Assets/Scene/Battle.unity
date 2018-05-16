@@ -3324,9 +3324,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.834}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.597}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0.753}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.491}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.322}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -5122,8 +5122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicClips:
-  - {fileID: 8300000, guid: d63f4aa699d97f84c9e93c008b1bed51, type: 3}
-  - {fileID: 8300000, guid: 9f9730cfc9e02194798f2aabc6cdbe24, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!82 &1157530422
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5132,8 +5132,9 @@ AudioSource:
   m_GameObject: {fileID: 1157530420}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: f79d6b07da405c94393f06898edbd00d,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 37e9bd4ad1eb8b14687a9c7f7e803c30, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

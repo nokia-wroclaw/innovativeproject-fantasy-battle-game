@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Champions;
 using UnityEngine;
-using System.Threading;
 
 namespace BattleManagement
 {
@@ -22,7 +17,6 @@ namespace BattleManagement
         private bool lastMoveFirstPlayer_ = false;
         private bool endGame_ = false;
         public TurnPhase turnPhase_;
-        private int counter_;
 
         void Start()
         {
@@ -60,7 +54,6 @@ namespace BattleManagement
 
         public void NextTurn()
         {
-            counter_++;
             if (firstPlayer_.Champions.Count == 0 || secondPlayer_.Champions.Count == 0)
             {
                 Winner();
