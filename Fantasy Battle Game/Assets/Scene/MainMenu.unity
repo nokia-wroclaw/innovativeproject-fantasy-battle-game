@@ -1488,8 +1488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e71cf4a65e83dae4aa294134b20f3654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicClips:
-  - {fileID: 8300000, guid: e3b2e50240df0494ea01eee76d478bea, type: 3}
 --- !u!82 &597065531
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1498,12 +1496,13 @@ AudioSource:
   m_GameObject: {fileID: 597065529}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: f79d6b07da405c94393f06898edbd00d,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 157b3a114d5f75f40b222c576806ffe7, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3170,7 +3169,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1920 x 1080
+  m_Text: 
 --- !u!222 &1371319876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3732,9 +3731,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: 1920 x 1080
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
