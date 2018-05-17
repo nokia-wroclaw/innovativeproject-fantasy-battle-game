@@ -29,11 +29,10 @@ namespace Menu
                 {
                     currentResolutionIndex = i;
                 }
-
-                resolutionDropDown.AddOptions(options);
-                resolutionDropDown.value = currentResolutionIndex;
-                resolutionDropDown.RefreshShownValue();
             }
+            resolutionDropDown.AddOptions(options);
+            resolutionDropDown.value = currentResolutionIndex;
+            resolutionDropDown.RefreshShownValue();
         }
 
         public void SetResolution(int resolutionIndex)
