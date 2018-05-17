@@ -67,6 +67,13 @@ namespace Map
             set { tilesNextToEnemyInRange_ = value; }
         }
 
+        public void ClearCosts()
+        {
+            foreach (var tile in tiles_)
+            {
+                
+            }
+        }
         #endregion
 
         public void MarkTilesNextToEnemyInRange(Tile tileWithEnemy)
