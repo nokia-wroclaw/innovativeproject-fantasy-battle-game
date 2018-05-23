@@ -9783,11 +9783,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChampionsPrefabs:
-  - {fileID: 143816, guid: 2e6391b851bd6104aa35c25d824e40b1, type: 2}
-  - {fileID: 101568, guid: 59c100dd669d88f46b60555886d4dae7, type: 2}
-  - {fileID: 1130849558671448, guid: 9afbc4b2ad407894c9280b5486d6516f, type: 2}
-  - {fileID: 1000013586557078, guid: 3c9c8a8bf50e6b5439ab9db67bc82586, type: 2}
-  - {fileID: 180470, guid: f4864ffb159f30048a3bdafeae646afb, type: 2}
+  - {fileID: 193048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
+  - {fileID: 193048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
+  - {fileID: 193048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
+  - {fileID: 193048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
+  - {fileID: 193048, guid: f6b560e1a1c6ae14c9a77e4cff107937, type: 2}
 --- !u!4 &2015306275
 Transform:
   m_ObjectHideFlags: 0

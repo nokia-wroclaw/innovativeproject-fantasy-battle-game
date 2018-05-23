@@ -92,7 +92,6 @@ public class Move : MonoBehaviour {
 			{  	
 				add = 5*AddWalkSpeed;
 				speed = Time.deltaTime*add;
-				transform.Translate( 0,0,speed );
 			}
 		}
 	}
