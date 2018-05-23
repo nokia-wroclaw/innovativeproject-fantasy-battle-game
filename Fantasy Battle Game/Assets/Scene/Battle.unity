@@ -8160,9 +8160,9 @@ MonoBehaviour:
   keyboardMovementSpeed: 24
   screenEdgeMovementSpeed: 6
   followingSpeed: 6
-  rotationSped: 10
-  panningSpeed: 10
-  mouseRotationSpeed: 10
+  rotationSped: 150
+  panningSpeed: 150
+  mouseRotationSpeed: 150
   autoHeight: 0
   groundMask:
     serializedVersion: 2
