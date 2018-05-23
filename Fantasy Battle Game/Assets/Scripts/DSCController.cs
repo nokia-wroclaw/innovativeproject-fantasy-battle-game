@@ -16,9 +16,11 @@ public class DSCController : MonoBehaviour{
             if (obj.name == "DSC_Name") Name = obj;
             else if (obj.name == "DSC_Brief") Brief = obj;
             else if (obj.name == "DSC_Lore") Lore = obj;
-
-            obj.text = "";
         }
+        Brief.transform.SetAsLastSibling();
+        Name.transform.SetAsLastSibling();
+        Lore.transform.SetAsLastSibling();
+
     }
 
     
