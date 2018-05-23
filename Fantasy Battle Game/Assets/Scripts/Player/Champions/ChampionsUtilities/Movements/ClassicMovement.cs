@@ -1,7 +1,7 @@
 ﻿using Map;
 using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
-
+using BattleManagement;
 namespace CharacterUtilities.Movements
 {
     public class ClassicMovement:MonoBehaviour, IMovement
@@ -13,10 +13,11 @@ namespace CharacterUtilities.Movements
         private Vector3 lookAtTarget_;
         private Quaternion playerRotation_;
         private bool moving_ = false;
+        private AnimationController animationController_;
 
-        private void Start()
+        private void Awake()
         {
-            
+            animationController_ = AnimationController.Instance;
         }
 
         void Update()
