@@ -13,18 +13,26 @@ namespace Champions
     {
         public GameObject GameObject { get; set; }
         private Player.Player owner_;
-
+        private bool hasAniComp = false;
         //stats
         public int MaxHp;
         public int CurrentHp;
         public int Damage;
         public int Range = 10;
+        private AnimationController animationController_;
+        private ChampionsManager championsManager_;
 
         void Awake()
         {
             CurrentHp = MaxHp;
+            if (null != GetComponent<Animation>())
+            {
+                hasAniComp = true;
+            }
+            animationController_ = AnimationController.Instance;
+            championsManager_ = ChampionsManager.Instance;
         }
-
+        
         public void AddDamagePopup(int damage)
         {
             var go = Instantiate(GridMetrics.Instance.DamagePopup, transform.position, Quaternion.identity);
@@ -33,12 +41,15 @@ namespace Champions
         }
 
         public void PhysicalAttack(Champion defenderChampion, Tile destinationTile)
-        {
+        {   
             TurnManagement.Instance.turnPhase_ = TurnPhase.MovingPhase;
             DestinationTile = destinationTile;
+        
             StartCoroutine(physicalAttack(defenderChampion, destinationTile));
             CurrentPossition = destinationTile;
+            
             defenderChampion.CurrentHp -= Damage;
+
         }
 
         IEnumerator physicalAttack(Champion defenderChampion, Tile destinationTile)
@@ -52,13 +63,17 @@ namespace Champions
        
             defenderChampion.AddDamagePopup(Damage);
 
-            if (defenderChampion.CurrentHp<=0)
+            if (defenderChampion.CurrentHp <= 0)
             {
+                animationController_.DeadAnimation(defenderChampion);
                 defenderChampion.Destroy();
             }
+            else
+                animationController_.DamageAnimation(defenderChampion);
 
-            var x = defenderChampion.GameObject.GetComponent<DamagePopup>();
+            animationController_.AttackAnimation(this);
 
+            
             Debug.Log(defenderChampion.CurrentHp+"/"+MaxHp);
             yield return new WaitForSeconds(2);
             TurnManagement.Instance.NextTurn();
@@ -90,15 +105,23 @@ namespace Champions
                 value.Champions.Add(this);
             }
         }
-
+        
         public void Destroy()
         {
+            if (championsManager_.SelectedChampion != null)
+                animationController_.DeadAnimation(championsManager_.SelectedChampion);
             Debug.Log("destroy champion");
             owner_.Champions.Remove(this);
             CurrentPossition.DeleteChildsGO();
-            Destroy(GameObject);
             CurrentPossition.Champion = null;
             CurrentPossition.Available = true;
+            StartCoroutine(deleteGO());
+        }
+
+        private IEnumerator deleteGO()
+        {
+            yield return new WaitForSeconds(2);
+            Destroy(GameObject);
         }
 
         public void AddProjector(GameObject projector)

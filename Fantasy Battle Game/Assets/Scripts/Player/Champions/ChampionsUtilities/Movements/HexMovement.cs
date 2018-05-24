@@ -18,14 +18,19 @@ namespace Champions.CharacterUtilities.Movements
         public bool Moving = false;
 
         protected Tile currentTile { set; get; }
-
+        
         private float orientation_;
         private Tile destinationTile_;
         private List<Tile> route_ = new List<Tile>();
         private Map.Map map_ = Map.Map.Instance;
-        private bool move_;
-         
+        private AnimationController animationController_;
+        private ChampionsManager championsManager_;
 
+        public void Start()
+        {
+            animationController_ = AnimationController.Instance;
+            championsManager_ = ChampionsManager.Instance;
+        }
         public float Orientation
         {
             get { return orientation_; }
@@ -48,7 +53,9 @@ namespace Champions.CharacterUtilities.Movements
 
         public void GoToDestination()
         {
-
+            if (championsManager_.SelectedChampion != null)
+                animationController_.MoveAnimation(championsManager_.SelectedChampion);
+            
             if (route_==null || route_.Count==0)
             {
                 return;
@@ -105,6 +112,7 @@ namespace Champions.CharacterUtilities.Movements
                 yield return null;
             }
             Moving = false;
+            animationController_.RestAnimation(championsManager_.SelectedChampion);
         }
 
         public void LookAt(Vector3 point)
@@ -179,6 +187,6 @@ namespace Champions.CharacterUtilities.Movements
             }
             return list;
         }
-
+        
     }
 }
