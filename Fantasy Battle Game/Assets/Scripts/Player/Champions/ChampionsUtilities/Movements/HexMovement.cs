@@ -48,6 +48,7 @@ namespace Champions.CharacterUtilities.Movements
             {
                 destinationTile_ = value;
                 CalculateRoute(1);
+                map_.ClearCosts();
             }
         }
 
@@ -144,6 +145,14 @@ namespace Champions.CharacterUtilities.Movements
             orientation_ = transform.localRotation.eulerAngles.y;
         }
 
+        private double EstimateCost(Tile current, Tile destination)
+        {
+            var dx = Math.Abs(current.Coordinate.FirstCoord - destination.Coordinate.FirstCoord);
+            var dy = Math.Abs(current.Coordinate.SecondCoord - destination.Coordinate.SecondCoord);
+
+            return 1 * (dx + dy) + (Math.Sqrt(2) - 2 * 1) * Math.Min(dx, dy);
+        }
+
         protected void CalculateRoute(int kindOfAlgorithm)
         {
             
@@ -151,85 +160,53 @@ namespace Champions.CharacterUtilities.Movements
                                 
             openList.Clear();
             closedList.Clear();
-                        
-            Tile tempCurrentTile = currentTile;
 
             switch (kindOfAlgorithm)
             {
                 case 1:
-                    tempCurrentTile.Cost = 0;
-                    tempCurrentTile.MovementCost = 0;
-                    tempCurrentTile.DistanceToTarget = Vector3.Distance(tempCurrentTile.Position, DestinationTile.Position);
-                        
-                    openList.Add(tempCurrentTile);
-                    bool searching = true;
-            
                     
-                    //NIESKONCZONA PETLA - TRZEBA ZAMIENIAC TILE ZAMIAST DODAWAC NOWE! (CHYBA)
-                    while (openList.Any() && searching)
+                    openList.Add(currentTile);
+                    currentTile.GScore = 0;
+                    currentTile.FScore = EstimateCost(currentTile, DestinationTile);
+
+                    while (openList.Any())
                     {
                         
-                        Tile bestTile = openList[0];
+                        var bestTile = openList[0];
                         
                         foreach (var elem in openList)
                         {
-                            if (elem.Cost < bestTile.Cost) bestTile = elem;
+                            if (elem.FScore < bestTile.FScore) bestTile = elem;
                         }
 
-                        foreach (var elem in openList)
-                        {
-                            Debug.Log("open list: " + elem.Position);
-                        }
-                        Debug.Log("best tile: " + bestTile.Position);
-                        Debug.Log("tile: " + openList.Find(x=>x.Position == bestTile.Position));
-                        Debug.Log("indeks: " + openList.IndexOf(openList.Find(x=>x.Position == bestTile.Position)));
-                        openList.RemoveAt(openList.IndexOf(openList.Find(x=>x.Position == bestTile.Position)));
+                        if (bestTile == DestinationTile) break;
+
+                        openList.Remove(bestTile);
+                        closedList.Add(bestTile);
 
                         List<Tile> neighbours = map_.AvailableNeighbours(bestTile);
             
                         foreach (var elem in neighbours)
                         {
-                            elem.Parent = bestTile;
+                            if (closedList.Contains(elem)) continue;
+                            if (!openList.Contains(elem))
+                            {
+                                openList.Add(elem);
 
-                            if (elem.Position == DestinationTile.Position)
-                            {
-                                searching = false;
-                                break;
-                            }
-            
-                            elem.MovementCost = bestTile.Drag / 2 + elem.Drag / 2;
-                            elem.DistanceToTarget = Vector3.Distance(elem.Position, DestinationTile.Position);
-            
-                            elem.Cost = elem.MovementCost + elem.DistanceToTarget;
+                                var gScore = bestTile.GScore + bestTile.Drag / 2 + elem.Drag / 2;
+                                
+                                if(gScore >= elem.GScore) continue;
 
-                            if (openList.Find(x => x.Position == elem.Position) != null)
-                            {
-                                if (openList.Find(x=>x.Position == elem.Position).Cost < elem.Cost) break;
+                                elem.Parent = bestTile;
+                                elem.GScore = gScore;
+                                elem.FScore = elem.GScore + EstimateCost(elem, DestinationTile);
                             }
-                            
-                            if (closedList.Find(x => x.Position == elem.Position) != null)
-                            {
-                                if (closedList.Find(x=>x.Position == elem.Position).Cost < elem.Cost) break;
-                            }
-                            else openList.Add(elem);
                         }
-                        
-                        Debug.Log("Searching: " + searching);
-                        Debug.Log("any: " + openList.Any());
-                        
-                        if (!searching) break;
-                        
-                        closedList.Add(bestTile);
                     }
-
-
-                    foreach (var elem in closedList)
-                    {
-                        Debug.Log("closedlist item: " + elem.Position);
-                    }
+                    
                     Tile destination = DestinationTile;
-                    Debug.Log("destination: " + destination.Position);
-                    Debug.Log("current: " + currentTile.Position);
+                    Debug.Log("Koszt celu: " + DestinationTile.FScore);
+                    Debug.Log("Rodzic celu: " + DestinationTile.Parent);
                     
                     while (destination.Position != currentTile.Position)
                     {
@@ -239,7 +216,7 @@ namespace Champions.CharacterUtilities.Movements
                         
                         Debug.Log("parent: " + destination);
                     }
-                    
+                     
                     route_.Add(currentTile);
                     route_.Reverse();
 
@@ -247,10 +224,10 @@ namespace Champions.CharacterUtilities.Movements
                     
                     
                 case 2:
-                    route_.Add(tempCurrentTile);
-                    while (tempCurrentTile != DestinationTile)
+                    route_.Add(currentTile);
+                    while (currentTile != DestinationTile)
                     {
-                        var list = SortList(tempCurrentTile, DestinationTile);
+                        var list = SortList(currentTile, DestinationTile);
 
                         var position = 0;
                         while (route_.Contains(list[position]))
@@ -258,7 +235,7 @@ namespace Champions.CharacterUtilities.Movements
                             position++;
                         }
                         route_.Add(list[position]);
-                        tempCurrentTile = list[position];
+                        currentTile = list[position];
                     }
 
                     break;                

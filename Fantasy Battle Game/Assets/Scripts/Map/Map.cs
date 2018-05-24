@@ -66,14 +66,6 @@ namespace Map
             get { return tilesNextToEnemyInRange_; }
             set { tilesNextToEnemyInRange_ = value; }
         }
-
-        public void ClearCosts()
-        {
-            foreach (var tile in tiles_)
-            {
-                
-            }
-        }
         #endregion
 
         public void MarkTilesNextToEnemyInRange(Tile tileWithEnemy)
@@ -97,6 +89,14 @@ namespace Map
 
         }
 
+        public void ClearCosts()
+        {
+            foreach (var elem in tiles_)
+            {
+                elem.Value.FScore = Double.PositiveInfinity;
+                elem.Value.GScore = Double.PositiveInfinity;
+            }
+        }
 
         public List<KeyValuePair<TileMetrics.HexCoordinate, int>> RandomPositions(int amountofCreaturesFirstPlayer, int amountofCreaturesSecondPlayer)
         {
