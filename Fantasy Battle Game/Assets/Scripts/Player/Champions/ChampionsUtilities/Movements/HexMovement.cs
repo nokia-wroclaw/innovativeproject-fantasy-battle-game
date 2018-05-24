@@ -7,10 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using BattleManagement;
-using UnityEngine.Analytics;
 
 namespace Champions.CharacterUtilities.Movements
 {
@@ -25,8 +22,6 @@ namespace Champions.CharacterUtilities.Movements
         private float orientation_;
         private Tile destinationTile_;
         private List<Tile> route_ = new List<Tile>();
-        List<Tile> openList = new List<Tile>();
-        List<Tile> closedList = new List<Tile>();
         private Map.Map map_ = Map.Map.Instance;
         private AnimationController animationController_;
         private ChampionsManager championsManager_;
@@ -52,8 +47,7 @@ namespace Champions.CharacterUtilities.Movements
             set
             {
                 destinationTile_ = value;
-                CalculateRoute(1);
-                map_.ClearCosts();
+                CalculateRoute();
             }
         }
 
@@ -153,106 +147,22 @@ namespace Champions.CharacterUtilities.Movements
             orientation_ = transform.localRotation.eulerAngles.y;
         }
 
-        private double EstimateCost(Tile current, Tile destination)
+        protected void CalculateRoute()
         {
-            var dx = Math.Abs(current.Coordinate.FirstCoord - destination.Coordinate.FirstCoord);
-            var dy = Math.Abs(current.Coordinate.SecondCoord - destination.Coordinate.SecondCoord);
-
-            return 1 * (dx + dy) + (Math.Sqrt(2) - 2 * 1) * Math.Min(dx, dy);
-        }
-
-        protected void CalculateRoute(int kindOfAlgorithm)
-        {
-            
             route_.Clear();
-                                
-            openList.Clear();
-            closedList.Clear();
-
-            switch (kindOfAlgorithm)
+            Tile TempDestinationTile = currentTile;
+            route_.Add(TempDestinationTile);
+            while (TempDestinationTile != DestinationTile)
             {
-                case 1:
-                    
-                    openList.Add(currentTile);
-                    currentTile.GScore = 0;
-                    currentTile.FScore = EstimateCost(currentTile, DestinationTile);
+                var list = SortList(TempDestinationTile, DestinationTile);
 
-                    while (openList.Any())
-                    {
-                        
-                        var bestTile = openList[0];
-                        
-                        foreach (var elem in openList)
-                        {
-                            if (elem.FScore < bestTile.FScore) bestTile = elem;
-                        }
-
-                        if (bestTile == DestinationTile) break;
-
-                        openList.Remove(bestTile);
-                        closedList.Add(bestTile);
-
-                        List<Tile> neighbours = map_.AvailableNeighbours(bestTile);
-            
-                        foreach (var elem in neighbours)
-                        {
-                            if (closedList.Contains(elem)) continue;
-                            if (!openList.Contains(elem))
-                            {
-                                openList.Add(elem);
-
-                                var gScore = bestTile.GScore + bestTile.Drag / 2 + elem.Drag / 2;
-                                
-                                if(gScore >= elem.GScore) continue;
-
-                                elem.Parent = bestTile;
-                                elem.GScore = gScore;
-                                elem.FScore = elem.GScore + EstimateCost(elem, DestinationTile);
-                            }
-                        }
-                    }
-                    
-                    Tile destination = DestinationTile;
-                    Debug.Log("Koszt celu: " + DestinationTile.FScore);
-                    Debug.Log("Rodzic celu: " + DestinationTile.Parent);
-                    
-                    while (destination.Position != currentTile.Position)
-                    {
-                        destination = map_.GetTile(destination.Coordinate);
-                        route_.Add(destination);
-                        destination = destination.Parent;
-                        
-                        Debug.Log("parent: " + destination);
-                    }
-                     
-                    route_.Add(currentTile);
-                    route_.Reverse();
-
-                    break;
-                    
-                    
-                case 2:
-                    route_.Add(currentTile);
-                    while (currentTile != DestinationTile)
-                    {
-                        var list = SortList(currentTile, DestinationTile);
-
-                        var position = 0;
-                        while (route_.Contains(list[position]))
-                        {
-                            position++;
-                        }
-                        route_.Add(list[position]);
-                        currentTile = list[position];
-                    }
-
-                    break;                
-            }
-
-
-            foreach (var elem in route_)
-            {
-                Debug.Log(elem);
+                var position = 0;
+                while (route_.Contains(list[position]))
+                {
+                    position++;
+                }
+                route_.Add(list[position]);
+                TempDestinationTile = list[position];
             }
             Debug.Log("Route calculated");
         }
