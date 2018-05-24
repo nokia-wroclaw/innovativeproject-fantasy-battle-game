@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Champions;
 using UnityEngine;
+using System.Threading;
 
 namespace BattleManagement
 {
@@ -52,12 +57,12 @@ namespace BattleManagement
             secondPlayerTurnList_ = new List<Champion>();
         }
 
-        public void NextTurn()
+        public bool NextTurn()
         {
             if (firstPlayer_.Champions.Count == 0 || secondPlayer_.Champions.Count == 0)
             {
                 Winner();
-                return;
+                return false;
             }
             if (CurrentPlayer == firstPlayer_)
             {
@@ -74,7 +79,7 @@ namespace BattleManagement
 
             turnPhase_ = TurnPhase.FirstPhase;
             
-            return;
+            return !endGame_;
         }
 
         private bool firstPlayerTurn()
