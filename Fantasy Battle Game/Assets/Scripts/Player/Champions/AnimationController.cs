@@ -36,6 +36,7 @@ namespace BattleManagement {
         public void DamageAnimation(Champion selectedChampion)
         {
             selectedChampion.GetComponent<Animation>().CrossFade("damage", 0.2f);
+            selectedChampion.GetComponent<Animation>().PlayQueued("idle01");
         }
         public void RestAnimation(Champion selectedChampion)
         {

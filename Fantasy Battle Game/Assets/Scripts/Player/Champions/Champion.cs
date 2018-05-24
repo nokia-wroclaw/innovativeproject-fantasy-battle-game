@@ -63,20 +63,17 @@ namespace Champions
        
             defenderChampion.AddDamagePopup(Damage);
 
-            if (defenderChampion.CurrentHp<=0)
+            if (defenderChampion.CurrentHp <= 0)
             {
-                if (championsManager_.SelectedChampion != null)
-                    animationController_.DeadAnimation(championsManager_.SelectedChampion);
+                animationController_.DeadAnimation(defenderChampion);
                 defenderChampion.Destroy();
             }
+            else
+                animationController_.DamageAnimation(defenderChampion);
 
-            var x = defenderChampion.GameObject.GetComponent<DamagePopup>();
+            animationController_.AttackAnimation(this);
+
             
-                
-            if (championsManager_.SelectedChampion != null)
-                animationController_.AttackAnimation(championsManager_.SelectedChampion);
-            animationController_.DamageAnimation(defenderChampion);
-            animationController_.RestAnimation(defenderChampion);
             Debug.Log(defenderChampion.CurrentHp+"/"+MaxHp);
             yield return new WaitForSeconds(2);
             TurnManagement.Instance.NextTurn();
@@ -116,9 +113,15 @@ namespace Champions
             Debug.Log("destroy champion");
             owner_.Champions.Remove(this);
             CurrentPossition.DeleteChildsGO();
-            Destroy(GameObject);
             CurrentPossition.Champion = null;
             CurrentPossition.Available = true;
+            StartCoroutine(deleteGO());
+        }
+
+        private IEnumerator deleteGO()
+        {
+            yield return new WaitForSeconds(2);
+            Destroy(GameObject);
         }
 
         public void AddProjector(GameObject projector)
