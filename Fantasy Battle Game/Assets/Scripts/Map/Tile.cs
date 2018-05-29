@@ -118,7 +118,7 @@ namespace Map
                 dscController_ = GameObject.Find("Description").GetComponent<DSCController>();
                 return;
             }
-            if(Champion == null) Debug.Log("Champion is a null");
+//            if(Champion == null) Debug.Log("Champion is a null");
             dscController_.UpdateStatus(Champion);
         }
         void OnMouseExit()
