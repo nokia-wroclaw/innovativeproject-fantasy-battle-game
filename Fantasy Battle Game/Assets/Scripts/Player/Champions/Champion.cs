@@ -19,8 +19,6 @@ namespace Champions
         public int CurrentHp;
         public int Damage;
         public int Range = 10;
-        private AnimationController animationController_;
-        private ChampionsManager championsManager_;
 
         void Awake()
         {
@@ -29,8 +27,6 @@ namespace Champions
             {
                 hasAniComp = true;
             }
-            animationController_ = AnimationController.Instance;
-            championsManager_ = ChampionsManager.Instance;
         }
         
         public void AddDamagePopup(int damage)
