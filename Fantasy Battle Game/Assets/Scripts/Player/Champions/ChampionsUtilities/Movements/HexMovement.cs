@@ -120,6 +120,7 @@ namespace Champions.CharacterUtilities.Movements
                 yield return null;
             }
             Moving = false;
+            animationController_.RestAnimation(championsManager_.SelectedChampion);
         }
 
         public void LookAt(Vector3 point)
