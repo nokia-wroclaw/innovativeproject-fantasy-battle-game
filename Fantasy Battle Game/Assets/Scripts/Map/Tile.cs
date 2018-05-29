@@ -39,6 +39,7 @@ namespace Map
         private readonly List<Tile> neighbours_ = new List<Tile>();
         private ChampionsManager championsManager_;
         private BattleManagement.MouseManagement mouseManagement_;
+        private DSCController dscController_;
 
 
         void Awake()
@@ -121,6 +122,13 @@ namespace Map
             projector.transform.parent = TileGameObject.transform;
             projector.transform.position = position_ + projector.transform.position;
             projectorOnMouseGameObject_ = projector;
+            
+            if (EventSystem.current.IsPointerOverGameObject() || dscController_ == null){
+                dscController_ = GameObject.Find("Description").GetComponent<DSCController>();
+                return;
+            }
+//            if(Champion == null) Debug.Log("Champion is a null");
+            dscController_.UpdateStatus(Champion);
         }
         void OnMouseExit()
         {
@@ -132,10 +140,9 @@ namespace Map
 
         private void OnMouseDown()
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                mouseManagement_.MouseDown(this);
-            }
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            
+            mouseManagement_.MouseDown(this);
         }
 
         private void OnMouseUp()

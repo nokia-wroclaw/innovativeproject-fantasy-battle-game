@@ -6,14 +6,27 @@ using Champions.CharacterUtilities.Movements;
 using UnityEngine;
 using Player;
 using UnityEngine.EventSystems;
+using System;
 
 namespace Champions
 {
-    public class Champion : HexMovement
+    public class Champion : HexMovement, IDescription
     {
         public GameObject GameObject { get; set; }
         private Player.Player owner_;
+
+        public String GetName(){return "My name is Jeff.";}
+        public String GetBrief(){
+            return 
+                "\nMax Health: " + MaxHp.ToString() +
+                "\nCurrent Health: " + CurrentHp.ToString() +
+                "\nDamage: " + Damage.ToString() +
+                "\nRange: " + Range.ToString();
+            }
+        public String GetLore(){return "Lorem ipsum";}
+
         private bool hasAniComp = false;
+
         //stats
         public int MaxHp;
         public int CurrentHp;
@@ -68,9 +81,9 @@ namespace Champions
                 animationController_.DamageAnimation(defenderChampion);
 
             animationController_.AttackAnimation(this);
-
-            
+   
             Debug.Log(defenderChampion.CurrentHp+"/"+MaxHp);
+
             yield return new WaitForSeconds(2);
             TurnManagement.Instance.NextTurn();
         }
