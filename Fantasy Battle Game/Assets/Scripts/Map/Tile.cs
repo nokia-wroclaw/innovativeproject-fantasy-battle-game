@@ -16,6 +16,10 @@ namespace Map
     {
         public GameObject TileGameObject;
         public Champion Champion { set; get; }
+        
+        public Tile Parent { get; set; }
+        public double FScore { get; set; }
+        public double GScore { get; set; }
 
         [SerializeField]
         private double distanceFromStart_ = 0;
@@ -37,10 +41,15 @@ namespace Map
         private BattleManagement.MouseManagement mouseManagement_;
         private DSCController dscController_;
 
+
         void Awake()
         {
             championsManager_ = ChampionsManager.Instance;
             mouseManagement_ = BattleManagement.MouseManagement.Instance;
+            FScore = Double.PositiveInfinity;
+            GScore = Double.PositiveInfinity;
+            
+
         }
         
         public void DeleteChildsGO()

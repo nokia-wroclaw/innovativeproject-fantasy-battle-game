@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 33477040783145736}
   - component: {fileID: 23841947129938870}
   - component: {fileID: 95439889055689026}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Olive_Tree_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
