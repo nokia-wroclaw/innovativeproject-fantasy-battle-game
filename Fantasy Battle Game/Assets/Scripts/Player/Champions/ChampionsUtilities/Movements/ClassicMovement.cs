@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using BattleManagement;
+using Map;
 using Champions.ChampionsUtilities.Interfaces;
 using UnityEngine;
 
@@ -9,14 +10,16 @@ namespace CharacterUtilities.Movements
         public float RotationSpeed = 5;
         public float Speed = 10;
         
+        protected AnimationController animationController_;
+        
         private Vector3 targetPosition_;
         private Vector3 lookAtTarget_;
         private Quaternion playerRotation_;
         private bool moving_ = false;
 
-        private void Start()
+        private void Awake()
         {
-            
+            animationController_ = AnimationController.Instance;
         }
 
         void Update()

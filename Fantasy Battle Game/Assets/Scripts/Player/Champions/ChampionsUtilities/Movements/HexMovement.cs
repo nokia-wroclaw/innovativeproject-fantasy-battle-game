@@ -21,16 +21,22 @@ namespace Champions.CharacterUtilities.Movements
         public bool Moving = false;
 
         protected Tile currentTile { set; get; }
-
+        protected AnimationController animationController_;
+        protected ChampionsManager championsManager_;
+        
         private float orientation_;
         private Tile destinationTile_;
         private List<Tile> route_ = new List<Tile>();
         List<Tile> openList = new List<Tile>();
         List<Tile> closedList = new List<Tile>();
         private Map.Map map_ = Map.Map.Instance;
-        private bool move_;
-         
 
+        public void Start()
+        {
+            animationController_ = AnimationController.Instance;
+            championsManager_ = ChampionsManager.Instance;
+        }
+        
         public float Orientation
         {
             get { return orientation_; }
@@ -55,6 +61,9 @@ namespace Champions.CharacterUtilities.Movements
         public void GoToDestination()
         {
 
+            if (championsManager_.SelectedChampion != null)
+                animationController_.MoveAnimation(championsManager_.SelectedChampion);
+            
             if (route_==null || route_.Count==0)
             {
                 return;
